@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:10:14 PAGE 1   
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:41:57 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE ADC
@@ -48,9 +48,9 @@ line level    source
   38   1      
   39   1          //工作模式1和模式3得储存,模式2不储存,那么就要求不能直接进入模式2
   40   1          if(workMode!=2){
-  41   2          P2=P2|0x20;
+  41   2          P2=P2&0x7F;
   42   2              P2=P2&0xBF;
-  43   2              P2=P2&0x7F;
+  43   2              P2=P2&0xDF;
   44   2              //进行adc值的存储（外部RAM0x6000-0x7000),最多只能存这么多
   45   2              if(adcount>=16&&adAddress<0x7000)
   46   2              {
@@ -62,7 +62,7 @@ line level    source
   52   1          //进行ADC值向DAC的转换
   53   1      
   54   1          //问题:ADC转换值是1024个阶,DAC转换值是256个阶,要进行转换,舍去最低两位
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:10:14 PAGE 2   
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:41:57 PAGE 2   
 
   55   1              ADC_RESULT=ADC_RES;
   56   1              ADC_RES=0x00;
@@ -70,9 +70,9 @@ line level    source
   58   1      
   59   1          //进行DAC赋值
   60   1          //使能S1 DAC芯片
-  61   1              P2=P2&0xEF;
-  62   1              P2=P2|0x40;
-  63   1              P2=P2&0x7F;
+  61   1          P2=P2&0x7F;
+  62   1              P2=P2&0xBF;
+  63   1              P2=P2|0x20;
   64   1          //写选通
   65   1          P3=P3&0xBF;
   66   1          //给P0口赋值
@@ -83,16 +83,16 @@ line level    source
   71   1          if(workMode==2){
   72   2              if(daAddress<=adAddress){
   73   3                  //使能RAM
-  74   3                  P2=P2|0x20;
+  74   3                  P2=P2&0x7F;
   75   3                      P2=P2&0xBF;
-  76   3                      P2=P2&0x7F;
+  76   3                      P2=P2&0xDF;
   77   3                  tmpData=XBYTE[daAddress];
   78   3                  daAddress++;
   79   3                  //进行DAC赋值
-  80   3                  //使能S1 DAC芯片
-  81   3                      P2=P2&0xEF;
+  80   3                  //使能S2 DAC芯片
+  81   3                  P2=P2&0x7F;
   82   3                      P2=P2|0x40;
-  83   3                      P2=P2&0x7F;
+  83   3                      P2=P2&0xDF;
   84   3                  //写选通
   85   3                  P3=P3&0xBF;
   86   3                  //给P0口赋值
@@ -126,7 +126,7 @@ line level    source
  114   1          for(i=0;i<delayTime;i++)
  115   1          {
  116   2      
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:10:14 PAGE 3   
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:41:57 PAGE 3   
 
  117   2          }
  118   1      }

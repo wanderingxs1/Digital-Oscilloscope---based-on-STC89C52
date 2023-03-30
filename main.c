@@ -78,7 +78,7 @@ void dsptask()
    case 0:  a=0xF7;  break;
    case 1:  a=0xFB;  break;
    case 2:  a=0xFD;  break;
-   default: a=0x0E;
+   default: a=0xFE;
    }
    //把工作模式送出去
   for(b=0x80,i=0;i<8;i++)

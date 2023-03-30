@@ -38,9 +38,9 @@ void adc_work() interrupt 5 using 1		//实时性强，采到一个就输出。但是存储是每4ms
 
     //工作模式1和模式3得储存,模式2不储存,那么就要求不能直接进入模式2
     if(workMode!=2){
-    P2=P2|0x20;
+    P2=P2&0x7F;
 	P2=P2&0xBF;
-	P2=P2&0x7F;
+	P2=P2&0xDF;
 	//进行adc值的存储（外部RAM0x6000-0x7000),最多只能存这么多
 	if(adcount>=16&&adAddress<0x7000)
 	{
@@ -58,9 +58,9 @@ void adc_work() interrupt 5 using 1		//实时性强，采到一个就输出。但是存储是每4ms
 
     //进行DAC赋值
     //使能S1 DAC芯片
-	P2=P2&0xEF;
-	P2=P2|0x40;
-	P2=P2&0x7F;
+    P2=P2&0x7F;
+	P2=P2&0xBF;
+	P2=P2|0x20;
     //写选通
     P3=P3&0xBF;
     //给P0口赋值
@@ -71,16 +71,16 @@ void adc_work() interrupt 5 using 1		//实时性强，采到一个就输出。但是存储是每4ms
     if(workMode==2){
         if(daAddress<=adAddress){
             //使能RAM
-            P2=P2|0x20;
+            P2=P2&0x7F;
 	        P2=P2&0xBF;
-	        P2=P2&0x7F;
+	        P2=P2&0xDF;
             tmpData=XBYTE[daAddress];
             daAddress++;
             //进行DAC赋值
-            //使能S1 DAC芯片
-	        P2=P2&0xEF;
+            //使能S2 DAC芯片
+            P2=P2&0x7F;
 	        P2=P2|0x40;
-	        P2=P2&0x7F;
+	        P2=P2&0xDF;
             //写选通
             P3=P3&0xBF;
             //给P0口赋值

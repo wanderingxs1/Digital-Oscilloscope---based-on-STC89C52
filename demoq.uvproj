@@ -356,6 +356,16 @@
               <FileType>1</FileType>
               <FilePath>.\adc.c</FilePath>
             </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>workMode1-outputWave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\workMode1-outputWave.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
