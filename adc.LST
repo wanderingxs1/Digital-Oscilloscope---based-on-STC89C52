@@ -1,0 +1,113 @@
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 20:38:47 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN adc.OBJ
+COMPILER INVOKED BY: D:\keil4\C51\BIN\C51.EXE adc.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<adc.h>
+   2          
+   3          extern int adc_work_count;
+   4          extern char ADC_RESULT;
+   5          extern int adAddress;
+   6          extern int adcount;
+   7          
+   8          bit testa;
+   9          bit testb;
+  10          bit testc;
+  11          
+  12          
+  13          void adc_init()
+  14          {
+  15   1          P1ASF=0x08;     //È·¶¨p13ÊÇa-d¹¦ÄÜ,ÊäÈë
+  16   1          ADC_CONTR=0x0CB;//¼ûipad±Ê¼Ç
+  17   1          //AUXR1=0x04;//AUXR1ÎÞ·¨±»¸³Öµ£¬ËüÄ¬ÈÏÎª0£¬Ö»ÄÜÊ¹µÃ¸ß8Î»ÔÚADS_RESÀï±ß£¬µÍ2Î»ÔÚADC_RESLµÄµÍ2Î»£¨ÕâÁ½Î»É
+             -áÆú£©
+  18   1          ADC_RES=0x00;
+  19   1          ADC_RESL=0x00;
+  20   1      
+  21   1          //ÅäÖÃÖÐ¶Ï
+  22   1          EADC=1;//ADÖÐ¶ÏÔÊÐí
+  23   1          IP=0x24;//AD¸ßÓÅÏÈ,Íâ²¿ÖÐ¶Ï1´Î¸ß,¶¨Ê±Æ÷×îµÍ
+  24   1          delay(2);
+  25   1      }
+  26          
+  27          void adc_work() interrupt 5 using 1             //ÊµÊ±ÐÔÇ¿£¬²Éµ½Ò»¸ö¾ÍÊä³ö¡£µ«ÊÇ´æ´¢ÊÇÃ¿4msÒ»´Î¡£´ËÊ±adcount>=16.
+  28          {
+  29   1          //ÇåÁãADCÖÐ¶Ï¿ØÖÆÎ»
+  30   1          ADC_CONTR=ADC_CONTR&0xEF;
+  31   1          //±£»¤P25-P27,²¢ÖÃÎ»ÏàÓ¦¹Ü½Å·¢³öS0Æ¬Ñ¡ÐÅºÅ,Æ¬Ñ¡´æ´¢Æ÷
+  32   1              testa=P2^5;
+  33   1          testb=P2^6;
+  34   1          testc=P2^7;
+  35   1          P2=P2|0x20;
+  36   1              P2=P2&0xBF;
+  37   1              P2=P2&0x7F;
+  38   1              //½øÐÐadcÖµµÄ´æ´¢£¨Íâ²¿RAM0x6000-0x7000),×î¶àÖ»ÄÜ´æÕâÃ´¶à
+  39   1              if(adcount>=16&&adAddress<0x7000)
+  40   1              {
+  41   2                 XBYTE[adAddress]=ADC_RES;
+  42   2                 adAddress++;
+  43   2              }
+  44   1      
+  45   1          //½øÐÐADCÖµÏòDACµÄ×ª»»
+  46   1      
+  47   1          //ÎÊÌâ:ADC×ª»»ÖµÊÇ1024¸ö½×,DAC×ª»»ÖµÊÇ256¸ö½×,Òª½øÐÐ×ª»»,ÉáÈ¥×îµÍÁ½Î»
+  48   1              ADC_RESULT=ADC_RES;
+  49   1              ADC_RES=0x00;
+  50   1              ADC_RESL=0x00;
+  51   1      
+  52   1          //½øÐÐDAC¸³Öµ
+  53   1          //Ê¹ÄÜS1 DACÐ¾Æ¬
+  54   1              P2=P2&0xEF;
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 20:38:47 PAGE 2   
+
+  55   1              P2=P2|0x40;
+  56   1              P2=P2&0x7F;
+  57   1          //Ð´Ñ¡Í¨
+  58   1          P3=P3&0xBF;
+  59   1          //¸øP0¿Ú¸³Öµ
+  60   1          P0=ADC_RESULT;
+  61   1              delay(10);
+  62   1          //Íê³É¶Ë¿Ú±£»¤
+  63   1              if(testa)
+  64   1                      P2=P2|0x20;
+  65   1              else
+  66   1                      P2=P2&0xEF;
+  67   1              if(testb)
+  68   1                      P2=P2|0x40;
+  69   1              else
+  70   1                      P2=P2&0xBF;
+  71   1              if(testc)
+  72   1                      P2=P2|0x80;
+  73   1              else
+  74   1                      P2=P2&0x7F;
+  75   1      
+  76   1          
+  77   1      
+  78   1      }
+  79          
+  80          void delay(int delayTime)
+  81          {
+  82   1              int i;
+  83   1          for(i=0;i<delayTime;i++)
+  84   1          {
+  85   2      
+  86   2          }
+  87   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    208    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

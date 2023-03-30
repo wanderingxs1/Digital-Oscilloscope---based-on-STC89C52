@@ -1,0 +1,599 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\360MoveData\Users\wandering\Desktop\demo1\demoq.uvproj
+Project File Date:  03/30/2023
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(97): warning C280: 't': unreferenced local variable
+MAIN.C(137): warning C280: 't': unreferenced local variable
+MAIN.C(133): warning C290: missing return value
+compiling adc.c...
+ADC.C(7): error C202: 'ADRJ': undefined identifier
+ADC.C(12): error C202: 'EADC': undefined identifier
+ADC.C(13): error C202: 'IPH': undefined identifier
+ADC.C(19): error C231: 'adc_work': redefinition
+ADC.C(23): error C141: syntax error near 'bit'
+ADC.C(23): error C202: 'A': undefined identifier
+ADC.C(23): error C141: syntax error near '.5'
+ADC.C(24): error C141: syntax error near 'bit'
+ADC.C(24): error C141: syntax error near '.6'
+ADC.C(25): error C141: syntax error near 'bit'
+ADC.C(25): error C202: 'C': undefined identifier
+ADC.C(25): error C141: syntax error near '.7'
+ADC.C(26): error C141: syntax error near '.5'
+ADC.C(27): error C141: syntax error near '.6'
+ADC.C(28): error C141: syntax error near '.7'
+ADC.C(57): error C141: syntax error near 'float'
+ADC.C(57): error C202: 'tmp1': undefined identifier
+ADC.C(58): error C202: 'tmp': undefined identifier
+ADC.C(62): error C141: syntax error near '.5'
+ADC.C(63): error C141: syntax error near '.6'
+ADC.C(64): error C141: syntax error near '.7'
+ADC.C(66): error C141: syntax error near '.6'
+ADC.C(68): error C202: 'tmp': undefined identifier
+ADC.C(70): error C141: syntax error near '.5'
+ADC.C(70): error C202: 'A': undefined identifier
+ADC.C(71): error C141: syntax error near '.6'
+ADC.C(72): error C141: syntax error near '.7'
+ADC.C(72): error C202: 'C': undefined identifier
+ADC.C(76): error C231: 'adc_work': redefinition
+ADC.C(80): error C141: syntax error near 'int'
+ADC.C(80): error C202: 'i': undefined identifier
+ADC.C(80): error C202: 'i': undefined identifier
+ADC.C(80): error C202: 'i': undefined identifier
+ADC.C(80): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(7): error C202: 'ADRJ': undefined identifier
+ADC.C(12): error C202: 'EADC': undefined identifier
+ADC.C(13): error C202: 'IPH': undefined identifier
+ADC.C(19): error C231: 'adc_work': redefinition
+ADC.C(23): error C141: syntax error near 'bit'
+ADC.C(23): error C202: 'A': undefined identifier
+ADC.C(23): error C141: syntax error near '.5'
+ADC.C(24): error C141: syntax error near 'bit'
+ADC.C(24): error C141: syntax error near '.6'
+ADC.C(25): error C141: syntax error near 'bit'
+ADC.C(25): error C202: 'C': undefined identifier
+ADC.C(25): error C141: syntax error near '.7'
+ADC.C(26): error C141: syntax error near '.5'
+ADC.C(27): error C141: syntax error near '.6'
+ADC.C(28): error C141: syntax error near '.7'
+ADC.C(57): error C141: syntax error near 'float'
+ADC.C(57): error C202: 'tmp1': undefined identifier
+ADC.C(58): error C202: 'tmp': undefined identifier
+ADC.C(62): error C141: syntax error near '.5'
+ADC.C(63): error C141: syntax error near '.6'
+ADC.C(64): error C141: syntax error near '.7'
+ADC.C(66): error C141: syntax error near '.6'
+ADC.C(68): error C202: 'tmp': undefined identifier
+ADC.C(70): error C141: syntax error near '.5'
+ADC.C(70): error C202: 'A': undefined identifier
+ADC.C(71): error C141: syntax error near '.6'
+ADC.C(72): error C141: syntax error near '.7'
+ADC.C(72): error C202: 'C': undefined identifier
+ADC.C(76): error C231: 'adc_work': redefinition
+ADC.C(80): error C141: syntax error near 'int'
+ADC.C(80): error C202: 'i': undefined identifier
+ADC.C(80): error C202: 'i': undefined identifier
+ADC.C(80): error C202: 'i': undefined identifier
+ADC.C(80): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(7): error C202: 'ADRJ': undefined identifier
+ADC.C(12): error C202: 'EADC': undefined identifier
+ADC.C(13): error C202: 'IPH': undefined identifier
+ADC.C(19): error C231: 'adc_work': redefinition
+ADC.C(23): error C141: syntax error near 'bit'
+ADC.C(23): error C202: 'A': undefined identifier
+ADC.C(24): error C141: syntax error near 'bit'
+ADC.C(25): error C141: syntax error near 'bit'
+ADC.C(25): error C202: 'C': undefined identifier
+ADC.C(26): error C202: 'A': undefined identifier
+ADC.C(55): error C141: syntax error near 'float'
+ADC.C(55): error C202: 'tmp1': undefined identifier
+ADC.C(56): error C202: 'tmp': undefined identifier
+ADC.C(60): error C141: syntax error near '.5'
+ADC.C(61): error C141: syntax error near '.6'
+ADC.C(62): error C141: syntax error near '.7'
+ADC.C(64): error C141: syntax error near '.6'
+ADC.C(66): error C202: 'tmp': undefined identifier
+ADC.C(68): error C141: syntax error near '.5'
+ADC.C(68): error C202: 'A': undefined identifier
+ADC.C(69): error C141: syntax error near '.6'
+ADC.C(70): error C141: syntax error near '.7'
+ADC.C(70): error C202: 'C': undefined identifier
+ADC.C(74): error C231: 'adc_work': redefinition
+ADC.C(78): error C141: syntax error near 'int'
+ADC.C(78): error C202: 'i': undefined identifier
+ADC.C(78): error C202: 'i': undefined identifier
+ADC.C(78): error C202: 'i': undefined identifier
+ADC.C(78): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(7): error C202: 'ADRJ': undefined identifier
+ADC.C(12): error C202: 'EADC': undefined identifier
+ADC.C(13): error C202: 'IPH': undefined identifier
+ADC.C(19): error C231: 'adc_work': redefinition
+ADC.C(23): error C141: syntax error near 'sbit'
+ADC.C(23): error C202: 'A': undefined identifier
+ADC.C(24): error C141: syntax error near 'sbit'
+ADC.C(25): error C141: syntax error near 'sbit'
+ADC.C(25): error C202: 'C': undefined identifier
+ADC.C(26): error C202: 'A': undefined identifier
+ADC.C(55): error C141: syntax error near 'float'
+ADC.C(55): error C202: 'tmp1': undefined identifier
+ADC.C(56): error C202: 'tmp': undefined identifier
+ADC.C(60): error C141: syntax error near '.5'
+ADC.C(61): error C141: syntax error near '.6'
+ADC.C(62): error C141: syntax error near '.7'
+ADC.C(64): error C141: syntax error near '.6'
+ADC.C(66): error C202: 'tmp': undefined identifier
+ADC.C(68): error C141: syntax error near '.5'
+ADC.C(68): error C202: 'A': undefined identifier
+ADC.C(69): error C141: syntax error near '.6'
+ADC.C(70): error C141: syntax error near '.7'
+ADC.C(70): error C202: 'C': undefined identifier
+ADC.C(74): error C231: 'adc_work': redefinition
+ADC.C(78): error C141: syntax error near 'int'
+ADC.C(78): error C202: 'i': undefined identifier
+ADC.C(78): error C202: 'i': undefined identifier
+ADC.C(78): error C202: 'i': undefined identifier
+ADC.C(78): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(7): error C202: 'ADRJ': undefined identifier
+ADC.C(12): error C202: 'EADC': undefined identifier
+ADC.C(13): error C202: 'IPH': undefined identifier
+ADC.C(19): error C231: 'adc_work': redefinition
+ADC.C(23): error C141: syntax error near 'sbit'
+ADC.C(23): error C202: 'testa': undefined identifier
+ADC.C(24): error C141: syntax error near 'sbit'
+ADC.C(24): error C202: 'testb': undefined identifier
+ADC.C(25): error C202: 'testa': undefined identifier
+ADC.C(54): error C141: syntax error near 'float'
+ADC.C(54): error C202: 'tmp1': undefined identifier
+ADC.C(55): error C202: 'tmp': undefined identifier
+ADC.C(59): error C141: syntax error near '.5'
+ADC.C(60): error C141: syntax error near '.6'
+ADC.C(61): error C141: syntax error near '.7'
+ADC.C(63): error C141: syntax error near '.6'
+ADC.C(65): error C202: 'tmp': undefined identifier
+ADC.C(67): error C141: syntax error near '.5'
+ADC.C(67): error C202: 'A': undefined identifier
+ADC.C(68): error C141: syntax error near '.6'
+ADC.C(69): error C141: syntax error near '.7'
+ADC.C(69): error C202: 'C': undefined identifier
+ADC.C(73): error C231: 'adc_work': redefinition
+ADC.C(77): error C141: syntax error near 'int'
+ADC.C(77): error C202: 'i': undefined identifier
+ADC.C(77): error C202: 'i': undefined identifier
+ADC.C(77): error C202: 'i': undefined identifier
+ADC.C(77): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(8): error C202: 'ADRJ': undefined identifier
+ADC.C(13): error C202: 'EADC': undefined identifier
+ADC.C(14): error C202: 'IPH': undefined identifier
+ADC.C(20): error C231: 'adc_work': redefinition
+ADC.C(52): error C141: syntax error near 'float'
+ADC.C(52): error C202: 'tmp1': undefined identifier
+ADC.C(53): error C202: 'tmp': undefined identifier
+ADC.C(57): error C141: syntax error near '.5'
+ADC.C(58): error C141: syntax error near '.6'
+ADC.C(59): error C141: syntax error near '.7'
+ADC.C(61): error C141: syntax error near '.6'
+ADC.C(63): error C202: 'tmp': undefined identifier
+ADC.C(65): error C141: syntax error near '.5'
+ADC.C(65): error C202: 'A': undefined identifier
+ADC.C(66): error C141: syntax error near '.6'
+ADC.C(67): error C141: syntax error near '.7'
+ADC.C(67): error C202: 'C': undefined identifier
+ADC.C(71): error C231: 'adc_work': redefinition
+ADC.C(75): error C141: syntax error near 'int'
+ADC.C(75): error C202: 'i': undefined identifier
+ADC.C(75): error C202: 'i': undefined identifier
+ADC.C(75): error C202: 'i': undefined identifier
+ADC.C(75): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(10): error C202: 'ADRJ': undefined identifier
+ADC.C(15): error C202: 'EADC': undefined identifier
+ADC.C(16): error C202: 'IPH': undefined identifier
+ADC.C(22): error C231: 'adc_work': redefinition
+ADC.C(29): error C141: syntax error near '='
+ADC.C(30): error C141: syntax error near '='
+ADC.C(31): error C141: syntax error near '='
+ADC.C(59): error C141: syntax error near 'float'
+ADC.C(59): error C202: 'tmp1': undefined identifier
+ADC.C(60): error C202: 'tmp': undefined identifier
+ADC.C(64): error C141: syntax error near '.5'
+ADC.C(65): error C141: syntax error near '.6'
+ADC.C(66): error C141: syntax error near '.7'
+ADC.C(68): error C141: syntax error near '.6'
+ADC.C(70): error C202: 'tmp': undefined identifier
+ADC.C(72): error C141: syntax error near '.5'
+ADC.C(72): error C202: 'A': undefined identifier
+ADC.C(73): error C141: syntax error near '.6'
+ADC.C(74): error C141: syntax error near '.7'
+ADC.C(74): error C202: 'C': undefined identifier
+ADC.C(78): error C231: 'adc_work': redefinition
+ADC.C(82): error C141: syntax error near 'int'
+ADC.C(82): error C202: 'i': undefined identifier
+ADC.C(82): error C202: 'i': undefined identifier
+ADC.C(82): error C202: 'i': undefined identifier
+ADC.C(82): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(10): error C202: 'ADRJ': undefined identifier
+ADC.C(15): error C202: 'EADC': undefined identifier
+ADC.C(16): error C202: 'IPH': undefined identifier
+ADC.C(22): error C231: 'adc_work': redefinition
+ADC.C(29): error C141: syntax error near '='
+ADC.C(61): error C141: syntax error near 'float'
+ADC.C(61): error C202: 'tmp1': undefined identifier
+ADC.C(62): error C202: 'tmp': undefined identifier
+ADC.C(66): error C141: syntax error near '.5'
+ADC.C(67): error C141: syntax error near '.6'
+ADC.C(68): error C141: syntax error near '.7'
+ADC.C(70): error C141: syntax error near '.6'
+ADC.C(72): error C202: 'tmp': undefined identifier
+ADC.C(74): error C141: syntax error near '.5'
+ADC.C(74): error C202: 'A': undefined identifier
+ADC.C(75): error C141: syntax error near '.6'
+ADC.C(76): error C141: syntax error near '.7'
+ADC.C(76): error C202: 'C': undefined identifier
+ADC.C(80): error C231: 'adc_work': redefinition
+ADC.C(84): error C141: syntax error near 'int'
+ADC.C(84): error C202: 'i': undefined identifier
+ADC.C(84): error C202: 'i': undefined identifier
+ADC.C(84): error C202: 'i': undefined identifier
+ADC.C(84): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(10): error C202: 'ADRJ': undefined identifier
+ADC.C(15): error C202: 'EADC': undefined identifier
+ADC.C(16): error C202: 'IPH': undefined identifier
+ADC.C(22): error C231: 'adc_work': redefinition
+ADC.C(61): error C141: syntax error near 'float'
+ADC.C(61): error C202: 'tmp1': undefined identifier
+ADC.C(62): error C202: 'tmp': undefined identifier
+ADC.C(66): error C141: syntax error near '.5'
+ADC.C(67): error C141: syntax error near '.6'
+ADC.C(68): error C141: syntax error near '.7'
+ADC.C(70): error C141: syntax error near '.6'
+ADC.C(72): error C202: 'tmp': undefined identifier
+ADC.C(74): error C141: syntax error near '.5'
+ADC.C(74): error C202: 'A': undefined identifier
+ADC.C(75): error C141: syntax error near '.6'
+ADC.C(76): error C141: syntax error near '.7'
+ADC.C(76): error C202: 'C': undefined identifier
+ADC.C(80): error C231: 'adc_work': redefinition
+ADC.C(84): error C141: syntax error near 'int'
+ADC.C(84): error C202: 'i': undefined identifier
+ADC.C(84): error C202: 'i': undefined identifier
+ADC.C(84): error C202: 'i': undefined identifier
+ADC.C(84): error C141: syntax error near ')'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(10): error C202: 'ADRJ': undefined identifier
+ADC.C(15): error C202: 'EADC': undefined identifier
+ADC.C(16): error C202: 'IPH': undefined identifier
+ADC.C(22): error C231: 'adc_work': redefinition
+ADC.C(61): error C141: syntax error near 'float'
+ADC.C(61): error C202: 'tmp1': undefined identifier
+ADC.C(62): error C202: 'tmp': undefined identifier
+ADC.C(66): error C141: syntax error near '.5'
+ADC.C(67): error C141: syntax error near '.6'
+ADC.C(68): error C141: syntax error near '.7'
+ADC.C(70): error C141: syntax error near '.6'
+ADC.C(72): error C202: 'tmp': undefined identifier
+ADC.C(74): error C141: syntax error near '.5'
+ADC.C(74): error C202: 'A': undefined identifier
+ADC.C(75): error C141: syntax error near '.6'
+ADC.C(76): error C141: syntax error near '.7'
+ADC.C(76): error C202: 'C': undefined identifier
+ADC.C(80): error C231: 'adc_work': redefinition
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(10): error C202: 'ADRJ': undefined identifier
+ADC.C(15): error C202: 'EADC': undefined identifier
+ADC.C(16): error C202: 'IPH': undefined identifier
+ADC.C(61): error C141: syntax error near 'float'
+ADC.C(61): error C202: 'tmp1': undefined identifier
+ADC.C(62): error C202: 'tmp': undefined identifier
+ADC.C(66): error C141: syntax error near '.5'
+ADC.C(67): error C141: syntax error near '.6'
+ADC.C(68): error C141: syntax error near '.7'
+ADC.C(70): error C141: syntax error near '.6'
+ADC.C(72): error C202: 'tmp': undefined identifier
+ADC.C(74): error C141: syntax error near '.5'
+ADC.C(74): error C202: 'A': undefined identifier
+ADC.C(75): error C141: syntax error near '.6'
+ADC.C(76): error C141: syntax error near '.7'
+ADC.C(76): error C202: 'C': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(10): error C213: left side of asn-op not an lvalue
+ADC.C(29): error C141: syntax error near '='
+ADC.C(30): error C141: syntax error near '='
+ADC.C(31): error C141: syntax error near '='
+ADC.C(73): error C141: syntax error near '='
+ADC.C(74): error C141: syntax error near '='
+ADC.C(75): error C141: syntax error near '='
+ADC.C(77): error C141: syntax error near '='
+ADC.C(81): error C141: syntax error near '='
+ADC.C(82): error C141: syntax error near '='
+ADC.C(83): error C141: syntax error near '='
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(10): error C213: left side of asn-op not an lvalue
+ADC.C(30): error C141: syntax error near '='
+ADC.C(31): error C141: syntax error near '='
+ADC.C(73): error C141: syntax error near '='
+ADC.C(74): error C141: syntax error near '='
+ADC.C(75): error C141: syntax error near '='
+ADC.C(77): error C141: syntax error near '='
+ADC.C(81): error C141: syntax error near '='
+ADC.C(82): error C141: syntax error near '='
+ADC.C(83): error C141: syntax error near '='
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(11): error C213: left side of asn-op not an lvalue
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(11): error C213: left side of asn-op not an lvalue
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(11): error C213: left side of asn-op not an lvalue
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(11): error C213: left side of asn-op not an lvalue
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(139): warning C206: 'adc_init': missing function-prototype
+compiling adc.c...
+ADC.C(16): error C213: left side of asn-op not an lvalue
+ADC.C(41): error C141: syntax error near 'adc_work_count'
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(139): warning C206: 'adc_init': missing function-prototype
+compiling adc.c...
+ADC.C(17): error C213: left side of asn-op not an lvalue
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(139): warning C206: 'adc_init': missing function-prototype
+compiling adc.c...
+ADC.C(24): error C213: left side of asn-op not an lvalue
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(139): warning C206: 'adc_init': missing function-prototype
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.3 xdata=0 code=811
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(139): warning C206: 'adc_init': missing function-prototype
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.3 xdata=0 code=811
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(27): warning C231: 'adc_work_count': redefinition
+MAIN.C(28): warning C231: 'ADC_RESULT': redefinition
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.3 xdata=0 code=811
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 3 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=28.3 xdata=0 code=808
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=28.3 xdata=0 code=808
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(23): error C202: 'ADC_BASE_ADDRESS': undefined identifier
+compiling adc.c...
+ADC.C(38): error C202: 'adAdress': undefined identifier
+ADC.C(40): error C202: 'adAdress': undefined identifier
+ADC.C(41): error C202: 'adAdress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(23): error C129: missing ';' before '=='
+compiling adc.c...
+ADC.C(38): error C202: 'adAdress': undefined identifier
+ADC.C(40): error C202: 'adAdress': undefined identifier
+ADC.C(41): error C202: 'adAdress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(23): error C129: missing ';' before '=='
+compiling adc.c...
+ADC.C(38): error C202: 'adAdress': undefined identifier
+ADC.C(40): error C202: 'adAdress': undefined identifier
+ADC.C(41): error C202: 'adAdress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(23): error C129: missing ';' before '=='
+compiling adc.c...
+ADC.C(38): error C202: 'adAdress': undefined identifier
+ADC.C(40): error C202: 'adAdress': undefined identifier
+ADC.C(41): error C202: 'adAdress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(38): error C202: 'adAdress': undefined identifier
+ADC.C(40): error C202: 'adAdress': undefined identifier
+ADC.C(41): error C202: 'adAdress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.3 xdata=0 code=688
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.3 xdata=0 code=688
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.H(20): warning C231: 'adcount': redefinition
+MAIN.H(22): warning C231: 'ADC_RESULT': redefinition
+MAIN.H(23): warning C231: 'adAddress': redefinition
+compiling adc.c...
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  TESTC
+    MODULE:  adc.obj (ADC)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  TESTB
+    MODULE:  adc.obj (ADC)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  TESTA
+    MODULE:  adc.obj (ADC)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.6 xdata=0 code=688
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.H(20): warning C231: 'adcount': redefinition
+MAIN.H(22): warning C231: 'ADC_RESULT': redefinition
+MAIN.H(23): warning C231: 'adAddress': redefinition
+compiling adc.c...
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  TESTC
+    MODULE:  adc.obj (ADC)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  TESTB
+    MODULE:  adc.obj (ADC)
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  TESTA
+    MODULE:  adc.obj (ADC)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.6 xdata=0 code=688
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.3 xdata=0 code=688
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=29.3 xdata=0 code=688
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=31.3 xdata=0 code=692
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=31.3 xdata=0 code=692
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+Program Size: data=31.3 xdata=0 code=692
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 1 Warning(s).
