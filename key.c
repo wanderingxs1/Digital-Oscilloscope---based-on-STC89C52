@@ -1,6 +1,6 @@
 #include<key.h>
 
-extern int workMode;
+extern char workMode;
 extern char key_num;
 extern char waveMode;
 extern char key_sta;

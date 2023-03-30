@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   KEY                                                                   03/30/2023 22:45:17 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   03/30/2023 23:10:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
@@ -9,7 +9,7 @@ line level    source
 
    1          #include<key.h>
    2          
-   3          extern int workMode;
+   3          extern char workMode;
    4          extern char key_num;
    5          extern char waveMode;
    6          extern char key_sta;
@@ -62,7 +62,7 @@ line level    source
   52   3                      }
   53   2                  break;
   54   2      //5678号按键适用于在工作模式1下改变输出波形
-C51 COMPILER V9.00   KEY                                                                   03/30/2023 22:45:17 PAGE 2   
+C51 COMPILER V9.00   KEY                                                                   03/30/2023 23:10:14 PAGE 2   
 
   55   2                  case 5:
   56   2                      if(workMode==1){
@@ -92,7 +92,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    152    ----
+   CODE SIZE        =    131    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

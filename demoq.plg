@@ -1,0 +1,221 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\360MoveData\Users\wandering\Desktop\demo1\demoq.uvproj
+Project File Date:  03/30/2023
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(79): warning C206: 'key_service': missing function-prototype
+MAIN.C(114): warning C206: 'keyWork': missing function-prototype
+compiling adc.c...
+compiling key.c...
+C51 FATAL-ERROR -
+  ACTION:  PARSING SOURCE-FILE
+  ERROR:    PREPROCESSOR: MACROS TOO NESTED
+C51 TERMINATED.
+Target not created
+Build target 'Target 1'
+compiling main.c...
+KEY.H(8): error C143: invalid absolute bit address
+compiling adc.c...
+compiling key.c...
+C51 FATAL-ERROR -
+  ACTION:  PARSING SOURCE-FILE
+  ERROR:    PREPROCESSOR: MACROS TOO NESTED
+C51 TERMINATED.
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+C51 FATAL-ERROR -
+  ACTION:  PARSING SOURCE-FILE
+  ERROR:    PREPROCESSOR: MACROS TOO NESTED
+C51 TERMINATED.
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+KEY.C(9): error C202: 'key_sta': undefined identifier
+KEY.C(10): error C202: 'KEY2': undefined identifier
+KEY.C(13): error C202: 'key_sta': undefined identifier
+KEY.C(15): error C202: 'KEY1': undefined identifier
+KEY.C(18): error C202: 'key_sta': undefined identifier
+compiling workMode1-outputWave.c...
+Target not created
+Build target 'Target 1'
+compiling main.c...
+MAIN.H(36): error C231: 'KEY1': redefinition
+MAIN.H(37): error C231: 'KEY2': redefinition
+compiling adc.c...
+compiling key.c...
+compiling workMode1-outputWave.c...
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+KEY.C(7): error C141: syntax error near 'sbit'
+KEY.C(8): error C202: 'KEY2': undefined identifier
+KEY.C(13): error C202: 'KEY2': undefined identifier
+KEY.C(18): error C202: 'KEY1': undefined identifier
+compiling workMode1-outputWave.c...
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling key.c...
+KEY.C(12): error C202: 'KEY2': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+compiling workMode1-outputWave.c...
+linking...
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  FLAG4
+    MODULE:  key.obj (KEY)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 0014H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 001BH
+Program Size: data=36.3 xdata=0 code=901
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+compiling workMode1-outputWave.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 0014H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 001BH
+Program Size: data=35.3 xdata=0 code=898
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 5 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+compiling workMode1-outputWave.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 0014H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 001BH
+Program Size: data=35.3 xdata=0 code=898
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 5 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 0014H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 001BH
+Program Size: data=35.3 xdata=0 code=898
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 5 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+compiling workMode1-outputWave.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 0014H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 001BH
+Program Size: data=35.3 xdata=0 code=898
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 5 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling key.c...
+compiling workMode1-outputWave.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 0014H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 001BH
+Program Size: data=39.3 xdata=0 code=1001
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 5 Warning(s).

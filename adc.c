@@ -3,11 +3,14 @@
 extern int adc_work_count;
 extern char ADC_RESULT;
 extern int adAddress;
+extern int daAddress;
 extern int adcount;
+extern char workMode;
 
 bit testa;
 bit testb;
 bit testc;
+unsigned char tmpData=0x00;//用来存储工作模式2下,RAM里边取出来的一个值
 
 
 void adc_init()
@@ -32,6 +35,9 @@ void adc_work() interrupt 5 using 1		//实时性强，采到一个就输出。但是存储是每4ms
 	testa=P2^5;
     testb=P2^6;
     testc=P2^7;
+
+    //工作模式1和模式3得储存,模式2不储存,那么就要求不能直接进入模式2
+    if(workMode!=2){
     P2=P2|0x20;
 	P2=P2&0xBF;
 	P2=P2&0x7F;
@@ -41,6 +47,7 @@ void adc_work() interrupt 5 using 1		//实时性强，采到一个就输出。但是存储是每4ms
 	   XBYTE[adAddress]=ADC_RES;
 	   adAddress++;
 	}
+    }
 
     //进行ADC值向DAC的转换
 
@@ -59,6 +66,30 @@ void adc_work() interrupt 5 using 1		//实时性强，采到一个就输出。但是存储是每4ms
     //给P0口赋值
     P0=ADC_RESULT;
 	delay(10);
+
+    //工作模式2下输出之前采到的波形
+    if(workMode==2){
+        if(daAddress<=adAddress){
+            //使能RAM
+            P2=P2|0x20;
+	        P2=P2&0xBF;
+	        P2=P2&0x7F;
+            tmpData=XBYTE[daAddress];
+            daAddress++;
+            //进行DAC赋值
+            //使能S1 DAC芯片
+	        P2=P2&0xEF;
+	        P2=P2|0x40;
+	        P2=P2&0x7F;
+            //写选通
+            P3=P3&0xBF;
+            //给P0口赋值
+            P0=tmpData;
+	        delay(10);
+
+        }
+    }
+
     //完成端口保护
 	if(testa)
 		P2=P2|0x20;

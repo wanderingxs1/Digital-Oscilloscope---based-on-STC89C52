@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 22:45:17 PAGE 1   
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:10:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE ADC
@@ -12,99 +12,132 @@ line level    source
    3          extern int adc_work_count;
    4          extern char ADC_RESULT;
    5          extern int adAddress;
-   6          extern int adcount;
-   7          
-   8          bit testa;
-   9          bit testb;
-  10          bit testc;
-  11          
-  12          
-  13          void adc_init()
-  14          {
-  15   1          P1ASF=0x08;     //È·¶¨p13ÊÇa-d¹¦ÄÜ,ÊäÈë
-  16   1          ADC_CONTR=0x0CB;//¼ûipad±Ê¼Ç
-  17   1          //AUXR1=0x04;//AUXR1ÎŞ·¨±»¸³Öµ£¬ËüÄ¬ÈÏÎª0£¬Ö»ÄÜÊ¹µÃ¸ß8Î»ÔÚADS_RESÀï±ß£¬µÍ2Î»ÔÚADC_RESLµÄµÍ2Î»£¨ÕâÁ½Î»É
+   6          extern int daAddress;
+   7          extern int adcount;
+   8          extern char workMode;
+   9          
+  10          bit testa;
+  11          bit testb;
+  12          bit testc;
+  13          unsigned char tmpData=0x00;//ÓÃÀ´´æ´¢¹¤×÷Ä£Ê½2ÏÂ,RAMÀï±ßÈ¡³öÀ´µÄÒ»¸öÖµ
+  14          
+  15          
+  16          void adc_init()
+  17          {
+  18   1          P1ASF=0x08;     //È·¶¨p13ÊÇa-d¹¦ÄÜ,ÊäÈë
+  19   1          ADC_CONTR=0x0CB;//¼ûipad±Ê¼Ç
+  20   1          //AUXR1=0x04;//AUXR1ÎŞ·¨±»¸³Öµ£¬ËüÄ¬ÈÏÎª0£¬Ö»ÄÜÊ¹µÃ¸ß8Î»ÔÚADS_RESÀï±ß£¬µÍ2Î»ÔÚADC_RESLµÄµÍ2Î»£¨ÕâÁ½Î»É
              -áÆú£©
-  18   1          ADC_RES=0x00;
-  19   1          ADC_RESL=0x00;
-  20   1      
-  21   1          //ÅäÖÃÖĞ¶Ï
-  22   1          EADC=1;//ADÖĞ¶ÏÔÊĞí
-  23   1          IP=0x24;//AD¸ßÓÅÏÈ,Íâ²¿ÖĞ¶Ï1´Î¸ß,¶¨Ê±Æ÷×îµÍ
-  24   1          delay(2);
-  25   1      }
-  26          
-  27          void adc_work() interrupt 5 using 1             //ÊµÊ±ĞÔÇ¿£¬²Éµ½Ò»¸ö¾ÍÊä³ö¡£µ«ÊÇ´æ´¢ÊÇÃ¿4msÒ»´Î¡£´ËÊ±adcount>=16.
-  28          {
-  29   1          //ÇåÁãADCÖĞ¶Ï¿ØÖÆÎ»
-  30   1          ADC_CONTR=ADC_CONTR&0xEF;
-  31   1          //±£»¤P25-P27,²¢ÖÃÎ»ÏàÓ¦¹Ü½Å·¢³öS0Æ¬Ñ¡ĞÅºÅ,Æ¬Ñ¡´æ´¢Æ÷
-  32   1              testa=P2^5;
-  33   1          testb=P2^6;
-  34   1          testc=P2^7;
-  35   1          P2=P2|0x20;
-  36   1              P2=P2&0xBF;
-  37   1              P2=P2&0x7F;
-  38   1              //½øĞĞadcÖµµÄ´æ´¢£¨Íâ²¿RAM0x6000-0x7000),×î¶àÖ»ÄÜ´æÕâÃ´¶à
-  39   1              if(adcount>=16&&adAddress<0x7000)
-  40   1              {
-  41   2                 XBYTE[adAddress]=ADC_RES;
-  42   2                 adAddress++;
-  43   2              }
-  44   1      
-  45   1          //½øĞĞADCÖµÏòDACµÄ×ª»»
-  46   1      
-  47   1          //ÎÊÌâ:ADC×ª»»ÖµÊÇ1024¸ö½×,DAC×ª»»ÖµÊÇ256¸ö½×,Òª½øĞĞ×ª»»,ÉáÈ¥×îµÍÁ½Î»
-  48   1              ADC_RESULT=ADC_RES;
-  49   1              ADC_RES=0x00;
-  50   1              ADC_RESL=0x00;
+  21   1          ADC_RES=0x00;
+  22   1          ADC_RESL=0x00;
+  23   1      
+  24   1          //ÅäÖÃÖĞ¶Ï
+  25   1          EADC=1;//ADÖĞ¶ÏÔÊĞí
+  26   1          IP=0x24;//AD¸ßÓÅÏÈ,Íâ²¿ÖĞ¶Ï1´Î¸ß,¶¨Ê±Æ÷×îµÍ
+  27   1          delay(2);
+  28   1      }
+  29          
+  30          void adc_work() interrupt 5 using 1             //ÊµÊ±ĞÔÇ¿£¬²Éµ½Ò»¸ö¾ÍÊä³ö¡£µ«ÊÇ´æ´¢ÊÇÃ¿4msÒ»´Î¡£´ËÊ±adcount>=16.
+  31          {
+  32   1          //ÇåÁãADCÖĞ¶Ï¿ØÖÆÎ»
+  33   1          ADC_CONTR=ADC_CONTR&0xEF;
+  34   1          //±£»¤P25-P27,²¢ÖÃÎ»ÏàÓ¦¹Ü½Å·¢³öS0Æ¬Ñ¡ĞÅºÅ,Æ¬Ñ¡´æ´¢Æ÷
+  35   1              testa=P2^5;
+  36   1          testb=P2^6;
+  37   1          testc=P2^7;
+  38   1      
+  39   1          //¹¤×÷Ä£Ê½1ºÍÄ£Ê½3µÃ´¢´æ,Ä£Ê½2²»´¢´æ,ÄÇÃ´¾ÍÒªÇó²»ÄÜÖ±½Ó½øÈëÄ£Ê½2
+  40   1          if(workMode!=2){
+  41   2          P2=P2|0x20;
+  42   2              P2=P2&0xBF;
+  43   2              P2=P2&0x7F;
+  44   2              //½øĞĞadcÖµµÄ´æ´¢£¨Íâ²¿RAM0x6000-0x7000),×î¶àÖ»ÄÜ´æÕâÃ´¶à
+  45   2              if(adcount>=16&&adAddress<0x7000)
+  46   2              {
+  47   3                 XBYTE[adAddress]=ADC_RES;
+  48   3                 adAddress++;
+  49   3              }
+  50   2          }
   51   1      
-  52   1          //½øĞĞDAC¸³Öµ
-  53   1          //Ê¹ÄÜS1 DACĞ¾Æ¬
-  54   1              P2=P2&0xEF;
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 22:45:17 PAGE 2   
+  52   1          //½øĞĞADCÖµÏòDACµÄ×ª»»
+  53   1      
+  54   1          //ÎÊÌâ:ADC×ª»»ÖµÊÇ1024¸ö½×,DAC×ª»»ÖµÊÇ256¸ö½×,Òª½øĞĞ×ª»»,ÉáÈ¥×îµÍÁ½Î»
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:10:14 PAGE 2   
 
-  55   1              P2=P2|0x40;
-  56   1              P2=P2&0x7F;
-  57   1          //Ğ´Ñ¡Í¨
-  58   1          P3=P3&0xBF;
-  59   1          //¸øP0¿Ú¸³Öµ
-  60   1          P0=ADC_RESULT;
-  61   1              delay(10);
-  62   1          //Íê³É¶Ë¿Ú±£»¤
-  63   1              if(testa)
-  64   1                      P2=P2|0x20;
-  65   1              else
-  66   1                      P2=P2&0xEF;
-  67   1              if(testb)
-  68   1                      P2=P2|0x40;
-  69   1              else
-  70   1                      P2=P2&0xBF;
-  71   1              if(testc)
-  72   1                      P2=P2|0x80;
-  73   1              else
-  74   1                      P2=P2&0x7F;
-  75   1      
-  76   1          
-  77   1      
-  78   1      }
-  79          
-  80          void delay(int delayTime)
-  81          {
-  82   1              int i;
-  83   1          for(i=0;i<delayTime;i++)
-  84   1          {
-  85   2      
-  86   2          }
-  87   1      }
+  55   1              ADC_RESULT=ADC_RES;
+  56   1              ADC_RES=0x00;
+  57   1              ADC_RESL=0x00;
+  58   1      
+  59   1          //½øĞĞDAC¸³Öµ
+  60   1          //Ê¹ÄÜS1 DACĞ¾Æ¬
+  61   1              P2=P2&0xEF;
+  62   1              P2=P2|0x40;
+  63   1              P2=P2&0x7F;
+  64   1          //Ğ´Ñ¡Í¨
+  65   1          P3=P3&0xBF;
+  66   1          //¸øP0¿Ú¸³Öµ
+  67   1          P0=ADC_RESULT;
+  68   1              delay(10);
+  69   1      
+  70   1          //¹¤×÷Ä£Ê½2ÏÂÊä³öÖ®Ç°²Éµ½µÄ²¨ĞÎ
+  71   1          if(workMode==2){
+  72   2              if(daAddress<=adAddress){
+  73   3                  //Ê¹ÄÜRAM
+  74   3                  P2=P2|0x20;
+  75   3                      P2=P2&0xBF;
+  76   3                      P2=P2&0x7F;
+  77   3                  tmpData=XBYTE[daAddress];
+  78   3                  daAddress++;
+  79   3                  //½øĞĞDAC¸³Öµ
+  80   3                  //Ê¹ÄÜS1 DACĞ¾Æ¬
+  81   3                      P2=P2&0xEF;
+  82   3                      P2=P2|0x40;
+  83   3                      P2=P2&0x7F;
+  84   3                  //Ğ´Ñ¡Í¨
+  85   3                  P3=P3&0xBF;
+  86   3                  //¸øP0¿Ú¸³Öµ
+  87   3                  P0=tmpData;
+  88   3                      delay(10);
+  89   3      
+  90   3              }
+  91   2          }
+  92   1      
+  93   1          //Íê³É¶Ë¿Ú±£»¤
+  94   1              if(testa)
+  95   1                      P2=P2|0x20;
+  96   1              else
+  97   1                      P2=P2&0xEF;
+  98   1              if(testb)
+  99   1                      P2=P2|0x40;
+ 100   1              else
+ 101   1                      P2=P2&0xBF;
+ 102   1              if(testc)
+ 103   1                      P2=P2|0x80;
+ 104   1              else
+ 105   1                      P2=P2&0x7F;
+ 106   1      
+ 107   1          
+ 108   1      
+ 109   1      }
+ 110          
+ 111          void delay(int delayTime)
+ 112          {
+ 113   1              int i;
+ 114   1          for(i=0;i<delayTime;i++)
+ 115   1          {
+ 116   2      
+C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:10:14 PAGE 3   
+
+ 117   2          }
+ 118   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    208    ----
+   CODE SIZE        =    285    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =      1    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      3    ----
 END OF MODULE INFORMATION.
