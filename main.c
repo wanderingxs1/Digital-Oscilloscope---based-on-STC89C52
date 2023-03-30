@@ -45,6 +45,7 @@ void dsptask()
     b=b>>1;  b=b&0x7f;
     }
   a=dspbuf[sel];
+  key_num=sel;		//取得按键所在行（可能的行）
   sel++;
   if(sel>=4) sel=0;
   for(b=0x80,i=0;i<8;i++)
@@ -59,6 +60,40 @@ void dsptask()
   D_RCLK=0;
   D_RCLK=1;
   D_RCLK=0;
+
+  //送入片选信号
+  a=0x10;
+  for(b=0x80,i=0;i<8;i++)
+    {
+    if(a&b)  D_SER=1;
+    else     D_SER=0;
+    D_SRCLK=0;
+    D_SRCLK=1;
+    D_SRCLK=0;
+    b=b>>1;  b=b&0x7f;
+    }
+   //选择要显示的工作模式
+  switch(workMode)
+   {
+   case 0:  a=0xF7;  break;
+   case 1:  a=0xFB;  break;
+   case 2:  a=0xFD;  break;
+   default: a=0x0E;
+   }
+   //把工作模式送出去
+  for(b=0x80,i=0;i<8;i++)
+    {
+    if(a&b)  D_SER=1;
+    else     D_SER=0;
+    D_SRCLK=0;
+    D_SRCLK=1;
+    D_SRCLK=0;
+    b=b>>1;  b=b&0x7fff;
+    }
+  D_RCLK=0;
+  D_RCLK=1;
+  D_RCLK=0;
+
   }
 //---------------------------------------------------------------------------------------
 void timer_isr() interrupt 1           //定时器0中断处理
@@ -75,6 +110,7 @@ void timer_isr() interrupt 1           //定时器0中断处理
     if(p_write==LEN)  p_write=0;
     */
     dsptask();
+	key_service();
     clocktime++;
     adcount=0;
     }
@@ -106,7 +142,12 @@ void main(void)                    // 主函数
   init_special_interrupts();      //设置中断
   adc_init();						//设置ADC
   for(;;)
-    { 
+    {
+	  if(key_sta&0x01)              // key_sta.0==1?，有按键按下
+         {             
+		 keyWork();
+         key_sta=key_sta&0xfe;           // 置key_sta.0=0,复位
+         } 
     /*
 	if(p_read!=p_write)             //如果有读入数据，那么就写出去(只是写到了DA输出的1号单元)
    	   {
