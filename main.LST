@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  03/30/2023 23:41:57 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  04/06/2023 21:44:02 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -8,179 +8,142 @@ COMPILER INVOKED BY: D:\keil4\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
 line level    source
 
    1          #include<main.h>
-   2          //---------------------------------------------------------------------------------------
-   3          void init_timer0(void)              //  ¶¨Ê±Æ÷0³õÊ¼
-   4            {
-   5   1        TMOD &= 0XF0;
-   6   1        TMOD |= 0X02;
-   7   1        TL0 = 0X06;
-   8   1        TH0 = 0X06;
-   9   1        TR0 = 1;
-  10   1        ET0 = 1;
+   2          #include<adc.h>
+   3          //---------------------------------------------------------------------------------------
+   4          void init_timer0(void)              //  ¶¨Ê±Æ÷0³õÊ¼
+   5            {
+   6   1        TMOD &= 0XF0;
+   7   1        TMOD |= 0X02;    //8Î»ÖØÔØ¶¨Ê±Æ÷t0
+   8   1        TL0 = 0X06;
+   9   1        TH0 = 0X06;      //Ò»¸ö¼ÆÊýÖÜÆÚ0.25ms
+  10   1        TR0 = 1;
   11   1        }
   12          //---------------------------------------------------------------------------------------
   13          void init_special_interrupts(void)   //  ÖÐ¶ÏÉèÖÃ
   14            {
-  15   1        EX0 = 0;
-  16   1        ET0 = 1;
-  17   1        EX1 = 0;
-  18   1        ET1 = 0;
-  19   1        ES  = 1;
-  20   1        EA  = 1;
-  21   1        PT0 = 0;
-  22   1        PX1 = 1;
-  23   1        PS  = 0;
-  24   1        }
-  25          //---------------------------------------------------------------------------------------
-  26          void dsptask()
-  27            {
-  28   1        unsigned char i;
-  29   1        unsigned char a,b;
-  30   1      
-  31   1        switch(sel)
-  32   1         {
-  33   2         case 0:  a=0x01;  break;
-  34   2         case 1:  a=0x02;  break;
-  35   2         case 2:  a=0x04;  break;
-  36   2         default: a=0x08;
-  37   2         }
-  38   1       for(b=0x80,i=0;i<8;i++)
-  39   1          {
-  40   2          if(a&b)  D_SER=1;
-  41   2          else     D_SER=0;
+  15   1        //Á½¸öÖÐ¶ÏÅäÖÃ
+  16   1        EA  = 1;              //×ÜÖÐ¶Ï
+  17   1        ET0 = 1;              //ÔÊÐíT0ÖÐ¶Ï
+  18   1        EADC=1;               //ÔÊÐíADÖÐ¶Ï
+  19   1        //ÖÐ¶ÏÓÅÏÈ¼¶ÅäÖÃ
+  20   1        PT0 = 1;
+  21   1        PADC=0;
+  22   1        }
+  23          //---------------------------------------------------------------------------------------
+  24          void dsptask()
+  25            {
+  26   1        unsigned char i;
+  27   1        unsigned char a,b;
+  28   1      
+  29   1        switch(sel)
+  30   1         {
+  31   2         case 0:  a=0x01;  break;
+  32   2         case 1:  a=0x02;  break;
+  33   2         case 2:  a=0x04;  break;
+  34   2         default: a=0x08;
+  35   2         }
+  36   1       for(b=0x80,i=0;i<8;i++)
+  37   1          {
+  38   2          if(a&b)  D_SER=1;
+  39   2          else     D_SER=0;
+  40   2          D_SRCLK=0;
+  41   2          D_SRCLK=1;
   42   2          D_SRCLK=0;
-  43   2          D_SRCLK=1;
-  44   2          D_SRCLK=0;
-  45   2          b=b>>1;  b=b&0x7f;
-  46   2          }
-  47   1        a=dspbuf[sel];
-  48   1        key_num=sel;          //È¡µÃ°´¼üËùÔÚÐÐ£¨¿ÉÄÜµÄÐÐ£©
-  49   1        sel++;
-  50   1        if(sel>=4) sel=0;
-  51   1        for(b=0x80,i=0;i<8;i++)
-  52   1          {
-  53   2          if(a&b)  D_SER=1;
-  54   2          else     D_SER=0;
-  55   2          D_SRCLK=0;
-C51 COMPILER V9.00   MAIN                                                                  03/30/2023 23:41:57 PAGE 2   
+  43   2          b=b>>1;  b=b&0x7f;
+  44   2          }
+  45   1        a=dspbuf[sel];
+  46   1        sel++;
+  47   1        if(sel>=4) sel=0;
+  48   1        for(b=0x80,i=0;i<8;i++)
+  49   1          {
+  50   2          if(a&b)  D_SER=1;
+  51   2          else     D_SER=0;
+  52   2          D_SRCLK=0;
+  53   2          D_SRCLK=1;
+  54   2          D_SRCLK=0;
+  55   2          b=b>>1;  b=b&0x7fff;
+C51 COMPILER V9.00   MAIN                                                                  04/06/2023 21:44:02 PAGE 2   
 
-  56   2          D_SRCLK=1;
-  57   2          D_SRCLK=0;
-  58   2          b=b>>1;  b=b&0x7fff;
-  59   2          }
-  60   1        D_RCLK=0;
-  61   1        D_RCLK=1;
-  62   1        D_RCLK=0;
-  63   1      
-  64   1        //ËÍÈëÆ¬Ñ¡ÐÅºÅ
-  65   1        a=0x10;
-  66   1        for(b=0x80,i=0;i<8;i++)
-  67   1          {
-  68   2          if(a&b)  D_SER=1;
-  69   2          else     D_SER=0;
-  70   2          D_SRCLK=0;
-  71   2          D_SRCLK=1;
-  72   2          D_SRCLK=0;
-  73   2          b=b>>1;  b=b&0x7f;
-  74   2          }
-  75   1         //Ñ¡ÔñÒªÏÔÊ¾µÄ¹¤×÷Ä£Ê½
-  76   1        switch(workMode)
-  77   1         {
-  78   2         case 0:  a=0xF7;  break;
-  79   2         case 1:  a=0xFB;  break;
-  80   2         case 2:  a=0xFD;  break;
-  81   2         default: a=0xFE;
-  82   2         }
-  83   1         //°Ñ¹¤×÷Ä£Ê½ËÍ³öÈ¥
-  84   1        for(b=0x80,i=0;i<8;i++)
-  85   1          {
-  86   2          if(a&b)  D_SER=1;
-  87   2          else     D_SER=0;
-  88   2          D_SRCLK=0;
-  89   2          D_SRCLK=1;
-  90   2          D_SRCLK=0;
-  91   2          b=b>>1;  b=b&0x7fff;
-  92   2          }
-  93   1        D_RCLK=0;
-  94   1        D_RCLK=1;
-  95   1        D_RCLK=0;
-  96   1      
-  97   1        }
-  98          //---------------------------------------------------------------------------------------
-  99          void timer_isr() interrupt 1           //¶¨Ê±Æ÷0ÖÐ¶Ï´¦Àí
- 100            {
- 101   1        EA=0;
- 102   1        adcount++;
- 103   1        if(adcount==20)                      // 1/4*20 = 5ms
- 104   1          {
- 105   2          /*
- 106   2          //¶ÁÈëADC_0
- 107   2          buff[p_write]=ADC_0;               // A/D¶ÁÈë,¶ÁÈëAD×ª»»µÄ1ºÅµ¥ÔªÊý¾Ý
- 108   2          ADC_0=0;                           // restart A/D
- 109   2          p_write++;
- 110   2          if(p_write==LEN)  p_write=0;
- 111   2          */
- 112   2          dsptask();
- 113   2              key_service();
- 114   2          clocktime++;
- 115   2          adcount=0;
- 116   2          }
- 117   1        EA=1;
-C51 COMPILER V9.00   MAIN                                                                  03/30/2023 23:41:57 PAGE 3   
-
- 118   1        }
- 119          //---------------------------------------------------------------------------------------
- 120          void fdisp(unsigned char n,unsigned char m)      //¹¦ÄÜÊÇ½«ÒªÐ´ÈëµÄÊýÖµn¶ÔÓ¦µÄÊýÂë¹Ü±àÂë×°ÈëdspbufµÄµÚm¸öµ
+  56   2          }
+  57   1        D_RCLK=0;
+  58   1        D_RCLK=1;
+  59   1        D_RCLK=0;
+  60   1        }
+  61          //---------------------------------------------------------------------------------------
+  62          void timer_isr() interrupt 1           //¶¨Ê±Æ÷0ÖÐ¶Ï´¦Àí
+  63            {
+  64   1        EA=0;
+  65   1        adcount++;
+  66   1        adc_start();
+  67   1        if(adcount==20)                      // 1/4*20 = 5ms
+  68   1          {
+  69   2          dsptask();
+  70   2          clocktime++;
+  71   2          adcount=0;
+  72   2          }
+  73   1        EA=1;
+  74   1        }
+  75          //---------------------------------------------------------------------------------------
+  76          void fdisp(unsigned char n,unsigned char m)      //¹¦ÄÜÊÇ½«ÒªÐ´ÈëµÄÊýÖµn¶ÔÓ¦µÄÊýÂë¹Ü±àÂë×°ÈëdspbufµÄµÚm¸öµ
              -¥Ôª,Ã»ÓÐÓÃµ½
- 121            {
- 122   1        char  c;
- 123   1         switch(n)
- 124   1          {
- 125   2          case 0:  c=0x11;  break;
- 126   2          case 1:  c=0x7d;  break;
- 127   2          case 2:  c=0x23;  break;
- 128   2          case 3:  c=0x29;  break;
- 129   2          case 4:  c=0x4d;  break;
- 130   2          case 5:  c=0x89;  break;
- 131   2          case 6:  c=0x81;  break;
- 132   2          case 7:  c=0x3d;  break;
- 133   2          case 8:  c=0x01;  break;
- 134   2          default: c=0x09; 
- 135   2          }
- 136   1         dspbuf[m]=c;
- 137   1        }
- 138          //---------------------------------------------------------------------------------------
- 139          void main(void)                    // Ö÷º¯Êý
- 140            {
- 141   1        init_timer0();                  //³õÊ¼»¯¶¨Ê±Æ÷0
- 142   1        init_special_interrupts();      //ÉèÖÃÖÐ¶Ï
- 143   1        adc_init();                                           //ÉèÖÃADC
- 144   1        for(;;)
- 145   1          {
- 146   2                if(key_sta&0x01)              // key_sta.0==1?£¬ÓÐ°´¼ü°´ÏÂ
- 147   2               {             
- 148   3                       keyWork();
- 149   3               key_sta=key_sta&0xfe;           // ÖÃkey_sta.0=0,¸´Î»
- 150   3               } 
- 151   2          /*
- 152   2              if(p_read!=p_write)             //Èç¹ûÓÐ¶ÁÈëÊý¾Ý£¬ÄÇÃ´¾ÍÐ´³öÈ¥(Ö»ÊÇÐ´µ½ÁËDAÊä³öµÄ1ºÅµ¥Ôª)
- 153   2                 {
- 154   2              DAC_1=buff[p_read];       // D/AÊä³ö
- 155   2                  p_read++;
- 156   2                  if(p_read==LEN)  p_read=0;
- 157   2              }
- 158   2          */
- 159   2              }
- 160   1        }
- 161          //----------------------------------End---------------------------------------------------
+  77            {
+  78   1        char  c;
+  79   1         switch(n)
+  80   1          {
+  81   2          case 0:  c=0x11;  break;
+  82   2          case 1:  c=0x7d;  break;
+  83   2          case 2:  c=0x23;  break;
+  84   2          case 3:  c=0x29;  break;
+  85   2          case 4:  c=0x4d;  break;
+  86   2          case 5:  c=0x89;  break;
+  87   2          case 6:  c=0x81;  break;
+  88   2          case 7:  c=0x3d;  break;
+  89   2          case 8:  c=0x01;  break;
+  90   2          default: c=0x09; 
+  91   2          }
+  92   1         dspbuf[m]=c;
+  93   1        }
+  94          //---------------------------------------------------------------------------------------
+  95          void main(void)                    // Ö÷º¯Êý
+  96            {
+  97   1        init_timer0();                  //³õÊ¼»¯¶¨Ê±Æ÷0
+  98   1        init_special_interrupts();      //ÉèÖÃÖÐ¶Ï
+  99   1        adc_init();                                           //ÉèÖÃADC
+ 100   1        for(;;)
+ 101   1          {
+ 102   2              //Èç¹ûADC¡ª¡ªRESULTµÄÖµºÍÉÏÒ»´Î²»Í¬£¬ÄÇ¾Í¸üÐÂ,¹¹ÔìÁËÒ»¸öÑ­»·ÕóÁÐ
+ 103   2              if(ad_temp!=ADC_RESULT){
+ 104   3              if(adAddress<=0x0FFF){
+ 105   4              XBYTE[adAddress]=ADC_RESULT;
+ 106   4              ad_temp=ADC_RESULT;
+ 107   4              }
+ 108   3              else{
+ 109   4              adAddress=ADC_BASE_ADDRESS;
+ 110   4              XBYTE[adAddress]=ADC_RESULT;
+ 111   4              ad_temp=ADC_RESULT;
+ 112   4              }
+ 113   3              }
+ 114   2          /*
+ 115   2              if(p_read!=p_write)             //Èç¹ûÓÐ¶ÁÈëÊý¾Ý£¬ÄÇÃ´¾ÍÐ´³öÈ¥(Ö»ÊÇÐ´µ½ÁËDAÊä³öµÄ1ºÅµ¥Ôª)
+ 116   2                 {
+C51 COMPILER V9.00   MAIN                                                                  04/06/2023 21:44:02 PAGE 3   
+
+ 117   2              DAC_1=buff[p_read];       // D/AÊä³ö
+ 118   2                  p_read++;
+ 119   2                  if(p_read==LEN)  p_read=0;
+ 120   2              }
+ 121   2          */
+ 122   2              }
+ 123   1        }
+ 124          //----------------------------------End---------------------------------------------------
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    444    ----
+   CODE SIZE        =    385    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     21    ----
+   DATA SIZE        =     20    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

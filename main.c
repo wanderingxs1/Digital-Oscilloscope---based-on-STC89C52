@@ -1,26 +1,24 @@
 #include<main.h>
+#include<adc.h>
 //---------------------------------------------------------------------------------------
 void init_timer0(void)              //  定时器0初始
   {
   TMOD &= 0XF0;
-  TMOD |= 0X02;
+  TMOD |= 0X02;	   //8位重载定时器t0
   TL0 = 0X06;
-  TH0 = 0X06;
+  TH0 = 0X06;	   //一个计数周期0.25ms
   TR0 = 1;
-  ET0 = 1;
   }
 //---------------------------------------------------------------------------------------
 void init_special_interrupts(void)   //  中断设置
   {
-  EX0 = 0;
-  ET0 = 1;
-  EX1 = 0;
-  ET1 = 0;
-  ES  = 1;
-  EA  = 1;
-  PT0 = 0;
-  PX1 = 1;
-  PS  = 0;
+  //两个中断配置
+  EA  = 1;		//总中断
+  ET0 = 1;		//允许T0中断
+  EADC=1;		//允许AD中断
+  //中断优先级配置
+  PT0 = 1;
+  PADC=0;
   }
 //---------------------------------------------------------------------------------------
 void dsptask()
@@ -45,7 +43,6 @@ void dsptask()
     b=b>>1;  b=b&0x7f;
     }
   a=dspbuf[sel];
-  key_num=sel;		//取得按键所在行（可能的行）
   sel++;
   if(sel>=4) sel=0;
   for(b=0x80,i=0;i<8;i++)
@@ -60,57 +57,16 @@ void dsptask()
   D_RCLK=0;
   D_RCLK=1;
   D_RCLK=0;
-
-  //送入片选信号
-  a=0x10;
-  for(b=0x80,i=0;i<8;i++)
-    {
-    if(a&b)  D_SER=1;
-    else     D_SER=0;
-    D_SRCLK=0;
-    D_SRCLK=1;
-    D_SRCLK=0;
-    b=b>>1;  b=b&0x7f;
-    }
-   //选择要显示的工作模式
-  switch(workMode)
-   {
-   case 0:  a=0xF7;  break;
-   case 1:  a=0xFB;  break;
-   case 2:  a=0xFD;  break;
-   default: a=0xFE;
-   }
-   //把工作模式送出去
-  for(b=0x80,i=0;i<8;i++)
-    {
-    if(a&b)  D_SER=1;
-    else     D_SER=0;
-    D_SRCLK=0;
-    D_SRCLK=1;
-    D_SRCLK=0;
-    b=b>>1;  b=b&0x7fff;
-    }
-  D_RCLK=0;
-  D_RCLK=1;
-  D_RCLK=0;
-
   }
 //---------------------------------------------------------------------------------------
 void timer_isr() interrupt 1           //定时器0中断处理
   {
   EA=0;
   adcount++;
+  adc_start();
   if(adcount==20)                      // 1/4*20 = 5ms
     {
-    /*
-    //读入ADC_0
-    buff[p_write]=ADC_0;               // A/D读入,读入AD转换的1号单元数据
-    ADC_0=0;                           // restart A/D
-    p_write++;
-    if(p_write==LEN)  p_write=0;
-    */
     dsptask();
-	key_service();
     clocktime++;
     adcount=0;
     }
@@ -143,11 +99,18 @@ void main(void)                    // 主函数
   adc_init();						//设置ADC
   for(;;)
     {
-	  if(key_sta&0x01)              // key_sta.0==1?，有按键按下
-         {             
-		 keyWork();
-         key_sta=key_sta&0xfe;           // 置key_sta.0=0,复位
-         } 
+	//如果ADC——RESULT的值和上一次不同，那就更新,构造了一个循环阵列
+	if(ad_temp!=ADC_RESULT){
+	if(adAddress<=0x0FFF){
+	XBYTE[adAddress]=ADC_RESULT;
+	ad_temp=ADC_RESULT;
+	}
+	else{
+	adAddress=ADC_BASE_ADDRESS;
+	XBYTE[adAddress]=ADC_RESULT;
+	ad_temp=ADC_RESULT;
+	}
+	}
     /*
 	if(p_read!=p_write)             //如果有读入数据，那么就写出去(只是写到了DA输出的1号单元)
    	   {

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:41:57 PAGE 1   
+C51 COMPILER V9.00   ADC                                                                   04/06/2023 21:44:02 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE ADC
@@ -9,137 +9,79 @@ line level    source
 
    1          #include<adc.h>
    2          
-   3          extern int adc_work_count;
-   4          extern char ADC_RESULT;
-   5          extern int adAddress;
-   6          extern int daAddress;
-   7          extern int adcount;
-   8          extern char workMode;
-   9          
-  10          bit testa;
-  11          bit testb;
-  12          bit testc;
-  13          unsigned char tmpData=0x00;//ÓÃÀ´´æ´¢¹¤×÷Ä£Ê½2ÏÂ,RAMÀï±ßÈ¡³öÀ´µÄÒ»¸öÖµ
-  14          
-  15          
-  16          void adc_init()
-  17          {
-  18   1          P1ASF=0x08;     //È·¶¨p13ÊÇa-d¹¦ÄÜ,ÊäÈë
-  19   1          ADC_CONTR=0x0CB;//¼ûipad±Ê¼Ç
-  20   1          //AUXR1=0x04;//AUXR1ÎÞ·¨±»¸³Öµ£¬ËüÄ¬ÈÏÎª0£¬Ö»ÄÜÊ¹µÃ¸ß8Î»ÔÚADS_RESÀï±ß£¬µÍ2Î»ÔÚADC_RESLµÄµÍ2Î»£¨ÕâÁ½Î»É
-             -áÆú£©
-  21   1          ADC_RES=0x00;
-  22   1          ADC_RESL=0x00;
+   3          extern char ADC_RESULT;
+   4          extern char DAC_VALUE;
+   5          extern char workMode;
+   6          
+   7          unsigned int channalSelect=0x0000;//DACÍ¨µÀÑ¡Ôñ
+   8          
+   9          void adc_init()
+  10          {
+  11   1          P1ASF=0x08;     //È·¶¨p13ÊÇa-d¹¦ÄÜ,ÊäÈë
+  12   1              //¿ªADµçÔ´£¬ËÙ¶ÈÉèÖÃ×îÂý£¬ÇåÁãÒ»´ÎAD¿ªÊ¼Î»ºÍADÍê³ÉÎ»£¬Ñ¡ÔñP1^3×÷ÎªADÊäÈë¶Ë¿Ú
+  13   1          ADC_CONTR=ADC_INIT;
+  14   1          delay(2);
+  15   1      }
+  16          
+  17          
+  18          
+  19          void ad_start()         //adc·ÅÔÚ¶¨Ê±Æ÷ÖÐ¶ÏÀï±ß£¬²ÉÑùÆµÂÊÎª4000Hz¡£
+  20          {
+  21   1              //Æô¶¯Ò»´ÎAD×ª»»£¬È»ºóµÈ´ý×ª»»½áÊø¡£ADCÖÐ¶ÏÊÇµÍÓÅÏÈ¼¶
+  22   1              ADC_CONTR=ADC_START;
   23   1      
-  24   1          //ÅäÖÃÖÐ¶Ï
-  25   1          EADC=1;//ADÖÐ¶ÏÔÊÐí
-  26   1          IP=0x24;//AD¸ßÓÅÏÈ,Íâ²¿ÖÐ¶Ï1´Î¸ß,¶¨Ê±Æ÷×îµÍ
-  27   1          delay(2);
+  24   1              //Õâ¶ÎÊ±¼ä¸ÕºÃÓÃÀ´×öDAC,°ÑDA½á¹ûÊä³ö
+  25   1              channalSelect=CH1;
+  26   1              dac_work(channalSelect);
+  27   1      
   28   1      }
   29          
-  30          void adc_work() interrupt 5 using 1             //ÊµÊ±ÐÔÇ¿£¬²Éµ½Ò»¸ö¾ÍÊä³ö¡£µ«ÊÇ´æ´¢ÊÇÃ¿4msÒ»´Î¡£´ËÊ±adcount>=16.
-  31          {
-  32   1          //ÇåÁãADCÖÐ¶Ï¿ØÖÆÎ»
-  33   1          ADC_CONTR=ADC_CONTR&0xEF;
-  34   1          //±£»¤P25-P27,²¢ÖÃÎ»ÏàÓ¦¹Ü½Å·¢³öS0Æ¬Ñ¡ÐÅºÅ,Æ¬Ñ¡´æ´¢Æ÷
-  35   1              testa=P2^5;
-  36   1          testb=P2^6;
-  37   1          testc=P2^7;
-  38   1      
-  39   1          //¹¤×÷Ä£Ê½1ºÍÄ£Ê½3µÃ´¢´æ,Ä£Ê½2²»´¢´æ,ÄÇÃ´¾ÍÒªÇó²»ÄÜÖ±½Ó½øÈëÄ£Ê½2
-  40   1          if(workMode!=2){
-  41   2          P2=P2&0x7F;
-  42   2              P2=P2&0xBF;
-  43   2              P2=P2&0xDF;
-  44   2              //½øÐÐadcÖµµÄ´æ´¢£¨Íâ²¿RAM0x6000-0x7000),×î¶àÖ»ÄÜ´æÕâÃ´¶à
-  45   2              if(adcount>=16&&adAddress<0x7000)
-  46   2              {
-  47   3                 XBYTE[adAddress]=ADC_RES;
-  48   3                 adAddress++;
-  49   3              }
-  50   2          }
-  51   1      
-  52   1          //½øÐÐADCÖµÏòDACµÄ×ª»»
-  53   1      
-  54   1          //ÎÊÌâ:ADC×ª»»ÖµÊÇ1024¸ö½×,DAC×ª»»ÖµÊÇ256¸ö½×,Òª½øÐÐ×ª»»,ÉáÈ¥×îµÍÁ½Î»
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:41:57 PAGE 2   
+  30          
+  31          void dac_work(int channalSelect){
+  32   1              XBYTE[channalSelect]=DAC_VALUE; 
+  33   1      }
+  34          
+  35          void adc_work() interrupt 5
+  36          {
+  37   1              //ADC_START×ª»»½áÊøºó×Ô¶¯ÖÃ0
+  38   1              //ADC_FLAG×ª»»½áÊøºóÎª1,ÐèÒªÊÖ¶¯ÇåÁã
+  39   1              ADC_CONTR=ADC_INIT;
+  40   1      
+  41   1              //°ÑAD½á¹û´æ´¢
+  42   1              //ÎÊÌâ:ADC×ª»»ÖµÊÇ1024¸ö½×,DAC×ª»»ÖµÊÇ256¸ö½×,Òª½øÐÐ×ª»»,ÉáÈ¥×îµÍÁ½Î»
+  43   1              ADC_RESULT=ADC_RES;
+  44   1      
+  45   1              //¹¤×÷Ä£Ê½1ÊµÊ±Êä³öAD½á¹û,²¢´¢´æ
+  46   1              //¹¤×÷Ä£Ê½2ÊµÊ±Êä³ö½á¹û
+  47   1              switch(workMode){
+  48   2              case 1:DAC_VALUE=ADC_RESULT;break;
+  49   2              case 2:DAC_VALUE=ADC_RESULT;break;
+  50   2              default:break;
+  51   2              }
+  52   1      
+  53   1              ADC_RES=0;
+  54   1      }
+  55          
+C51 COMPILER V9.00   ADC                                                                   04/06/2023 21:44:02 PAGE 2   
 
-  55   1              ADC_RESULT=ADC_RES;
-  56   1              ADC_RES=0x00;
-  57   1              ADC_RESL=0x00;
-  58   1      
-  59   1          //½øÐÐDAC¸³Öµ
-  60   1          //Ê¹ÄÜS1 DACÐ¾Æ¬
-  61   1          P2=P2&0x7F;
-  62   1              P2=P2&0xBF;
-  63   1              P2=P2|0x20;
-  64   1          //Ð´Ñ¡Í¨
-  65   1          P3=P3&0xBF;
-  66   1          //¸øP0¿Ú¸³Öµ
-  67   1          P0=ADC_RESULT;
-  68   1              delay(10);
-  69   1      
-  70   1          //¹¤×÷Ä£Ê½2ÏÂÊä³öÖ®Ç°²Éµ½µÄ²¨ÐÎ
-  71   1          if(workMode==2){
-  72   2              if(daAddress<=adAddress){
-  73   3                  //Ê¹ÄÜRAM
-  74   3                  P2=P2&0x7F;
-  75   3                      P2=P2&0xBF;
-  76   3                      P2=P2&0xDF;
-  77   3                  tmpData=XBYTE[daAddress];
-  78   3                  daAddress++;
-  79   3                  //½øÐÐDAC¸³Öµ
-  80   3                  //Ê¹ÄÜS2 DACÐ¾Æ¬
-  81   3                  P2=P2&0x7F;
-  82   3                      P2=P2|0x40;
-  83   3                      P2=P2&0xDF;
-  84   3                  //Ð´Ñ¡Í¨
-  85   3                  P3=P3&0xBF;
-  86   3                  //¸øP0¿Ú¸³Öµ
-  87   3                  P0=tmpData;
-  88   3                      delay(10);
-  89   3      
-  90   3              }
-  91   2          }
-  92   1      
-  93   1          //Íê³É¶Ë¿Ú±£»¤
-  94   1              if(testa)
-  95   1                      P2=P2|0x20;
-  96   1              else
-  97   1                      P2=P2&0xEF;
-  98   1              if(testb)
-  99   1                      P2=P2|0x40;
- 100   1              else
- 101   1                      P2=P2&0xBF;
- 102   1              if(testc)
- 103   1                      P2=P2|0x80;
- 104   1              else
- 105   1                      P2=P2&0x7F;
- 106   1      
- 107   1          
- 108   1      
- 109   1      }
- 110          
- 111          void delay(int delayTime)
- 112          {
- 113   1              int i;
- 114   1          for(i=0;i<delayTime;i++)
- 115   1          {
- 116   2      
-C51 COMPILER V9.00   ADC                                                                   03/30/2023 23:41:57 PAGE 3   
-
- 117   2          }
- 118   1      }
+  56          void delay(int delayTime)
+  57          {
+  58   1              unsigned int x;
+  59   1              while(delayTime--){
+  60   2              x=5000;
+  61   2              while(x--);
+  62   2              }
+  63   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    285    ----
+   CODE SIZE        =     94    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      1    ----
+   DATA SIZE        =      2    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      3    ----
+   BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
