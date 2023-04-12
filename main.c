@@ -43,8 +43,42 @@ void dsptask()
     b=b>>1;  b=b&0x7f;
     }
   a=dspbuf[sel];
+  key_num=sel;		//取得按键所在行（可能的行）
   sel++;
   if(sel>=4) sel=0;
+  for(b=0x80,i=0;i<8;i++)
+    {
+    if(a&b)  D_SER=1;
+    else     D_SER=0;
+    D_SRCLK=0;
+    D_SRCLK=1;
+    D_SRCLK=0;
+    b=b>>1;  b=b&0x7fff;
+    }
+  D_RCLK=0;
+  D_RCLK=1;
+  D_RCLK=0;
+
+  //送入片选信号
+  a=0x10;
+  for(b=0x80,i=0;i<8;i++)
+    {
+    if(a&b)  D_SER=1;
+    else     D_SER=0;
+    D_SRCLK=0;
+    D_SRCLK=1;
+    D_SRCLK=0;
+    b=b>>1;  b=b&0x7f;
+    }
+   //选择要显示的工作模式
+  switch(workMode)
+   {
+   case 0:  a=0xF7;  break;
+   case 1:  a=0xFB;  break;
+   case 2:  a=0xFD;  break;
+   default: a=0x0E;
+   }
+   //把工作模式送出去
   for(b=0x80,i=0;i<8;i++)
     {
     if(a&b)  D_SER=1;
@@ -67,6 +101,7 @@ void timer_isr() interrupt 1           //定时器0中断处理
   if(adcount==20)                      // 1/4*20 = 5ms
     {
     dsptask();
+    key_service();
     clocktime++;
     adcount=0;
     }
@@ -99,26 +134,47 @@ void main(void)                    // 主函数
   adc_init();						//设置ADC
   for(;;)
     {
+
+  //工作模式1才会随时进行存储
+  if(workMode==1){
 	//如果ADC——RESULT的值和上一次不同，那就更新,构造了一个循环阵列
 	if(ad_temp!=ADC_RESULT){
+  daAddress=adAddress;//同步
 	if(adAddress<=0x0FFF){
 	XBYTE[adAddress]=ADC_RESULT;
 	ad_temp=ADC_RESULT;
+	adAddress++;
 	}
 	else{
 	adAddress=ADC_BASE_ADDRESS;
 	XBYTE[adAddress]=ADC_RESULT;
 	ad_temp=ADC_RESULT;
+    adAddress++;
 	}
 	}
-    /*
-	if(p_read!=p_write)             //如果有读入数据，那么就写出去(只是写到了DA输出的1号单元)
-   	   {
-        DAC_1=buff[p_read];       // D/A输出
-	    p_read++;
-	    if(p_read==LEN)  p_read=0;
-        }
-    */
+  }
+
+  //工作模式2进行ch2输出变量OUTPUT_VALUE的赋值,调到工作模式2一定已经采完一轮了
+  //留有一个问题，跳出工作模式1后adAddress会在内存空间的某一处停下
+  //暂定为从adAddress开始循环输出
+  if(workMode==2){
+    if(daAddress<=0x0FFF){
+      OUTPUT_VALUE=XBYTE[daAddress];
+      daAddress++;
+    }
+    else{
+      daAddress=ADC_BASE_ADDRESS;
+      OUTPUT_VALUE=XBYTE[daAddress];
+      daAddress++;
+    }
+  }
+
+  //按键处理
+  if(key_sta&0x01)              // key_sta.0==1?，有按键按下
+    {             
+		 keyWork();
+         key_sta=key_sta&0xfe;           // 置key_sta.0=0,复位
+    } 
 	}
   }
 //----------------------------------End---------------------------------------------------

@@ -1,4 +1,6 @@
 "main.obj",
-"adc.obj" 
+"adc.obj",
+"workMode1-outputWave.obj",
+"key.obj" 
 TO "demoq" 
 RAMSIZE(256) 

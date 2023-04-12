@@ -3,350 +3,72 @@
 <pre>
 <h1>礦ision Build Log</h1>
 <h2>Project:</h2>
-D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第一版-只有信号输入输出\demoq.uvproj
-Project File Date:  03/30/2023
+D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版2编译用-除了四个波形输出和波形特征提取外的其他功能 - 副本\Digital-Oscilloscope---based-on-STC89C52-master\demoq.uvproj
+Project File Date:  04/12/2023
 
 <h2>Output:</h2>
 Build target 'Target 1'
 compiling main.c...
-MAIN.C(68): warning C206: 'adc_work': missing function-prototype
 compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-Program Size: data=23.3 xdata=0 code=695
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-Program Size: data=23.3 xdata=0 code=695
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-Program Size: data=23.3 xdata=0 code=692
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-Program Size: data=25.3 xdata=0 code=712
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-Program Size: data=25.3 xdata=0 code=712
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-Program Size: data=25.3 xdata=0 code=712
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-Program Size: data=25.3 xdata=0 code=712
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 1 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-MAIN.H(8): error C132: 'init_timer0': not in formal parameter list
-MAIN.H(9): error C132: 'init_special_interrupts': not in formal parameter list
-MAIN.H(11): error C244: 'p_read': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_read': not in formal parameter list
-MAIN.H(11): error C244: 'p_write': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_write': not in formal parameter list
-MAIN.H(11): error C244: 'ad_temp': can't initialize, bad type or class
-MAIN.H(11): error C132: 'ad_temp': not in formal parameter list
-MAIN.H(12): error C244: 'dspbuf': can't initialize, bad type or class
-MAIN.H(12): error C132: 'dspbuf': not in formal parameter list
-MAIN.H(12): error C244: 'sel': can't initialize, bad type or class
-MAIN.H(12): error C132: 'sel': not in formal parameter list
-MAIN.H(13): error C244: 'clocktime': can't initialize, bad type or class
-MAIN.H(13): error C132: 'clocktime': not in formal parameter list
-MAIN.H(13): error C244: 'adcount': can't initialize, bad type or class
-MAIN.H(13): error C132: 'adcount': not in formal parameter list
-MAIN.H(15): error C244: 'ADC_RESULT': can't initialize, bad type or class
-MAIN.H(15): error C132: 'ADC_RESULT': not in formal parameter list
-MAIN.H(16): error C244: 'DAC_VALUE': can't initialize, bad type or class
-MAIN.H(16): error C132: 'DAC_VALUE': not in formal parameter list
-MAIN.H(17): error C244: 'adAddress': can't initialize, bad type or class
-MAIN.H(17): error C132: 'adAddress': not in formal parameter list
-MAIN.H(19): error C244: 'workMode': can't initialize, bad type or class
-MAIN.H(19): error C132: 'workMode': not in formal parameter list
-MAIN.H(24): error C141: syntax error near 'sbit'
-MAIN.C(28): error C202: 'sel': undefined identifier
-MAIN.C(44): error C202: 'sel': undefined identifier
-MAIN.C(45): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(64): error C202: 'adcount': undefined identifier
-compiling adc.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-ADC.C(3): error C127: 'ADC_RESULT': invalid storage class
-ADC.C(4): error C127: 'DAC_VALUE': invalid storage class
-ADC.C(5): error C127: 'workMode': invalid storage class
-ADC.C(7): error C244: 'channnalSelect': can't initialize, bad type or class
-ADC.C(7): error C132: 'channnalSelect': not in formal parameter list
-ADC.C(10): error C132: 'adc_init': not in formal parameter list
-ADC.C(10): error C141: syntax error near '{'
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C244: 'P1ASF': can't initialize, bad type or class
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C132: 'P1ASF': not in formal parameter list
-ADC.C(13): error C244: 'ADC_CONTR': can't initialize, bad type or class
-ADC.C(13): error C132: 'ADC_CONTR': not in formal parameter list
-ADC.C(14): error C141: syntax error near '2'
-ADC.C(14): error C132: 'delay': not in formal parameter list
-ADC.C(15): error C141: syntax error near '}'
-ADC.C(25): error C202: 'channalSelect': undefined identifier
-ADC.C(26): error C202: 'channalSelect': undefined identifier
-ADC.C(29): error C202: 'adcount': undefined identifier
-ADC.C(31): error C202: 'adAddress': undefined identifier
-ADC.C(32): error C202: 'adAddress': undefined identifier
-ADC.C(38): error C202: 'channalselect': undefined identifier
-ADC.C(49): error C202: 'ADC_RESULT': undefined identifier
-ADC.C(53): error C202: 'workMode': undefined identifier
-ADC.C(54): error C202: 'DAC_VALUE': undefined identifier
-ADC.C(55): error C202: 'DAC_VALUE': undefined identifier
-Target not created
-Build target 'Target 1'
-compiling main.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-MAIN.H(8): error C132: 'init_timer0': not in formal parameter list
-MAIN.H(9): error C132: 'init_special_interrupts': not in formal parameter list
-MAIN.H(11): error C244: 'p_read': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_read': not in formal parameter list
-MAIN.H(11): error C244: 'p_write': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_write': not in formal parameter list
-MAIN.H(11): error C244: 'ad_temp': can't initialize, bad type or class
-MAIN.H(11): error C132: 'ad_temp': not in formal parameter list
-MAIN.H(12): error C244: 'dspbuf': can't initialize, bad type or class
-MAIN.H(12): error C132: 'dspbuf': not in formal parameter list
-MAIN.H(12): error C244: 'sel': can't initialize, bad type or class
-MAIN.H(12): error C132: 'sel': not in formal parameter list
-MAIN.H(13): error C244: 'clocktime': can't initialize, bad type or class
-MAIN.H(13): error C132: 'clocktime': not in formal parameter list
-MAIN.H(13): error C244: 'adcount': can't initialize, bad type or class
-MAIN.H(13): error C132: 'adcount': not in formal parameter list
-MAIN.H(15): error C244: 'ADC_RESULT': can't initialize, bad type or class
-MAIN.H(15): error C132: 'ADC_RESULT': not in formal parameter list
-MAIN.H(16): error C244: 'DAC_VALUE': can't initialize, bad type or class
-MAIN.H(16): error C132: 'DAC_VALUE': not in formal parameter list
-MAIN.H(17): error C244: 'adAddress': can't initialize, bad type or class
-MAIN.H(17): error C132: 'adAddress': not in formal parameter list
-MAIN.H(19): error C244: 'workMode': can't initialize, bad type or class
-MAIN.H(19): error C132: 'workMode': not in formal parameter list
-MAIN.H(24): error C141: syntax error near 'sbit'
-MAIN.C(28): error C202: 'sel': undefined identifier
-MAIN.C(44): error C202: 'sel': undefined identifier
-MAIN.C(45): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(64): error C202: 'adcount': undefined identifier
-compiling adc.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-ADC.C(3): error C127: 'ADC_RESULT': invalid storage class
-ADC.C(4): error C127: 'DAC_VALUE': invalid storage class
-ADC.C(5): error C127: 'workMode': invalid storage class
-ADC.C(7): error C244: 'channnalSelect': can't initialize, bad type or class
-ADC.C(7): error C132: 'channnalSelect': not in formal parameter list
-ADC.C(10): error C132: 'adc_init': not in formal parameter list
-ADC.C(10): error C141: syntax error near '{'
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C244: 'P1ASF': can't initialize, bad type or class
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C132: 'P1ASF': not in formal parameter list
-ADC.C(13): error C244: 'ADC_CONTR': can't initialize, bad type or class
-ADC.C(13): error C132: 'ADC_CONTR': not in formal parameter list
-ADC.C(14): error C141: syntax error near '2'
-ADC.C(14): error C132: 'delay': not in formal parameter list
-ADC.C(15): error C141: syntax error near '}'
-ADC.C(25): error C202: 'channalSelect': undefined identifier
-ADC.C(26): error C202: 'channalSelect': undefined identifier
-ADC.C(29): error C202: 'adcount': undefined identifier
-ADC.C(31): error C202: 'adAddress': undefined identifier
-ADC.C(32): error C202: 'adAddress': undefined identifier
-ADC.C(38): error C202: 'channalselect': undefined identifier
-ADC.C(49): error C202: 'ADC_RESULT': undefined identifier
-ADC.C(53): error C202: 'workMode': undefined identifier
-ADC.C(54): error C202: 'DAC_VALUE': undefined identifier
-ADC.C(55): error C202: 'DAC_VALUE': undefined identifier
-Target not created
-Build target 'Target 1'
-compiling main.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-MAIN.H(8): error C132: 'init_timer0': not in formal parameter list
-MAIN.H(9): error C132: 'init_special_interrupts': not in formal parameter list
-MAIN.H(11): error C244: 'p_read': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_read': not in formal parameter list
-MAIN.H(11): error C244: 'p_write': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_write': not in formal parameter list
-MAIN.H(11): error C244: 'ad_temp': can't initialize, bad type or class
-MAIN.H(11): error C132: 'ad_temp': not in formal parameter list
-MAIN.H(12): error C244: 'dspbuf': can't initialize, bad type or class
-MAIN.H(12): error C132: 'dspbuf': not in formal parameter list
-MAIN.H(12): error C244: 'sel': can't initialize, bad type or class
-MAIN.H(12): error C132: 'sel': not in formal parameter list
-MAIN.H(13): error C244: 'clocktime': can't initialize, bad type or class
-MAIN.H(13): error C132: 'clocktime': not in formal parameter list
-MAIN.H(13): error C244: 'adcount': can't initialize, bad type or class
-MAIN.H(13): error C132: 'adcount': not in formal parameter list
-MAIN.H(15): error C244: 'ADC_RESULT': can't initialize, bad type or class
-MAIN.H(15): error C132: 'ADC_RESULT': not in formal parameter list
-MAIN.H(16): error C244: 'DAC_VALUE': can't initialize, bad type or class
-MAIN.H(16): error C132: 'DAC_VALUE': not in formal parameter list
-MAIN.H(17): error C244: 'adAddress': can't initialize, bad type or class
-MAIN.H(17): error C132: 'adAddress': not in formal parameter list
-MAIN.H(19): error C244: 'workMode': can't initialize, bad type or class
-MAIN.H(19): error C132: 'workMode': not in formal parameter list
-MAIN.H(24): error C141: syntax error near 'sbit'
-MAIN.C(28): error C202: 'sel': undefined identifier
-MAIN.C(44): error C202: 'sel': undefined identifier
-MAIN.C(45): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(64): error C202: 'adcount': undefined identifier
-compiling adc.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-ADC.C(3): error C127: 'ADC_RESULT': invalid storage class
-ADC.C(4): error C127: 'DAC_VALUE': invalid storage class
-ADC.C(5): error C127: 'workMode': invalid storage class
-ADC.C(7): error C244: 'channnalSelect': can't initialize, bad type or class
-ADC.C(7): error C132: 'channnalSelect': not in formal parameter list
-ADC.C(10): error C132: 'adc_init': not in formal parameter list
-ADC.C(10): error C141: syntax error near '{'
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C244: 'P1ASF': can't initialize, bad type or class
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C132: 'P1ASF': not in formal parameter list
-ADC.C(13): error C244: 'ADC_CONTR': can't initialize, bad type or class
-ADC.C(13): error C132: 'ADC_CONTR': not in formal parameter list
-ADC.C(14): error C141: syntax error near '2'
-ADC.C(14): error C132: 'delay': not in formal parameter list
-ADC.C(15): error C141: syntax error near '}'
-ADC.C(25): error C202: 'channalSelect': undefined identifier
-ADC.C(26): error C202: 'channalSelect': undefined identifier
-ADC.C(29): error C202: 'adcount': undefined identifier
-ADC.C(31): error C202: 'adAddress': undefined identifier
-ADC.C(32): error C202: 'adAddress': undefined identifier
-ADC.C(38): error C202: 'channalselect': undefined identifier
-ADC.C(49): error C202: 'ADC_RESULT': undefined identifier
-ADC.C(53): error C202: 'workMode': undefined identifier
-ADC.C(54): error C202: 'DAC_VALUE': undefined identifier
-ADC.C(55): error C202: 'DAC_VALUE': undefined identifier
-Target not created
-Build target 'Target 1'
-compiling main.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-MAIN.H(8): error C132: 'init_timer0': not in formal parameter list
-MAIN.H(9): error C132: 'init_special_interrupts': not in formal parameter list
-MAIN.H(11): error C244: 'p_read': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_read': not in formal parameter list
-MAIN.H(11): error C244: 'p_write': can't initialize, bad type or class
-MAIN.H(11): error C132: 'p_write': not in formal parameter list
-MAIN.H(11): error C244: 'ad_temp': can't initialize, bad type or class
-MAIN.H(11): error C132: 'ad_temp': not in formal parameter list
-MAIN.H(12): error C244: 'dspbuf': can't initialize, bad type or class
-MAIN.H(12): error C132: 'dspbuf': not in formal parameter list
-MAIN.H(12): error C244: 'sel': can't initialize, bad type or class
-MAIN.H(12): error C132: 'sel': not in formal parameter list
-MAIN.H(13): error C244: 'clocktime': can't initialize, bad type or class
-MAIN.H(13): error C132: 'clocktime': not in formal parameter list
-MAIN.H(13): error C244: 'adcount': can't initialize, bad type or class
-MAIN.H(13): error C132: 'adcount': not in formal parameter list
-MAIN.H(15): error C244: 'ADC_RESULT': can't initialize, bad type or class
-MAIN.H(15): error C132: 'ADC_RESULT': not in formal parameter list
-MAIN.H(16): error C244: 'DAC_VALUE': can't initialize, bad type or class
-MAIN.H(16): error C132: 'DAC_VALUE': not in formal parameter list
-MAIN.H(17): error C244: 'adAddress': can't initialize, bad type or class
-MAIN.H(17): error C132: 'adAddress': not in formal parameter list
-MAIN.H(19): error C244: 'workMode': can't initialize, bad type or class
-MAIN.H(19): error C132: 'workMode': not in formal parameter list
-MAIN.H(24): error C141: syntax error near 'sbit'
-MAIN.C(28): error C202: 'sel': undefined identifier
-MAIN.C(44): error C202: 'sel': undefined identifier
-MAIN.C(45): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(46): error C202: 'sel': undefined identifier
-MAIN.C(64): error C202: 'adcount': undefined identifier
-compiling adc.c...
-ADC.H(27): error C132: '_delay': not in formal parameter list
-ADC.C(3): error C127: 'ADC_RESULT': invalid storage class
-ADC.C(4): error C127: 'DAC_VALUE': invalid storage class
-ADC.C(5): error C127: 'workMode': invalid storage class
-ADC.C(7): error C244: 'channnalSelect': can't initialize, bad type or class
-ADC.C(7): error C132: 'channnalSelect': not in formal parameter list
-ADC.C(10): error C132: 'adc_init': not in formal parameter list
-ADC.C(10): error C141: syntax error near '{'
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C244: 'P1ASF': can't initialize, bad type or class
-ADC.C(11): error C136: 'P1ASF': 'void' on variable
-ADC.C(11): error C132: 'P1ASF': not in formal parameter list
-ADC.C(13): error C244: 'ADC_CONTR': can't initialize, bad type or class
-ADC.C(13): error C132: 'ADC_CONTR': not in formal parameter list
-ADC.C(14): error C141: syntax error near '2'
-ADC.C(14): error C132: 'delay': not in formal parameter list
-ADC.C(15): error C141: syntax error near '}'
-ADC.C(25): error C202: 'channalSelect': undefined identifier
-ADC.C(26): error C202: 'channalSelect': undefined identifier
-ADC.C(29): error C202: 'adcount': undefined identifier
-ADC.C(31): error C202: 'adAddress': undefined identifier
-ADC.C(32): error C202: 'adAddress': undefined identifier
-ADC.C(38): error C202: 'channalselect': undefined identifier
-ADC.C(49): error C202: 'ADC_RESULT': undefined identifier
-ADC.C(53): error C202: 'workMode': undefined identifier
-ADC.C(54): error C202: 'DAC_VALUE': undefined identifier
-ADC.C(55): error C202: 'DAC_VALUE': undefined identifier
-Target not created
-Build target 'Target 1'
-compiling main.c...
-MAIN.C(65): warning C206: 'ad_start': missing function-prototype
-MAIN.C(103): error C202: 'adAdress': undefined identifier
-MAIN.C(104): error C202: 'adAdress': undefined identifier
-MAIN.C(108): error C202: 'adAdress': undefined identifier
-MAIN.C(109): error C202: 'adAdress': undefined identifier
-compiling adc.c...
-ADC.C(25): error C202: 'channalSelect': undefined identifier
-ADC.C(26): error C202: 'channalSelect': undefined identifier
-ADC.C(29): error C202: 'adcount': undefined identifier
-ADC.C(31): error C202: 'adAddress': undefined identifier
-ADC.C(32): error C202: 'adAddress': undefined identifier
-ADC.C(38): error C202: 'channalselect': undefined identifier
-Target not created
-Build target 'Target 1'
-compiling main.c...
-MAIN.C(108): error C202: 'ADC_BASE_ADRESS': undefined identifier
-compiling adc.c...
-ADC.C(32): error C202: 'channalselect': undefined identifier
+ADC.C(28): error C141: syntax error near ';'
+compiling workMode1-outputWave.c...
+compiling key.c...
 Target not created
 Build target 'Target 1'
 compiling main.c...
 compiling adc.c...
+compiling workMode1-outputWave.c...
+compiling key.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FDISP?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?AD_START?ADC
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DAC_WORK?ADC
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  ADC_START
+    MODULE:  main.obj (MAIN)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  ADC_START
+    MODULE:  main.obj (MAIN)
+    ADDRESS: 02C3H
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03BFH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03C6H
+Program Size: data=43.0 xdata=0 code=1018
+creating hex file from "demoq"...
+"demoq" - 0 Error(s), 9 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(26): error C141: syntax error near ';'
+compiling workMode1-outputWave.c...
+compiling key.c...
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+ADC.C(37): error C202: 'OUTPUT_VALUE': undefined identifier
+compiling workMode1-outputWave.c...
+compiling key.c...
+Target not created
+Build target 'Target 1'
+compiling main.c...
+compiling adc.c...
+compiling workMode1-outputWave.c...
+compiling key.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_FDISP?MAIN
@@ -358,13 +80,29 @@ linking...
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  ADC_START
     MODULE:  main.obj (MAIN)
-    ADDRESS: 0151H
-Program Size: data=31.0 xdata=0 code=675
+    ADDRESS: 02C3H
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03F8H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03FFH
+Program Size: data=43.0 xdata=0 code=1083
 creating hex file from "demoq"...
-"demoq" - 0 Error(s), 4 Warning(s).
+"demoq" - 0 Error(s), 8 Warning(s).
 Build target 'Target 1'
 compiling main.c...
 compiling adc.c...
+compiling workMode1-outputWave.c...
+compiling key.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_FDISP?MAIN
@@ -376,25 +114,21 @@ linking...
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  ADC_START
     MODULE:  main.obj (MAIN)
-    ADDRESS: 0151H
-Program Size: data=31.0 xdata=0 code=675
-creating hex file from "demoq"...
-"demoq" - 0 Error(s), 4 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-compiling adc.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FDISP?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?AD_START?ADC
+    ADDRESS: 02C3H
 *** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  ADC_START
-    MODULE:  main.obj (MAIN)
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  ADC_START
-    MODULE:  main.obj (MAIN)
-    ADDRESS: 0151H
-Program Size: data=31.0 xdata=0 code=675
+    SYMBOL:  KEY2
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03F8H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  KEY1
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03FFH
+Program Size: data=43.0 xdata=0 code=1083
 creating hex file from "demoq"...
-"demoq" - 0 Error(s), 4 Warning(s).
+"demoq" - 0 Error(s), 8 Warning(s).

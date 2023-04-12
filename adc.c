@@ -3,6 +3,8 @@
 extern char ADC_RESULT;
 extern char DAC_VALUE;
 extern char workMode;
+extern char WAVE_VALUE;
+extern char OUTPUT_VALUE;
 
 unsigned int channalSelect=0x0000;//DAC通道选择
 
@@ -22,14 +24,34 @@ void ad_start()		//adc放在定时器中断里边，采样频率为4000Hz。
 	ADC_CONTR=ADC_START;
 
 	//这段时间刚好用来做DAC,把DA结果输出
-	channalSelect=CH1;
-	dac_work(channalSelect);
+    switch(workMode){
+        case 1:
+		channalSelect=CH1;
+        dac_work(channalSelect,DAC_VALUE);
+		channalSelect=CH2;
+        dac_work(channalSelect,WAVE_VALUE);
+        break;
+        case 2:
+		channalSelect=CH1;
+        dac_work(channalSelect,DAC_VALUE);
+		channalSelect=CH2;
+        dac_work(channalSelect,OUTPUT_VALUE);
+        break;
+        case 3:
+		channalSelect=CH1;
+        dac_work(channalSelect,DAC_VALUE);
+		channalSelect=CH2;
+        dac_work(channalSelect,0x00);
+        break;
+        default:break;
+    }
+
 
 }
 
 
-void dac_work(int channalSelect){
-	XBYTE[channalSelect]=DAC_VALUE;	
+void dac_work(int channalSelect,char value){
+	XBYTE[channalSelect]=value;	
 }
 
 void adc_work() interrupt 5
@@ -42,7 +64,7 @@ void adc_work() interrupt 5
 	//问题:ADC转换值是1024个阶,DAC转换值是256个阶,要进行转换,舍去最低两位
 	ADC_RESULT=ADC_RES;
 
-	//工作模式1实时输出AD结果,并储存
+	//工作模式1实时输出AD结果,并储存(在main.c里)
 	//工作模式2实时输出结果
 	switch(workMode){
 	case 1:DAC_VALUE=ADC_RESULT;break;

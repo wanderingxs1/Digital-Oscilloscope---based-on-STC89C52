@@ -22,7 +22,7 @@ sfr P1ASF=0x9D;		//P1口用途寄存器
 
 void adc_init();
 void adc_start();
-void dac_work(int channalSelect);
+void dac_work(int channalSelect,char value);
 
 void delay(int delayTime);//单位延时为5ms，只在最开始使能用
 
