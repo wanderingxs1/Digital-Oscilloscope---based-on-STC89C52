@@ -63,16 +63,6 @@ void adc_work() interrupt 5
 	//把AD结果存储
 	//问题:ADC转换值是1024个阶,DAC转换值是256个阶,要进行转换,舍去最低两位
 	ADC_RESULT=ADC_RES;
-
-	//工作模式1实时输出AD结果,并储存(在main.c里)
-	//工作模式2实时输出结果
-	switch(workMode){
-	case 1:DAC_VALUE=ADC_RESULT;break;
-	case 2:DAC_VALUE=ADC_RESULT;break;
-	default:break;
-	}
-
-	ADC_RES=0;
 }
 
 void delay(int delayTime)

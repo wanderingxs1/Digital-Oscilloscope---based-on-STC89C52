@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   WORKMODE1_OUTPUTWAVE                                                  04/12/2023 20:35:58 PAGE 1   
+C51 COMPILER V9.00   WORKMODE1_OUTPUTWAVE                                                  04/12/2023 23:39:19 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE WORKMODE1_OUTPUTWAVE
@@ -12,16 +12,58 @@ line level    source
    3          unsigned char waveMode=0;//工作模式1下输出波形默认无效0
    4          //1正弦2三角波3方波4锯齿波
    5          unsigned char WAVE_VALUE=0;//要输出波形的当前值
+   6          
+   7          //初始化4种波形，每种1周期，256个采样点
+   8          void waveInit()
+   9          {
+  10   1          unsigned int address=0x00;
+  11   1          unsigned int i=0;
+  12   1          //sin
+  13   1          i=0;
+  14   1          address=SIN_BASE_ADDRESS;
+  15   1          for(;address<=0x10FF;address++,i++){
+  16   2              XBYTE[address]=floor(128*(sin(3.14*i/128)+1));
+  17   2          }
+  18   1          //triangular
+  19   1          i=0;
+  20   1          address=TRI_BASE_ADDRESS;
+  21   1          for(;address<=0x1179;address++,i++){
+  22   2              XBYTE[address]=2*i;
+  23   2          }
+  24   1          i=0;
+  25   1          address=0x1180;
+  26   1          for(;address<=0x11FF;address++,i++){
+  27   2              XBYTE[address]=256-2*i;
+  28   2          }
+  29   1          //square
+  30   1          address=SQU_BASE_ADDRESS;
+  31   1          for(;address<=0x1279;address++){
+  32   2              XBYTE[address]=256;
+  33   2          }
+  34   1          address=0x1280;
+  35   1          for(;address<=0x12FF;address++){
+  36   2              XBYTE[address]=0;
+  37   2          }
+  38   1          //teeth
+  39   1          i=0;
+  40   1          address=TEE_BASE_ADDRESS;
+  41   1          for(;address<=0x13FF;address++,i++){
+  42   2              XBYTE[address]=i;
+  43   2          }
+  44   1      }
+  45          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   ----    ----
+   CODE SIZE        =    323    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      2    ----
+   DATA SIZE        =      2       4
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
+C51 COMPILER V9.00   WORKMODE1_OUTPUTWAVE                                                  04/12/2023 23:39:19 PAGE 2   
+
 END OF MODULE INFORMATION.
 
 

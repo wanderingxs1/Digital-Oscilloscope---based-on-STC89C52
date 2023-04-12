@@ -1,5 +1,8 @@
 #include<main.h>
 #include<adc.h>
+
+sbit KEY1      = P3^4;
+sbit KEY2      = P3^5;
 //---------------------------------------------------------------------------------------
 void init_timer0(void)              //  定时器0初始
   {
@@ -43,7 +46,7 @@ void dsptask()
     b=b>>1;  b=b&0x7f;
     }
   a=dspbuf[sel];
-  key_num=sel;		//取得按键所在行（可能的行）
+  key_num=sel;		//取得按键可能所在列
   sel++;
   if(sel>=4) sel=0;
   for(b=0x80,i=0;i<8;i++)
@@ -132,6 +135,7 @@ void main(void)                    // 主函数
   init_timer0();                  //初始化定时器0
   init_special_interrupts();      //设置中断
   adc_init();						//设置ADC
+  waveInit();
   for(;;)
     {
 
@@ -154,26 +158,107 @@ void main(void)                    // 主函数
 	}
   }
 
-  //工作模式2进行ch2输出变量OUTPUT_VALUE的赋值,调到工作模式2一定已经采完一轮了
-  //留有一个问题，跳出工作模式1后adAddress会在内存空间的某一处停下
-  //暂定为从adAddress开始循环输出
-  if(workMode==2){
-    if(daAddress<=0x0FFF){
-      OUTPUT_VALUE=XBYTE[daAddress];
-      daAddress++;
-    }
-    else{
-      daAddress=ADC_BASE_ADDRESS;
-      OUTPUT_VALUE=XBYTE[daAddress];
-      daAddress++;
-    }
+	//工作模式1的波形选择
+	//工作模式2的输出已有波形
+  //都是将所需数据送入它自己维护的buffer
+	switch(workMode){
+	case 1:
+	{
+		//通道1实时输出
+		DAC_VALUE=ADC_RESULT;
+		//通道2输出四种波，给WAVE_VALUE赋值
+		switch(waveMode){
+			case 1:
+      {
+        if(sinAddress<=0x10FF){
+      			WAVE_VALUE=XBYTE[sinAddress];
+      			sinAddress++;
+    		  }
+    	  else{
+      		sinAddress=SIN_BASE_ADDRESS;
+      		WAVE_VALUE=XBYTE[sinAddress];
+      		sinAddress++;
+    	}
+      }
+      break;
+			case 2:
+       {
+        if(triAddress<=0x11FF){
+      			WAVE_VALUE=XBYTE[triAddress];
+      			triAddress++;
+    		  }
+    	  else{
+      		triAddress=TRI_BASE_ADDRESS;
+      		WAVE_VALUE=XBYTE[triAddress];
+      		triAddress++;
+    	}
+      }
+      break;
+			case 3:
+      {
+        if(squAddress<=0x12FF){
+      			WAVE_VALUE=XBYTE[squAddress];
+      			squAddress++;
+    		  }
+    	  else{
+      		squAddress=SQU_BASE_ADDRESS;
+      		WAVE_VALUE=XBYTE[squAddress];
+      		squAddress++;
+    	}
+      }
+      break;
+			case 4:
+      {
+        if(teeAddress<=0x13FF){
+      			WAVE_VALUE=XBYTE[teeAddress];
+      			teeAddress++;
+    		  }
+    	  else{
+      		teeAddress=TEE_BASE_ADDRESS;
+      		WAVE_VALUE=XBYTE[teeAddress];
+      		teeAddress++;
+    	}
+      }
+      break;
+			default:break;
+		}
+	}
+	break;
+	case 2:
+	{
+		//通道1实时输出
+		DAC_VALUE=ADC_RESULT;
+		//通道2输出以前采的波形
+		//工作模式2进行ch2输出变量OUTPUT_VALUE的赋值,调到工作模式2一定已经采完一轮了
+  		//留有一个问题，跳出工作模式1后adAddress会在内存空间的某一处停下
+  		//暂定为从adAddress开始循环输出
+  		if(workMode==2){
+    		if(daAddress<=0x0FFF){
+      			OUTPUT_VALUE=XBYTE[daAddress];
+      			daAddress++;
+    		}
+    	else{
+      		daAddress=ADC_BASE_ADDRESS;
+      		OUTPUT_VALUE=XBYTE[daAddress];
+      		daAddress++;
+    	}
+  		}
+	}
+	break;
+  case 3:
+  {
+    //通道1实时输出
+    DAC_VALUE=ADC_RESULT;
   }
+  break;
+	default:break;
+	}
 
   //按键处理
   if(key_sta&0x01)              // key_sta.0==1?，有按键按下
     {             
-		 keyWork();
-         key_sta=key_sta&0xfe;           // 置key_sta.0=0,复位
+		    keyWork();
+        key_sta=key_sta&0xfe;           // 置key_sta.0=0,复位
     } 
 	}
   }

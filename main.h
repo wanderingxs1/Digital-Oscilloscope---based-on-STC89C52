@@ -2,6 +2,7 @@
 #include<absacc.h>
 #include<adc.h>
 #include<key.h>
+#include<workMode1-outputWave.h>
 
 //片外RAM大小为8192(0x0000-0x1FFF)字节，使用4096(0x1000)字节来存放AD转换结果
 #define ADC_BASE_ADDRESS 0x0000
@@ -20,6 +21,11 @@ unsigned char        OUTPUT_VALUE=0;//工作模式2下每次在ch2输出的值
 unsigned int		 adAddress=ADC_BASE_ADDRESS;//ADC结果的存储地址首位
 unsigned int		 daAddress=ADC_BASE_ADDRESS;//工作模式2，ch2输出工作模式1下采出的波形，如果不够，那么就不输出了
 
+unsigned int         sinAddress=SIN_BASE_ADDRESS;
+unsigned int         triAddress=TRI_BASE_ADDRESS;
+unsigned int         squAddress=SQU_BASE_ADDRESS;
+unsigned int         teeAddress=TEE_BASE_ADDRESS;
+
 unsigned  char 	key_sta=0,key_num;//按键按下状态和按键编号(绝对编号）
 unsigned char workMode=1;//工作模式
 //工作模式1：ch1读取输入，存储输出 ch2根据5678按键按下情况，输出正弦，三角，方波，锯齿四种波形
@@ -29,5 +35,6 @@ unsigned char workMode=1;//工作模式
 sbit D_SER     = P1^0;
 sbit D_SRCLK   = P1^1;
 sbit D_RCLK    = P1^2;
-sbit KEY1      = P3^4;
-sbit KEY2      = P3^5;
+
+extern char waveMode;
+extern char WAVE_VALUE;

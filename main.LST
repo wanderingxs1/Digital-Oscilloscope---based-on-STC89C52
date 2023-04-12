@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  04/12/2023 20:35:58 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  04/12/2023 23:39:18 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -9,199 +9,286 @@ line level    source
 
    1          #include<main.h>
    2          #include<adc.h>
-   3          //---------------------------------------------------------------------------------------
-   4          void init_timer0(void)              //  ¶¨Ê±Æ÷0³õÊ¼
-   5            {
-   6   1        TMOD &= 0XF0;
-   7   1        TMOD |= 0X02;    //8Î»ÖØÔØ¶¨Ê±Æ÷t0
-   8   1        TL0 = 0X06;
-   9   1        TH0 = 0X06;      //Ò»¸ö¼ÆÊýÖÜÆÚ0.25ms
-  10   1        TR0 = 1;
-  11   1        }
-  12          //---------------------------------------------------------------------------------------
-  13          void init_special_interrupts(void)   //  ÖÐ¶ÏÉèÖÃ
-  14            {
-  15   1        //Á½¸öÖÐ¶ÏÅäÖÃ
-  16   1        EA  = 1;              //×ÜÖÐ¶Ï
-  17   1        ET0 = 1;              //ÔÊÐíT0ÖÐ¶Ï
-  18   1        EADC=1;               //ÔÊÐíADÖÐ¶Ï
-  19   1        //ÖÐ¶ÏÓÅÏÈ¼¶ÅäÖÃ
-  20   1        PT0 = 1;
-  21   1        PADC=0;
-  22   1        }
-  23          //---------------------------------------------------------------------------------------
-  24          void dsptask()
-  25            {
-  26   1        unsigned char i;
-  27   1        unsigned char a,b;
-  28   1      
-  29   1        switch(sel)
-  30   1         {
-  31   2         case 0:  a=0x01;  break;
-  32   2         case 1:  a=0x02;  break;
-  33   2         case 2:  a=0x04;  break;
-  34   2         default: a=0x08;
-  35   2         }
-  36   1       for(b=0x80,i=0;i<8;i++)
-  37   1          {
-  38   2          if(a&b)  D_SER=1;
-  39   2          else     D_SER=0;
-  40   2          D_SRCLK=0;
-  41   2          D_SRCLK=1;
-  42   2          D_SRCLK=0;
-  43   2          b=b>>1;  b=b&0x7f;
-  44   2          }
-  45   1        a=dspbuf[sel];
-  46   1        key_num=sel;          //È¡µÃ°´¼üËùÔÚÐÐ£¨¿ÉÄÜµÄÐÐ£©
-  47   1        sel++;
-  48   1        if(sel>=4) sel=0;
-  49   1        for(b=0x80,i=0;i<8;i++)
-  50   1          {
-  51   2          if(a&b)  D_SER=1;
-  52   2          else     D_SER=0;
-  53   2          D_SRCLK=0;
-  54   2          D_SRCLK=1;
-  55   2          D_SRCLK=0;
-C51 COMPILER V9.00   MAIN                                                                  04/12/2023 20:35:58 PAGE 2   
+   3          
+   4          sbit KEY1      = P3^4;
+   5          sbit KEY2      = P3^5;
+   6          //---------------------------------------------------------------------------------------
+   7          void init_timer0(void)              //  ¶¨Ê±Æ÷0³õÊ¼
+   8            {
+   9   1        TMOD &= 0XF0;
+  10   1        TMOD |= 0X02;    //8Î»ÖØÔØ¶¨Ê±Æ÷t0
+  11   1        TL0 = 0X06;
+  12   1        TH0 = 0X06;      //Ò»¸ö¼ÆÊýÖÜÆÚ0.25ms
+  13   1        TR0 = 1;
+  14   1        }
+  15          //---------------------------------------------------------------------------------------
+  16          void init_special_interrupts(void)   //  ÖÐ¶ÏÉèÖÃ
+  17            {
+  18   1        //Á½¸öÖÐ¶ÏÅäÖÃ
+  19   1        EA  = 1;              //×ÜÖÐ¶Ï
+  20   1        ET0 = 1;              //ÔÊÐíT0ÖÐ¶Ï
+  21   1        EADC=1;               //ÔÊÐíADÖÐ¶Ï
+  22   1        //ÖÐ¶ÏÓÅÏÈ¼¶ÅäÖÃ
+  23   1        PT0 = 1;
+  24   1        PADC=0;
+  25   1        }
+  26          //---------------------------------------------------------------------------------------
+  27          void dsptask()
+  28            {
+  29   1        unsigned char i;
+  30   1        unsigned char a,b;
+  31   1      
+  32   1        switch(sel)
+  33   1         {
+  34   2         case 0:  a=0x01;  break;
+  35   2         case 1:  a=0x02;  break;
+  36   2         case 2:  a=0x04;  break;
+  37   2         default: a=0x08;
+  38   2         }
+  39   1       for(b=0x80,i=0;i<8;i++)
+  40   1          {
+  41   2          if(a&b)  D_SER=1;
+  42   2          else     D_SER=0;
+  43   2          D_SRCLK=0;
+  44   2          D_SRCLK=1;
+  45   2          D_SRCLK=0;
+  46   2          b=b>>1;  b=b&0x7f;
+  47   2          }
+  48   1        a=dspbuf[sel];
+  49   1        key_num=sel;          //È¡µÃ°´¼ü¿ÉÄÜËùÔÚÁÐ
+  50   1        sel++;
+  51   1        if(sel>=4) sel=0;
+  52   1        for(b=0x80,i=0;i<8;i++)
+  53   1          {
+  54   2          if(a&b)  D_SER=1;
+  55   2          else     D_SER=0;
+C51 COMPILER V9.00   MAIN                                                                  04/12/2023 23:39:18 PAGE 2   
 
-  56   2          b=b>>1;  b=b&0x7fff;
-  57   2          }
-  58   1        D_RCLK=0;
-  59   1        D_RCLK=1;
-  60   1        D_RCLK=0;
-  61   1      
-  62   1        //ËÍÈëÆ¬Ñ¡ÐÅºÅ
-  63   1        a=0x10;
-  64   1        for(b=0x80,i=0;i<8;i++)
-  65   1          {
-  66   2          if(a&b)  D_SER=1;
-  67   2          else     D_SER=0;
-  68   2          D_SRCLK=0;
-  69   2          D_SRCLK=1;
-  70   2          D_SRCLK=0;
-  71   2          b=b>>1;  b=b&0x7f;
-  72   2          }
-  73   1         //Ñ¡ÔñÒªÏÔÊ¾µÄ¹¤×÷Ä£Ê½
-  74   1        switch(workMode)
-  75   1         {
-  76   2         case 0:  a=0xF7;  break;
-  77   2         case 1:  a=0xFB;  break;
-  78   2         case 2:  a=0xFD;  break;
-  79   2         default: a=0x0E;
-  80   2         }
-  81   1         //°Ñ¹¤×÷Ä£Ê½ËÍ³öÈ¥
-  82   1        for(b=0x80,i=0;i<8;i++)
-  83   1          {
-  84   2          if(a&b)  D_SER=1;
-  85   2          else     D_SER=0;
-  86   2          D_SRCLK=0;
-  87   2          D_SRCLK=1;
-  88   2          D_SRCLK=0;
-  89   2          b=b>>1;  b=b&0x7fff;
-  90   2          }
-  91   1        D_RCLK=0;
-  92   1        D_RCLK=1;
-  93   1        D_RCLK=0;
-  94   1        }
-  95          //---------------------------------------------------------------------------------------
-  96          void timer_isr() interrupt 1           //¶¨Ê±Æ÷0ÖÐ¶Ï´¦Àí
-  97            {
-  98   1        EA=0;
-  99   1        adcount++;
- 100   1        adc_start();
- 101   1        if(adcount==20)                      // 1/4*20 = 5ms
- 102   1          {
- 103   2          dsptask();
- 104   2          key_service();
- 105   2          clocktime++;
- 106   2          adcount=0;
- 107   2          }
- 108   1        EA=1;
- 109   1        }
- 110          //---------------------------------------------------------------------------------------
- 111          void fdisp(unsigned char n,unsigned char m)      //¹¦ÄÜÊÇ½«ÒªÐ´ÈëµÄÊýÖµn¶ÔÓ¦µÄÊýÂë¹Ü±àÂë×°ÈëdspbufµÄµÚm¸öµ
+  56   2          D_SRCLK=0;
+  57   2          D_SRCLK=1;
+  58   2          D_SRCLK=0;
+  59   2          b=b>>1;  b=b&0x7fff;
+  60   2          }
+  61   1        D_RCLK=0;
+  62   1        D_RCLK=1;
+  63   1        D_RCLK=0;
+  64   1      
+  65   1        //ËÍÈëÆ¬Ñ¡ÐÅºÅ
+  66   1        a=0x10;
+  67   1        for(b=0x80,i=0;i<8;i++)
+  68   1          {
+  69   2          if(a&b)  D_SER=1;
+  70   2          else     D_SER=0;
+  71   2          D_SRCLK=0;
+  72   2          D_SRCLK=1;
+  73   2          D_SRCLK=0;
+  74   2          b=b>>1;  b=b&0x7f;
+  75   2          }
+  76   1         //Ñ¡ÔñÒªÏÔÊ¾µÄ¹¤×÷Ä£Ê½
+  77   1        switch(workMode)
+  78   1         {
+  79   2         case 0:  a=0xF7;  break;
+  80   2         case 1:  a=0xFB;  break;
+  81   2         case 2:  a=0xFD;  break;
+  82   2         default: a=0x0E;
+  83   2         }
+  84   1         //°Ñ¹¤×÷Ä£Ê½ËÍ³öÈ¥
+  85   1        for(b=0x80,i=0;i<8;i++)
+  86   1          {
+  87   2          if(a&b)  D_SER=1;
+  88   2          else     D_SER=0;
+  89   2          D_SRCLK=0;
+  90   2          D_SRCLK=1;
+  91   2          D_SRCLK=0;
+  92   2          b=b>>1;  b=b&0x7fff;
+  93   2          }
+  94   1        D_RCLK=0;
+  95   1        D_RCLK=1;
+  96   1        D_RCLK=0;
+  97   1        }
+  98          //---------------------------------------------------------------------------------------
+  99          void timer_isr() interrupt 1           //¶¨Ê±Æ÷0ÖÐ¶Ï´¦Àí
+ 100            {
+ 101   1        EA=0;
+ 102   1        adcount++;
+ 103   1        adc_start();
+ 104   1        if(adcount==20)                      // 1/4*20 = 5ms
+ 105   1          {
+ 106   2          dsptask();
+ 107   2          key_service();
+ 108   2          clocktime++;
+ 109   2          adcount=0;
+ 110   2          }
+ 111   1        EA=1;
+ 112   1        }
+ 113          //---------------------------------------------------------------------------------------
+ 114          void fdisp(unsigned char n,unsigned char m)      //¹¦ÄÜÊÇ½«ÒªÐ´ÈëµÄÊýÖµn¶ÔÓ¦µÄÊýÂë¹Ü±àÂë×°ÈëdspbufµÄµÚm¸öµ
              -¥Ôª,Ã»ÓÐÓÃµ½
- 112            {
- 113   1        char  c;
- 114   1         switch(n)
- 115   1          {
- 116   2          case 0:  c=0x11;  break;
-C51 COMPILER V9.00   MAIN                                                                  04/12/2023 20:35:58 PAGE 3   
+ 115            {
+ 116   1        char  c;
+C51 COMPILER V9.00   MAIN                                                                  04/12/2023 23:39:18 PAGE 3   
 
- 117   2          case 1:  c=0x7d;  break;
- 118   2          case 2:  c=0x23;  break;
- 119   2          case 3:  c=0x29;  break;
- 120   2          case 4:  c=0x4d;  break;
- 121   2          case 5:  c=0x89;  break;
- 122   2          case 6:  c=0x81;  break;
- 123   2          case 7:  c=0x3d;  break;
- 124   2          case 8:  c=0x01;  break;
- 125   2          default: c=0x09; 
- 126   2          }
- 127   1         dspbuf[m]=c;
- 128   1        }
- 129          //---------------------------------------------------------------------------------------
- 130          void main(void)                    // Ö÷º¯Êý
- 131            {
- 132   1        init_timer0();                  //³õÊ¼»¯¶¨Ê±Æ÷0
- 133   1        init_special_interrupts();      //ÉèÖÃÖÐ¶Ï
- 134   1        adc_init();                                           //ÉèÖÃADC
- 135   1        for(;;)
- 136   1          {
- 137   2      
- 138   2        //¹¤×÷Ä£Ê½1²Å»áËæÊ±½øÐÐ´æ´¢
- 139   2        if(workMode==1){
- 140   3              //Èç¹ûADC¡ª¡ªRESULTµÄÖµºÍÉÏÒ»´Î²»Í¬£¬ÄÇ¾Í¸üÐÂ,¹¹ÔìÁËÒ»¸öÑ­»·ÕóÁÐ
- 141   3              if(ad_temp!=ADC_RESULT){
- 142   4        daAddress=adAddress;//Í¬²½
- 143   4              if(adAddress<=0x0FFF){
- 144   5              XBYTE[adAddress]=ADC_RESULT;
- 145   5              ad_temp=ADC_RESULT;
- 146   5              adAddress++;
- 147   5              }
- 148   4              else{
- 149   5              adAddress=ADC_BASE_ADDRESS;
- 150   5              XBYTE[adAddress]=ADC_RESULT;
- 151   5              ad_temp=ADC_RESULT;
- 152   5          adAddress++;
- 153   5              }
- 154   4              }
- 155   3        }
- 156   2      
- 157   2        //¹¤×÷Ä£Ê½2½øÐÐch2Êä³ö±äÁ¿OUTPUT_VALUEµÄ¸³Öµ,µ÷µ½¹¤×÷Ä£Ê½2Ò»¶¨ÒÑ¾­²ÉÍêÒ»ÂÖÁË
- 158   2        //ÁôÓÐÒ»¸öÎÊÌâ£¬Ìø³ö¹¤×÷Ä£Ê½1ºóadAddress»áÔÚÄÚ´æ¿Õ¼äµÄÄ³Ò»´¦Í£ÏÂ
- 159   2        //ÔÝ¶¨Îª´ÓadAddress¿ªÊ¼Ñ­»·Êä³ö
- 160   2        if(workMode==2){
- 161   3          if(daAddress<=0x0FFF){
- 162   4            OUTPUT_VALUE=XBYTE[daAddress];
- 163   4            daAddress++;
- 164   4          }
- 165   3          else{
- 166   4            daAddress=ADC_BASE_ADDRESS;
- 167   4            OUTPUT_VALUE=XBYTE[daAddress];
- 168   4            daAddress++;
- 169   4          }
- 170   3        }
- 171   2      
- 172   2        //°´¼ü´¦Àí
- 173   2        if(key_sta&0x01)              // key_sta.0==1?£¬ÓÐ°´¼ü°´ÏÂ
- 174   2          {             
- 175   3                       keyWork();
- 176   3               key_sta=key_sta&0xfe;           // ÖÃkey_sta.0=0,¸´Î»
- 177   3          } 
- 178   2              }
-C51 COMPILER V9.00   MAIN                                                                  04/12/2023 20:35:58 PAGE 4   
+ 117   1         switch(n)
+ 118   1          {
+ 119   2          case 0:  c=0x11;  break;
+ 120   2          case 1:  c=0x7d;  break;
+ 121   2          case 2:  c=0x23;  break;
+ 122   2          case 3:  c=0x29;  break;
+ 123   2          case 4:  c=0x4d;  break;
+ 124   2          case 5:  c=0x89;  break;
+ 125   2          case 6:  c=0x81;  break;
+ 126   2          case 7:  c=0x3d;  break;
+ 127   2          case 8:  c=0x01;  break;
+ 128   2          default: c=0x09; 
+ 129   2          }
+ 130   1         dspbuf[m]=c;
+ 131   1        }
+ 132          //---------------------------------------------------------------------------------------
+ 133          void main(void)                    // Ö÷º¯Êý
+ 134            {
+ 135   1        init_timer0();                  //³õÊ¼»¯¶¨Ê±Æ÷0
+ 136   1        init_special_interrupts();      //ÉèÖÃÖÐ¶Ï
+ 137   1        adc_init();                                           //ÉèÖÃADC
+ 138   1        waveInit();
+ 139   1        for(;;)
+ 140   1          {
+ 141   2      
+ 142   2        //¹¤×÷Ä£Ê½1²Å»áËæÊ±½øÐÐ´æ´¢
+ 143   2        if(workMode==1){
+ 144   3              //Èç¹ûADC¡ª¡ªRESULTµÄÖµºÍÉÏÒ»´Î²»Í¬£¬ÄÇ¾Í¸üÐÂ,¹¹ÔìÁËÒ»¸öÑ­»·ÕóÁÐ
+ 145   3              if(ad_temp!=ADC_RESULT){
+ 146   4        daAddress=adAddress;//Í¬²½
+ 147   4              if(adAddress<=0x0FFF){
+ 148   5              XBYTE[adAddress]=ADC_RESULT;
+ 149   5              ad_temp=ADC_RESULT;
+ 150   5              adAddress++;
+ 151   5              }
+ 152   4              else{
+ 153   5              adAddress=ADC_BASE_ADDRESS;
+ 154   5              XBYTE[adAddress]=ADC_RESULT;
+ 155   5              ad_temp=ADC_RESULT;
+ 156   5          adAddress++;
+ 157   5              }
+ 158   4              }
+ 159   3        }
+ 160   2      
+ 161   2              //¹¤×÷Ä£Ê½1µÄ²¨ÐÎÑ¡Ôñ
+ 162   2              //¹¤×÷Ä£Ê½2µÄÊä³öÒÑÓÐ²¨ÐÎ
+ 163   2        //¶¼ÊÇ½«ËùÐèÊý¾ÝËÍÈëËü×Ô¼ºÎ¬»¤µÄbuffer
+ 164   2              switch(workMode){
+ 165   3              case 1:
+ 166   3              {
+ 167   4                      //Í¨µÀ1ÊµÊ±Êä³ö
+ 168   4                      DAC_VALUE=ADC_RESULT;
+ 169   4                      //Í¨µÀ2Êä³öËÄÖÖ²¨£¬¸øWAVE_VALUE¸³Öµ
+ 170   4                      switch(waveMode){
+ 171   5                              case 1:
+ 172   5            {
+ 173   6              if(sinAddress<=0x10FF){
+ 174   7                              WAVE_VALUE=XBYTE[sinAddress];
+ 175   7                              sinAddress++;
+ 176   7                        }
+ 177   6                else{
+ 178   7                      sinAddress=SIN_BASE_ADDRESS;
+C51 COMPILER V9.00   MAIN                                                                  04/12/2023 23:39:18 PAGE 4   
 
- 179   1        }
- 180          //----------------------------------End---------------------------------------------------
+ 179   7                      WAVE_VALUE=XBYTE[sinAddress];
+ 180   7                      sinAddress++;
+ 181   7              }
+ 182   6            }
+ 183   5            break;
+ 184   5                              case 2:
+ 185   5             {
+ 186   6              if(triAddress<=0x11FF){
+ 187   7                              WAVE_VALUE=XBYTE[triAddress];
+ 188   7                              triAddress++;
+ 189   7                        }
+ 190   6                else{
+ 191   7                      triAddress=TRI_BASE_ADDRESS;
+ 192   7                      WAVE_VALUE=XBYTE[triAddress];
+ 193   7                      triAddress++;
+ 194   7              }
+ 195   6            }
+ 196   5            break;
+ 197   5                              case 3:
+ 198   5            {
+ 199   6              if(squAddress<=0x12FF){
+ 200   7                              WAVE_VALUE=XBYTE[squAddress];
+ 201   7                              squAddress++;
+ 202   7                        }
+ 203   6                else{
+ 204   7                      squAddress=SQU_BASE_ADDRESS;
+ 205   7                      WAVE_VALUE=XBYTE[squAddress];
+ 206   7                      squAddress++;
+ 207   7              }
+ 208   6            }
+ 209   5            break;
+ 210   5                              case 4:
+ 211   5            {
+ 212   6              if(teeAddress<=0x13FF){
+ 213   7                              WAVE_VALUE=XBYTE[teeAddress];
+ 214   7                              teeAddress++;
+ 215   7                        }
+ 216   6                else{
+ 217   7                      teeAddress=TEE_BASE_ADDRESS;
+ 218   7                      WAVE_VALUE=XBYTE[teeAddress];
+ 219   7                      teeAddress++;
+ 220   7              }
+ 221   6            }
+ 222   5            break;
+ 223   5                              default:break;
+ 224   5                      }
+ 225   4              }
+ 226   3              break;
+ 227   3              case 2:
+ 228   3              {
+ 229   4                      //Í¨µÀ1ÊµÊ±Êä³ö
+ 230   4                      DAC_VALUE=ADC_RESULT;
+ 231   4                      //Í¨µÀ2Êä³öÒÔÇ°²ÉµÄ²¨ÐÎ
+ 232   4                      //¹¤×÷Ä£Ê½2½øÐÐch2Êä³ö±äÁ¿OUTPUT_VALUEµÄ¸³Öµ,µ÷µ½¹¤×÷Ä£Ê½2Ò»¶¨ÒÑ¾­²ÉÍêÒ»ÂÖÁË
+ 233   4                      //ÁôÓÐÒ»¸öÎÊÌâ£¬Ìø³ö¹¤×÷Ä£Ê½1ºóadAddress»áÔÚÄÚ´æ¿Õ¼äµÄÄ³Ò»´¦Í£ÏÂ
+ 234   4                      //ÔÝ¶¨Îª´ÓadAddress¿ªÊ¼Ñ­»·Êä³ö
+ 235   4                      if(workMode==2){
+ 236   5                      if(daAddress<=0x0FFF){
+ 237   6                              OUTPUT_VALUE=XBYTE[daAddress];
+ 238   6                              daAddress++;
+ 239   6                      }
+ 240   5              else{
+C51 COMPILER V9.00   MAIN                                                                  04/12/2023 23:39:18 PAGE 5   
+
+ 241   6                      daAddress=ADC_BASE_ADDRESS;
+ 242   6                      OUTPUT_VALUE=XBYTE[daAddress];
+ 243   6                      daAddress++;
+ 244   6              }
+ 245   5                      }
+ 246   4              }
+ 247   3              break;
+ 248   3        case 3:
+ 249   3        {
+ 250   4          //Í¨µÀ1ÊµÊ±Êä³ö
+ 251   4          DAC_VALUE=ADC_RESULT;
+ 252   4        }
+ 253   3        break;
+ 254   3              default:break;
+ 255   3              }
+ 256   2      
+ 257   2        //°´¼ü´¦Àí
+ 258   2        if(key_sta&0x01)              // key_sta.0==1?£¬ÓÐ°´¼ü°´ÏÂ
+ 259   2          {             
+ 260   3                          keyWork();
+ 261   3              key_sta=key_sta&0xfe;           // ÖÃkey_sta.0=0,¸´Î»
+ 262   3          } 
+ 263   2              }
+ 264   1        }
+ 265          //----------------------------------End---------------------------------------------------
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    585    ----
+   CODE SIZE        =    871    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     29    ----
+   DATA SIZE        =     37    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
