@@ -1,25 +1,25 @@
 #include<main.h>
 #include<adc.h>
 
-sbit KEY1      = P3^4;
-sbit KEY2      = P3^5;
+extern char waveMode;
+extern char WAVE_VALUE;
 //---------------------------------------------------------------------------------------
-void init_timer0(void)              //  ¶¨Ê±Æ÷0³õÊ¼
+void init_timer0(void)              //  å®šæ—¶å™¨0åˆå§‹
   {
   TMOD &= 0XF0;
-  TMOD |= 0X02;	   //8Î»ÖØÔØ¶¨Ê±Æ÷t0
+  TMOD |= 0X02;	   //8ä½é‡è½½å®šæ—¶å™¨t0
   TL0 = 0X06;
-  TH0 = 0X06;	   //Ò»¸ö¼ÆÊıÖÜÆÚ0.25ms
+  TH0 = 0X06;	   //ä¸€ä¸ªè®¡æ•°å‘¨æœŸ0.25ms
   TR0 = 1;
   }
 //---------------------------------------------------------------------------------------
-void init_special_interrupts(void)   //  ÖĞ¶ÏÉèÖÃ
+void init_special_interrupts(void)   //  ä¸­æ–­è®¾ç½®
   {
-  //Á½¸öÖĞ¶ÏÅäÖÃ
-  EA  = 1;		//×ÜÖĞ¶Ï
-  ET0 = 1;		//ÔÊĞíT0ÖĞ¶Ï
-  EADC=1;		//ÔÊĞíADÖĞ¶Ï
-  //ÖĞ¶ÏÓÅÏÈ¼¶ÅäÖÃ
+  //ä¸¤ä¸ªä¸­æ–­é…ç½®
+  EA  = 1;		//æ€»ä¸­æ–­å…è®¸
+  ET0 = 1;		//å…è®¸T0ä¸­æ–­
+  EADC=1;		//å…è®¸ADä¸­æ–­
+  //ä¸­æ–­ä¼˜å…ˆçº§é…ç½®
   PT0 = 1;
   PADC=0;
   }
@@ -34,7 +34,8 @@ void dsptask()
    case 0:  a=0x01;  break;
    case 1:  a=0x02;  break;
    case 2:  a=0x04;  break;
-   default: a=0x08;
+   case 3:  a=0x08;	 break;
+   default: a=0x10;  break;
    }
  for(b=0x80,i=0;i<8;i++)
     {
@@ -45,43 +46,21 @@ void dsptask()
     D_SRCLK=0;
     b=b>>1;  b=b&0x7f;
     }
-  a=dspbuf[sel];
-  key_num=sel;		//È¡µÃ°´¼ü¿ÉÄÜËùÔÚÁĞ
-  sel++;
-  if(sel>=4) sel=0;
-  for(b=0x80,i=0;i<8;i++)
-    {
-    if(a&b)  D_SER=1;
-    else     D_SER=0;
-    D_SRCLK=0;
-    D_SRCLK=1;
-    D_SRCLK=0;
-    b=b>>1;  b=b&0x7fff;
-    }
-  D_RCLK=0;
-  D_RCLK=1;
-  D_RCLK=0;
-
-  //ËÍÈëÆ¬Ñ¡ĞÅºÅ
-  a=0x10;
-  for(b=0x80,i=0;i<8;i++)
-    {
-    if(a&b)  D_SER=1;
-    else     D_SER=0;
-    D_SRCLK=0;
-    D_SRCLK=1;
-    D_SRCLK=0;
-    b=b>>1;  b=b&0x7f;
-    }
-   //Ñ¡ÔñÒªÏÔÊ¾µÄ¹¤×÷Ä£Ê½
-  switch(workMode)
+  if(sel<=3){
+  	a=dspbuf[sel];  
+  }
+  else{
+  	switch(workMode)
    {
-   case 0:  a=0xF7;  break;
    case 1:  a=0xFB;  break;
    case 2:  a=0xFD;  break;
-   default: a=0x0E;
+   case 3:  a=0xFE;  break;
+   default: a=0x7F;
    }
-   //°Ñ¹¤×÷Ä£Ê½ËÍ³öÈ¥
+  }
+  key_num=sel;		//å–å¾—æŒ‰é”®æ‰€åœ¨è¡Œï¼ˆå¯èƒ½çš„è¡Œï¼‰
+  sel++;
+  if(sel>4) sel=0;
   for(b=0x80,i=0;i<8;i++)
     {
     if(a&b)  D_SER=1;
@@ -96,7 +75,7 @@ void dsptask()
   D_RCLK=0;
   }
 //---------------------------------------------------------------------------------------
-void timer_isr() interrupt 1           //¶¨Ê±Æ÷0ÖĞ¶Ï´¦Àí
+void timer_isr() interrupt 1           //å®šæ—¶å™¨0ä¸­æ–­å¤„ç†
   {
   EA=0;
   adcount++;
@@ -105,13 +84,12 @@ void timer_isr() interrupt 1           //¶¨Ê±Æ÷0ÖĞ¶Ï´¦Àí
     {
     dsptask();
     key_service();
-    clocktime++;
     adcount=0;
     }
   EA=1;
   }
 //---------------------------------------------------------------------------------------
-void fdisp(unsigned char n,unsigned char m)      //¹¦ÄÜÊÇ½«ÒªĞ´ÈëµÄÊıÖµn¶ÔÓ¦µÄÊıÂë¹Ü±àÂë×°ÈëdspbufµÄµÚm¸öµ¥Ôª,Ã»ÓĞÓÃµ½
+void fdisp(unsigned char n,unsigned char m)      //åŠŸèƒ½æ˜¯å°†è¦å†™å…¥çš„æ•°å€¼nå¯¹åº”çš„æ•°ç ç®¡ç¼–ç è£…å…¥dspbufçš„ç¬¬mä¸ªå•å…ƒ,æ²¡æœ‰ç”¨åˆ°
   {
   char  c;
    switch(n)
@@ -130,20 +108,21 @@ void fdisp(unsigned char n,unsigned char m)      //¹¦ÄÜÊÇ½«ÒªĞ´ÈëµÄÊıÖµn¶ÔÓ¦µÄÊı
    dspbuf[m]=c;
   }
 //---------------------------------------------------------------------------------------
-void main(void)                    // Ö÷º¯Êı
+void main(void)                    // ä¸»å‡½æ•°
   {
-  init_timer0();                  //³õÊ¼»¯¶¨Ê±Æ÷0
-  init_special_interrupts();      //ÉèÖÃÖĞ¶Ï
-  adc_init();						//ÉèÖÃADC
+  CLK_DIV=CLK_DIV|0x01;		   //åˆ†é¢‘ï¼Œéå¸¸é‡è¦ï¼å› ä¸ºDACçš„é€Ÿåº¦ä¸å¿«ï¼Œå¯¹å®ƒçŒå…¥è¿‡å¿«æ•°æ®å®ƒå—ä¸äº†äº†
+  init_timer0();                  //åˆå§‹åŒ–å®šæ—¶å™¨0
+  init_special_interrupts();      //è®¾ç½®ä¸­æ–­
+  adc_init();						//è®¾ç½®ADC
   waveInit();
   for(;;)
     {
 
-  //¹¤×÷Ä£Ê½1²Å»áËæÊ±½øĞĞ´æ´¢
+  //å·¥ä½œæ¨¡å¼1æ‰ä¼šéšæ—¶è¿›è¡Œå­˜å‚¨
   if(workMode==1){
-	//Èç¹ûADC¡ª¡ªRESULTµÄÖµºÍÉÏÒ»´Î²»Í¬£¬ÄÇ¾Í¸üĞÂ,¹¹ÔìÁËÒ»¸öÑ­»·ÕóÁĞ
+	//å¦‚æœADCâ€”â€”RESULTçš„å€¼å’Œä¸Šä¸€æ¬¡ä¸åŒï¼Œé‚£å°±æ›´æ–°,æ„é€ äº†ä¸€ä¸ªå¾ªç¯é˜µåˆ—
 	if(ad_temp!=ADC_RESULT){
-  daAddress=adAddress;//Í¬²½
+  daAddress=adAddress;//åŒæ­¥
 	if(adAddress<=0x0FFF){
 	XBYTE[adAddress]=ADC_RESULT;
 	ad_temp=ADC_RESULT;
@@ -158,15 +137,15 @@ void main(void)                    // Ö÷º¯Êı
 	}
   }
 
-	//¹¤×÷Ä£Ê½1µÄ²¨ĞÎÑ¡Ôñ
-	//¹¤×÷Ä£Ê½2µÄÊä³öÒÑÓĞ²¨ĞÎ
-  //¶¼ÊÇ½«ËùĞèÊı¾İËÍÈëËü×Ô¼ºÎ¬»¤µÄbuffer
+	//å·¥ä½œæ¨¡å¼1çš„æ³¢å½¢é€‰æ‹©
+	//å·¥ä½œæ¨¡å¼2çš„è¾“å‡ºå·²æœ‰æ³¢å½¢
+  //éƒ½æ˜¯å°†æ‰€éœ€æ•°æ®é€å…¥å®ƒè‡ªå·±ç»´æŠ¤çš„buffer
 	switch(workMode){
 	case 1:
 	{
-		//Í¨µÀ1ÊµÊ±Êä³ö
+		//é€šé“1å®æ—¶è¾“å‡º
 		DAC_VALUE=ADC_RESULT;
-		//Í¨µÀ2Êä³öËÄÖÖ²¨£¬¸øWAVE_VALUE¸³Öµ
+		//é€šé“2è¾“å‡ºå››ç§æ³¢ï¼Œç»™WAVE_VALUEèµ‹å€¼
 		switch(waveMode){
 			case 1:
       {
@@ -226,12 +205,12 @@ void main(void)                    // Ö÷º¯Êı
 	break;
 	case 2:
 	{
-		//Í¨µÀ1ÊµÊ±Êä³ö
+		//é€šé“1å®æ—¶è¾“å‡º
 		DAC_VALUE=ADC_RESULT;
-		//Í¨µÀ2Êä³öÒÔÇ°²ÉµÄ²¨ĞÎ
-		//¹¤×÷Ä£Ê½2½øĞĞch2Êä³ö±äÁ¿OUTPUT_VALUEµÄ¸³Öµ,µ÷µ½¹¤×÷Ä£Ê½2Ò»¶¨ÒÑ¾­²ÉÍêÒ»ÂÖÁË
-  		//ÁôÓĞÒ»¸öÎÊÌâ£¬Ìø³ö¹¤×÷Ä£Ê½1ºóadAddress»áÔÚÄÚ´æ¿Õ¼äµÄÄ³Ò»´¦Í£ÏÂ
-  		//Ôİ¶¨Îª´ÓadAddress¿ªÊ¼Ñ­»·Êä³ö
+		//é€šé“2è¾“å‡ºä»¥å‰é‡‡çš„æ³¢å½¢
+		//å·¥ä½œæ¨¡å¼2è¿›è¡Œch2è¾“å‡ºå˜é‡OUTPUT_VALUEçš„èµ‹å€¼,è°ƒåˆ°å·¥ä½œæ¨¡å¼2ä¸€å®šå·²ç»é‡‡å®Œä¸€è½®äº†
+  		//ç•™æœ‰ä¸€ä¸ªé—®é¢˜ï¼Œè·³å‡ºå·¥ä½œæ¨¡å¼1åadAddressä¼šåœ¨å†…å­˜ç©ºé—´çš„æŸä¸€å¤„åœä¸‹
+  		//æš‚å®šä¸ºä»adAddresså¼€å§‹å¾ªç¯è¾“å‡º
   		if(workMode==2){
     		if(daAddress<=0x0FFF){
       			OUTPUT_VALUE=XBYTE[daAddress];
@@ -247,18 +226,18 @@ void main(void)                    // Ö÷º¯Êı
 	break;
   case 3:
   {
-    //Í¨µÀ1ÊµÊ±Êä³ö
+    //é€šé“1å®æ—¶è¾“å‡º
     DAC_VALUE=ADC_RESULT;
   }
   break;
 	default:break;
 	}
 
-  //°´¼ü´¦Àí
-  if(key_sta&0x01)              // key_sta.0==1?£¬ÓĞ°´¼ü°´ÏÂ
+  //æŒ‰é”®å¤„ç†
+  if(key_sta&0x01)              // key_sta.0==1?ï¼Œæœ‰æŒ‰é”®æŒ‰ä¸‹
     {             
 		    keyWork();
-        key_sta=key_sta&0xfe;           // ÖÃkey_sta.0=0,¸´Î»
+        key_sta=key_sta&0xfe;           // ç½®key_sta.0=0,å¤ä½
     } 
 	}
   }

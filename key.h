@@ -7,6 +7,6 @@
 
 
 void key_service();
-void keyWork();		//°´¼üÏìÓ¦º¯Êı
+void keyWork();		//æŒ‰é”®å“åº”å‡½æ•°
 
 #endif
