@@ -179,10 +179,10 @@
       <FileType>1</FileType>
       <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>22</ColumnNumber>
+      <ColumnNumber>29</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>19</CurrentLine>
+      <TopLine>155</TopLine>
+      <CurrentLine>167</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -193,10 +193,10 @@
       <FileType>1</FileType>
       <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>1</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>43</TopLine>
+      <CurrentLine>75</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\adc.c</PathWithFileName>
       <FilenameWithoutPath>adc.c</FilenameWithoutPath>
@@ -205,12 +205,12 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>3</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>32</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>4</CurrentLine>
+      <TopLine>13</TopLine>
+      <CurrentLine>45</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\workMode1-outputWave.c</PathWithFileName>
       <FilenameWithoutPath>workMode1-outputWave.c</FilenameWithoutPath>
@@ -219,22 +219,50 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>4</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>1</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>19</CurrentLine>
+      <TopLine>47</TopLine>
+      <CurrentLine>79</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\key.c</PathWithFileName>
       <FilenameWithoutPath>key.c</FilenameWithoutPath>
     </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>0</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>21</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>1</TopLine>
+      <CurrentLine>6</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\featureExtract.c</PathWithFileName>
+      <FilenameWithoutPath>featureExtract.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>0</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>0</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\featureExtract.h</PathWithFileName>
+      <FilenameWithoutPath>featureExtract.h</FilenameWithoutPath>
+    </File>
   </Group>
 
   <AlienFiles>
-    <PathWithFilename>D:\KEIL4\C51\INC\REG51.H</PathWithFilename>
-    <TopLine>37</TopLine>
-    <CurrentLine>37</CurrentLine>
+    <PathWithFilename>D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版2编译用-除了四个波形输出和波形特征提取外的其他功能 - 副本\Digital-Oscilloscope---based-on-STC89C52-master\MAIN.H</PathWithFilename>
+    <TopLine>9</TopLine>
+    <CurrentLine>41</CurrentLine>
     <Constant>0</Constant>
     <WindowPosition>
       <length>0</length>
@@ -258,9 +286,9 @@
   </AlienFiles>
 
   <AlienFiles>
-    <PathWithFilename>D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版-除了四个波形输出和波形特征提取外的其他功能\Digital-Oscilloscope---based-on-STC89C52-master\MAIN.H</PathWithFilename>
+    <PathWithFilename>D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版2编译用-除了四个波形输出和波形特征提取外的其他功能 - 副本\Digital-Oscilloscope---based-on-STC89C52-master\ADC.H</PathWithFilename>
     <TopLine>1</TopLine>
-    <CurrentLine>26</CurrentLine>
+    <CurrentLine>29</CurrentLine>
     <Constant>0</Constant>
     <WindowPosition>
       <length>0</length>
@@ -284,9 +312,9 @@
   </AlienFiles>
 
   <AlienFiles>
-    <PathWithFilename>D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版-除了四个波形输出和波形特征提取外的其他功能\Digital-Oscilloscope---based-on-STC89C52-master\ADC.H</PathWithFilename>
+    <PathWithFilename>D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版2编译用-除了四个波形输出和波形特征提取外的其他功能 - 副本\Digital-Oscilloscope---based-on-STC89C52-master\KEY.H</PathWithFilename>
     <TopLine>1</TopLine>
-    <CurrentLine>24</CurrentLine>
+    <CurrentLine>12</CurrentLine>
     <Constant>0</Constant>
     <WindowPosition>
       <length>0</length>
@@ -310,9 +338,9 @@
   </AlienFiles>
 
   <AlienFiles>
-    <PathWithFilename>D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版-除了四个波形输出和波形特征提取外的其他功能\Digital-Oscilloscope---based-on-STC89C52-master\WORKMODE1-OUTPUTWAVE.H</PathWithFilename>
+    <PathWithFilename>D:\学校通知及任务\大三下课程资料\电子系统设计与实践\实验1\第三版2编译用-除了四个波形输出和波形特征提取外的其他功能 - 副本\Digital-Oscilloscope---based-on-STC89C52-master\WORKMODE1-OUTPUTWAVE.H</PathWithFilename>
     <TopLine>1</TopLine>
-    <CurrentLine>1</CurrentLine>
+    <CurrentLine>11</CurrentLine>
     <Constant>0</Constant>
     <WindowPosition>
       <length>0</length>
@@ -1679,52 +1707,64 @@
       <ActiveTab>0</ActiveTab>
       <Documents>
         <Doc>
-          <Name>.\adc.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>.\key.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>19</CurrentLine>
-        </Doc>
-        <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>22</ColumnNumber>
+          <ColumnNumber>29</ColumnNumber>
+          <TopLine>155</TopLine>
+          <CurrentLine>167</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>FEATUREEXTRACT.H</Name>
+          <ColumnNumber>21</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>19</CurrentLine>
+          <CurrentLine>5</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\adc.c</Name>
+          <ColumnNumber>1</ColumnNumber>
+          <TopLine>43</TopLine>
+          <CurrentLine>75</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\featureExtract.c</Name>
+          <ColumnNumber>21</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>6</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>MAIN.H</Name>
+          <ColumnNumber>22</ColumnNumber>
+          <TopLine>9</TopLine>
+          <CurrentLine>41</CurrentLine>
         </Doc>
         <Doc>
           <Name>WORKMODE1-OUTPUTWAVE.H</Name>
-          <ColumnNumber>0</ColumnNumber>
+          <ColumnNumber>16</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <CurrentLine>11</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\workMode1-outputWave.c</Name>
-          <ColumnNumber>32</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>13</TopLine>
+          <CurrentLine>45</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>KEY.H</Name>
+          <ColumnNumber>6</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>4</CurrentLine>
+          <CurrentLine>12</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\key.c</Name>
+          <ColumnNumber>1</ColumnNumber>
+          <TopLine>47</TopLine>
+          <CurrentLine>79</CurrentLine>
         </Doc>
         <Doc>
           <Name>ADC.H</Name>
           <ColumnNumber>6</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>24</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>MAIN.H</Name>
-          <ColumnNumber>22</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>26</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>D:\KEIL4\C51\INC\REG51.H</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>37</TopLine>
-          <CurrentLine>37</CurrentLine>
+          <CurrentLine>29</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

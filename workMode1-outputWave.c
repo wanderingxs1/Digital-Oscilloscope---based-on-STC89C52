@@ -1,44 +1,44 @@
 #include<workMode1-outputWave.h>
 
-unsigned char waveMode=0;//å·¥ä½œæ¨¡å¼1ä¸‹è¾“å‡ºæ³¢å½¢é»˜è®¤æ— æ•ˆ0
-//1æ­£å¼¦2ä¸‰è§’æ³¢3æ–¹æ³¢4é”¯é½¿æ³¢
-unsigned char WAVE_VALUE=0;//è¦è¾“å‡ºæ³¢å½¢çš„å½“å‰å€¼
+unsigned char waveMode=0;//¹¤×÷Ä£Ê½1ÏÂÊä³ö²¨ĞÎÄ¬ÈÏÎŞĞ§0
+//1ÕıÏÒ2Èı½Ç²¨3·½²¨4¾â³İ²¨
+unsigned char WAVE_VALUE=0;//ÒªÊä³ö²¨ĞÎµÄµ±Ç°Öµ
 
-//åˆå§‹åŒ–4ç§æ³¢å½¢ï¼Œæ¯ç§1å‘¨æœŸï¼Œ256ä¸ªé‡‡æ ·ç‚¹
+//³õÊ¼»¯4ÖÖ²¨ĞÎ£¬Ã¿ÖÖ1ÖÜÆÚ£¬256¸ö²ÉÑùµã
 void waveInit()
 {
-    unsigned int address=0x00;
+    unsigned int address=0;	
     unsigned int i=0;
     //sin
     i=0;
     address=SIN_BASE_ADDRESS;
     for(;address<=0x10FF;address++,i++){
-        XBYTE[address]=floor(128*(sin(3.14*i/128)+1));
+        XBYTE[address]=floor(64*(sin(3.14*i/128)+1))+40;
     }
     //triangular
     i=0;
     address=TRI_BASE_ADDRESS;
     for(;address<=0x1179;address++,i++){
-        XBYTE[address]=2*i;
+        XBYTE[address]=20+i;
     }
     i=0;
-    address=0x1180;
-    for(;address<=0x11FF;address++,i++){
-        XBYTE[address]=256-2*i;
+    address=0x117A;
+    for(;address<=0x11F3;address++,i++){
+        XBYTE[address]=141-i;
     }
     //square
     address=SQU_BASE_ADDRESS;
     for(;address<=0x1279;address++){
-        XBYTE[address]=256;
+        XBYTE[address]=150;
     }
-    address=0x1280;
-    for(;address<=0x12FF;address++){
-        XBYTE[address]=0;
+    address=0x127A;
+    for(;address<=0x12F3;address++){
+        XBYTE[address]=30;
     }
     //teeth
     i=0;
     address=TEE_BASE_ADDRESS;
-    for(;address<=0x13FF;address++,i++){
-        XBYTE[address]=i;
+    for(;address<=0x1379;address++,i++){
+        XBYTE[address]=i+20;
     }
 }

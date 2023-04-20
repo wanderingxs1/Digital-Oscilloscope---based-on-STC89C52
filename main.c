@@ -1,26 +1,46 @@
 #include<main.h>
 #include<adc.h>
 
+unsigned char tmpA,tmpB,tmpC;
+//ÓÃÀ´Êä³ö·å·åÖµµÄÁÙÊ±±äÁ¿
+
 extern char waveMode;
 extern char WAVE_VALUE;
+extern int freq;
+extern char vpp;
+//led2-4×÷ÎªÆµÂÊºÍ·å·åÖµµÄÒëÂë±äÁ¿£¬ÔÚÖ÷Ñ­»·Àï±»¸³Öµ£¬ÔÚ¶¨Ê±Æ÷ÖĞ¶Ï1Àï¸³¸ødspbuf
+//³õÊ¼ÏÔÊ¾0
+//µÚÈıÎ»ÒªÏÔÊ¾Ğ¡Êıµã£¬Óë0xFe
+unsigned char ledbuffer[4]={0x11,0x11,0x11,0x11};//»º³åÇø
+
 //---------------------------------------------------------------------------------------
-void init_timer0(void)              //  å®šæ—¶å™¨0åˆå§‹
+void init_timer0(void)              //  ¶¨Ê±Æ÷0³õÊ¼
   {
   TMOD &= 0XF0;
-  TMOD |= 0X02;	   //8ä½é‡è½½å®šæ—¶å™¨t0
+  TMOD |= 0X02;	   //8Î»ÖØÔØ¶¨Ê±Æ÷t0
   TL0 = 0X06;
-  TH0 = 0X06;	   //ä¸€ä¸ªè®¡æ•°å‘¨æœŸ0.25ms
+  TH0 = 0X06;	   //Ò»¸ö¼ÆÊıÖÜÆÚ0.25ms
   TR0 = 1;
   }
 //---------------------------------------------------------------------------------------
-void init_special_interrupts(void)   //  ä¸­æ–­è®¾ç½®
+void init_timer1(void)
+{
+  TMOD &= 0x0F;
+  TMOD |= 0x20;
+  TL1 = 0x06;
+  TH1 = 0x06;
+  TR1 = 1;
+}
+void init_special_interrupts(void)   //  ÖĞ¶ÏÉèÖÃ
   {
-  //ä¸¤ä¸ªä¸­æ–­é…ç½®
-  EA  = 1;		//æ€»ä¸­æ–­å…è®¸
-  ET0 = 1;		//å…è®¸T0ä¸­æ–­
-  EADC=1;		//å…è®¸ADä¸­æ–­
-  //ä¸­æ–­ä¼˜å…ˆçº§é…ç½®
+  //Á½¸öÖĞ¶ÏÅäÖÃ
+  EA  = 1;		//×ÜÖĞ¶ÏÔÊĞí
+  ET0 = 1;		//ÔÊĞíT0ÖĞ¶Ï
+  ET1 = 1;    //ÔÊĞíT1ÖĞ¶Ï£¬Çı¶¯ÌØÕ÷²ÎÊı¸üĞÂºÍËüÃÇµÄÏÔÊ¾
+  EADC=1;		//ÔÊĞíADÖĞ¶Ï
+  //ÖĞ¶ÏÓÅÏÈ¼¶ÅäÖÃ
   PT0 = 1;
+  PT1 = 0;
   PADC=0;
   }
 //---------------------------------------------------------------------------------------
@@ -52,13 +72,14 @@ void dsptask()
   else{
   	switch(workMode)
    {
-   case 1:  a=0xFB;  break;
-   case 2:  a=0xFD;  break;
-   case 3:  a=0xFE;  break;
-   default: a=0x7F;
+   case 1:  a=0xF7;  break;
+   case 2:  a=0xFB;  break;
+   case 3:  a=0xFD;  break;
+   default: a=0xFE;  break;
    }
   }
-  key_num=sel;		//å–å¾—æŒ‰é”®æ‰€åœ¨è¡Œï¼ˆå¯èƒ½çš„è¡Œï¼‰
+  if(sel<=3)
+    key_num=sel;		//È¡µÃ°´¼üËùÔÚĞĞ£¨¿ÉÄÜµÄĞĞ£©
   sel++;
   if(sel>4) sel=0;
   for(b=0x80,i=0;i<8;i++)
@@ -75,77 +96,54 @@ void dsptask()
   D_RCLK=0;
   }
 //---------------------------------------------------------------------------------------
-void timer_isr() interrupt 1           //å®šæ—¶å™¨0ä¸­æ–­å¤„ç†
+void timer_isr() interrupt 1           //¶¨Ê±Æ÷0ÖĞ¶Ï´¦Àí
   {
   EA=0;
   adcount++;
   adc_start();
-  if(adcount==20)                      // 1/4*20 = 5ms
+  if(adcount==3||adcount==6||adcount==9){
+	updateWaveBuffer(); 
+  }
+  if(adcount==10)                      // 1/4*10/2 = 5ms
     {
     dsptask();
     key_service();
+
     adcount=0;
     }
   EA=1;
   }
 //---------------------------------------------------------------------------------------
-void fdisp(unsigned char n,unsigned char m)      //åŠŸèƒ½æ˜¯å°†è¦å†™å…¥çš„æ•°å€¼nå¯¹åº”çš„æ•°ç ç®¡ç¼–ç è£…å…¥dspbufçš„ç¬¬mä¸ªå•å…ƒ,æ²¡æœ‰ç”¨åˆ°
+void updateFeature() interrupt 3    //¶¨Ê±Æ÷1ÖĞ¶Ï´¦Àí
+{
+  EA=0;
+  clocktime++;
+  if(clocktime==500)
   {
-  char  c;
-   switch(n)
-    {
-    case 0:  c=0x11;  break;
-    case 1:  c=0x7d;  break;
-    case 2:  c=0x23;  break;
-    case 3:  c=0x29;  break;
-    case 4:  c=0x4d;  break;
-    case 5:  c=0x89;  break;
-    case 6:  c=0x81;  break;
-    case 7:  c=0x3d;  break;
-    case 8:  c=0x01;  break;
-    default: c=0x09; 
-    }
-   dspbuf[m]=c;
+    //0.25s¸üĞÂÒ»´ÎĞÅÏ¢
+    //updateValue();
   }
-//---------------------------------------------------------------------------------------
-void main(void)                    // ä¸»å‡½æ•°
+  //ÏÈ×¼±¸ÏÔÊ¾ÆµÂÊ£¨1s-2sÊÇÆµÂÊ£©£¬ĞèÒª°ÑÆµÂÊ¶ÔÓ¦µÄÊıÂë×°½ødspbufÊı×éÖĞ
+  else if(clocktime==2000)
   {
-  CLK_DIV=CLK_DIV|0x01;		   //åˆ†é¢‘ï¼Œéå¸¸é‡è¦ï¼å› ä¸ºDACçš„é€Ÿåº¦ä¸å¿«ï¼Œå¯¹å®ƒçŒå…¥è¿‡å¿«æ•°æ®å®ƒå—ä¸äº†äº†
-  init_timer0();                  //åˆå§‹åŒ–å®šæ—¶å™¨0
-  init_special_interrupts();      //è®¾ç½®ä¸­æ–­
-  adc_init();						//è®¾ç½®ADC
-  waveInit();
-  for(;;)
-    {
-
-  //å·¥ä½œæ¨¡å¼1æ‰ä¼šéšæ—¶è¿›è¡Œå­˜å‚¨
-  if(workMode==1){
-	//å¦‚æœADCâ€”â€”RESULTçš„å€¼å’Œä¸Šä¸€æ¬¡ä¸åŒï¼Œé‚£å°±æ›´æ–°,æ„é€ äº†ä¸€ä¸ªå¾ªç¯é˜µåˆ—
-	if(ad_temp!=ADC_RESULT){
-  daAddress=adAddress;//åŒæ­¥
-	if(adAddress<=0x0FFF){
-	XBYTE[adAddress]=ADC_RESULT;
-	ad_temp=ADC_RESULT;
-	adAddress++;
-	}
-	else{
-	adAddress=ADC_BASE_ADDRESS;
-	XBYTE[adAddress]=ADC_RESULT;
-	ad_temp=ADC_RESULT;
-    adAddress++;
-	}
-	}
+    dspbuf[1]=ledbuffer[1];
+    dspbuf[2]=ledbuffer[2];
+    dspbuf[3]=ledbuffer[3];
   }
+  //ÔÙÏÔÊ¾·å·åÖµ£¨ÏÂÒ»¸ö0s-1sÊÇ·å·åÖµ)
+  else if(clocktime==4000)
+  {
+    dspbuf[1]=0x11;
+    dspbuf[2]=ledbuffer[2]&0xFE;
+    dspbuf[3]=ledbuffer[3];
+    clocktime=0;
+  }
+  EA=1;
+}
 
-	//å·¥ä½œæ¨¡å¼1çš„æ³¢å½¢é€‰æ‹©
-	//å·¥ä½œæ¨¡å¼2çš„è¾“å‡ºå·²æœ‰æ³¢å½¢
-  //éƒ½æ˜¯å°†æ‰€éœ€æ•°æ®é€å…¥å®ƒè‡ªå·±ç»´æŠ¤çš„buffer
-	switch(workMode){
-	case 1:
-	{
-		//é€šé“1å®æ—¶è¾“å‡º
-		DAC_VALUE=ADC_RESULT;
-		//é€šé“2è¾“å‡ºå››ç§æ³¢ï¼Œç»™WAVE_VALUEèµ‹å€¼
+void updateWaveBuffer(){
+	if(workMode==1){
+//Í¨µÀ2Êä³öËÄÖÖ²¨£¬¸øWAVE_VALUE¸³Öµ
 		switch(waveMode){
 			case 1:
       {
@@ -162,7 +160,7 @@ void main(void)                    // ä¸»å‡½æ•°
       break;
 			case 2:
        {
-        if(triAddress<=0x11FF){
+        if(triAddress<=0x11F3){
       			WAVE_VALUE=XBYTE[triAddress];
       			triAddress++;
     		  }
@@ -175,7 +173,7 @@ void main(void)                    // ä¸»å‡½æ•°
       break;
 			case 3:
       {
-        if(squAddress<=0x12FF){
+        if(squAddress<=0x12F3){
       			WAVE_VALUE=XBYTE[squAddress];
       			squAddress++;
     		  }
@@ -188,7 +186,7 @@ void main(void)                    // ä¸»å‡½æ•°
       break;
 			case 4:
       {
-        if(teeAddress<=0x13FF){
+        if(teeAddress<=0x1379){
       			WAVE_VALUE=XBYTE[teeAddress];
       			teeAddress++;
     		  }
@@ -201,18 +199,14 @@ void main(void)                    // ä¸»å‡½æ•°
       break;
 			default:break;
 		}
-	}
-	break;
-	case 2:
-	{
-		//é€šé“1å®æ—¶è¾“å‡º
-		DAC_VALUE=ADC_RESULT;
-		//é€šé“2è¾“å‡ºä»¥å‰é‡‡çš„æ³¢å½¢
-		//å·¥ä½œæ¨¡å¼2è¿›è¡Œch2è¾“å‡ºå˜é‡OUTPUT_VALUEçš„èµ‹å€¼,è°ƒåˆ°å·¥ä½œæ¨¡å¼2ä¸€å®šå·²ç»é‡‡å®Œä¸€è½®äº†
-  		//ç•™æœ‰ä¸€ä¸ªé—®é¢˜ï¼Œè·³å‡ºå·¥ä½œæ¨¡å¼1åadAddressä¼šåœ¨å†…å­˜ç©ºé—´çš„æŸä¸€å¤„åœä¸‹
-  		//æš‚å®šä¸ºä»adAddresså¼€å§‹å¾ªç¯è¾“å‡º
+		}
+
+//Í¨µÀ2Êä³öÒÔÇ°²ÉµÄ²¨ĞÎ
+		//¹¤×÷Ä£Ê½2½øĞĞch2Êä³ö±äÁ¿OUTPUT_VALUEµÄ¸³Öµ,µ÷µ½¹¤×÷Ä£Ê½2Ò»¶¨ÒÑ¾­²ÉÍêÒ»ÂÖÁË
+  		//ÁôÓĞÒ»¸öÎÊÌâ£¬Ìø³ö¹¤×÷Ä£Ê½1ºóadAddress»áÔÚÄÚ´æ¿Õ¼äµÄÄ³Ò»´¦Í£ÏÂ
+  		//Ôİ¶¨Îª´ÓadAddress¿ªÊ¼Ñ­»·Êä³ö
   		if(workMode==2){
-    		if(daAddress<=0x0FFF){
+    		if(daAddress<=0x0400){
       			OUTPUT_VALUE=XBYTE[daAddress];
       			daAddress++;
     		}
@@ -222,23 +216,113 @@ void main(void)                    // ä¸»å‡½æ•°
       		daAddress++;
     	}
   		}
+}
+
+//---------------------------------------------------------------------------------------
+void fdisp(unsigned char n,unsigned char m)      //¹¦ÄÜÊÇ½«ÒªĞ´ÈëµÄÊıÖµn¶ÔÓ¦µÄÊıÂë¹Ü±àÂë×°ÈëledbufµÄµÚm¸öµ¥Ôª
+  {
+  char  c;
+   switch(n)
+    {
+    case 0:  c=0x11;  break;
+    case 1:  c=0x7d;  break;
+    case 2:  c=0x23;  break;
+    case 3:  c=0x29;  break;
+    case 4:  c=0x4d;  break;
+    case 5:  c=0x89;  break;
+    case 6:  c=0x81;  break;
+    case 7:  c=0x3d;  break;
+    case 8:  c=0x01;  break;
+    default: c=0x09; 
+    }
+   ledbuffer[m]=c;
+  }
+//---------------------------------------------------------------------------------------
+void main(void)                    // Ö÷º¯Êı
+  {
+  CLK_DIV=CLK_DIV|0x09;		   //·ÖÆµ£¬·Ç³£ÖØÒª£¡ÒòÎªDACµÄËÙ¶È²»¿ì£¬¶ÔËü¹àÈë¹ı¿ìÊı¾İËüÊÜ²»ÁËÁË
+  //·¢ÏÖ²»ÄÜÔËĞĞÁ¢¼´µ÷·ÖÆµ£¬ÏÈ¸øÒ»¸öºÜ´óµÄ·ÖÆµ£¬ÔÙµ÷»ØÔ­À´µÄ
+  init_timer0();                  //³õÊ¼»¯¶¨Ê±Æ÷0
+  init_timer1();
+  init_special_interrupts();      //ÉèÖÃÖĞ¶Ï
+  adc_init();						//ÉèÖÃADC
+  waveInit();
+  for(;;)
+    {
+
+  //¹¤×÷Ä£Ê½1²Å»áËæÊ±½øĞĞ´æ´¢
+  if(workMode==1||workMode==3){
+	//Èç¹ûADC¡ª¡ªRESULTµÄÖµºÍÉÏÒ»´Î²»Í¬£¬ÄÇ¾Í¸üĞÂ,¹¹ÔìÁËÒ»¸öÑ­»·ÕóÁĞ
+  //·½²¨ÄØ£¿¿ÉÒÔ¿¼ÂÇ½«Ã¿´ÎAD²ÉÑùÍê³É×÷Îª´æÈëÊı¾İµÄ±ê×¼
+	if(ad_temp!=ADC_RESULT){
+  daAddress=adAddress;//Í¬²½
+	if(adAddress<=0x0400){
+	XBYTE[adAddress]=ADC_RESULT;
+	ad_temp=ADC_RESULT;
+	adAddress++;
+	}
+	else{
+	adAddress=ADC_BASE_ADDRESS;
+	XBYTE[adAddress]=ADC_RESULT;
+	ad_temp=ADC_RESULT;
+    adAddress++;
+	}
+	}
+  }
+
+	//¹¤×÷Ä£Ê½1µÄ²¨ĞÎÑ¡Ôñ
+	//¹¤×÷Ä£Ê½2µÄÊä³öÒÑÓĞ²¨ĞÎ
+  //¶¼ÊÇ½«ËùĞèÊı¾İËÍÈëËü×Ô¼ºÎ¬»¤µÄbuffer
+	switch(workMode){
+	case 1:
+	{
+		//Í¨µÀ1ÊµÊ±Êä³ö
+		DAC_VALUE=ADC_RESULT;
+		//Í¨µÀ2Êä³öËÄÖÖ²¨ĞÎÒª¶¨Ê±¸³Öµ
+	}
+	break;
+	case 2:
+	{
+		//Í¨µÀ1ÊµÊ±Êä³ö
+		DAC_VALUE=ADC_RESULT;
+		//Í¨µÀ2Í¬Ñù¶¨Ê±Êä³ö²¨ĞÎ
 	}
 	break;
   case 3:
   {
-    //é€šé“1å®æ—¶è¾“å‡º
+    //Í¨µÀ1ÊµÊ±Êä³ö
     DAC_VALUE=ADC_RESULT;
   }
   break;
 	default:break;
 	}
 
-  //æŒ‰é”®å¤„ç†
-  if(key_sta&0x01)              // key_sta.0==1?ï¼Œæœ‰æŒ‰é”®æŒ‰ä¸‹
+  //°´¼ü´¦Àí
+  if(key_sta&0x01)              // key_sta.0==1?£¬ÓĞ°´¼ü°´ÏÂ
     {             
 		    keyWork();
-        key_sta=key_sta&0xfe;           // ç½®key_sta.0=0,å¤ä½
-    } 
+        key_sta=key_sta&0xfe;           // ÖÃkey_sta.0=0,¸´Î»
+    }
+
+  //¶ÔÒÑÓĞÆµÂÊºÍvppÒëÂë£¬¼ÙÉèÆµÂÊÎª0-999£¬vppÎª0.0-9.9
+  if(clocktime<2000)   //Ç°1sÏÔÊ¾·å·åÖµ£¬Ò»Ö±ÒëÂëÆµÂÊ£¬µ½´ïºó1sÁ¢¼´Ğ´Èë¡£ºó1sÏÔÊ¾ÆµÂÊ£¬Ò»Ö±ÒëÂë·å·åÖµ£¬µ½´ïĞÂµÄÇ°1sÁ¢¼´Ğ´Èë
+  {
+    unsigned char tmp1=freq/100;//·Ö±ğÊÇÉÌºÍÓàÊı
+    unsigned char tmp2=freq%100;
+    fdisp(tmp1,1);
+    tmp1=tmp2/10;
+    tmp2=tmp2%10;
+    fdisp(tmp1,2);
+    fdisp(tmp2,3);
+  }
+  else{
+    float tmp = (vpp/256)*10;
+    tmpA=floor(tmp);
+    fdisp(tmpA,2);
+    tmpB=floor(tmp*10);
+    tmpC=tmpB%10;
+    fdisp(tmpC,3);
+  }
 	}
   }
 //----------------------------------End---------------------------------------------------

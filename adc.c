@@ -6,24 +6,24 @@ extern char workMode;
 extern char WAVE_VALUE;
 extern char OUTPUT_VALUE;
 
-unsigned int channalSelect=0x0000;//DACé€šé“é€‰æ‹©
+unsigned int channalSelect=0x0000;//DACÍ¨µÀÑ¡Ôñ
 
 void adc_init()
 {
-    P1ASF=0x08;     //ç¡®å®šp13æ˜¯a-dåŠŸèƒ½,è¾“å…¥
-	//å¼€ADç”µæºï¼Œé€Ÿåº¦è®¾ç½®æœ€æ…¢ï¼Œæ¸…é›¶ä¸€æ¬¡ADå¼€å§‹ä½å’ŒADå®Œæˆä½ï¼Œé€‰æ‹©P1^3ä½œä¸ºADè¾“å…¥ç«¯å£
+    P1ASF=0x08;     //È·¶¨p13ÊÇa-d¹¦ÄÜ,ÊäÈë
+	//¿ªADµçÔ´£¬ËÙ¶ÈÉèÖÃ×îÂý£¬ÇåÁãÒ»´ÎAD¿ªÊ¼Î»ºÍADÍê³ÉÎ»£¬Ñ¡ÔñP1^3×÷ÎªADÊäÈë¶Ë¿Ú
     ADC_CONTR=ADC_INIT;
     delay(2);
 }
 
 
 
-void adc_start()		//adcæ”¾åœ¨å®šæ—¶å™¨ä¸­æ–­é‡Œè¾¹ï¼Œé‡‡æ ·é¢‘çŽ‡ä¸º4000Hzã€‚
+void adc_start()		//adc·ÅÔÚ¶¨Ê±Æ÷ÖÐ¶ÏÀï±ß£¬²ÉÑùÆµÂÊÎª4000Hz¡£
 {
-	//å¯åŠ¨ä¸€æ¬¡ADè½¬æ¢ï¼Œç„¶åŽç­‰å¾…è½¬æ¢ç»“æŸã€‚ADCä¸­æ–­æ˜¯ä½Žä¼˜å…ˆçº§
+	//Æô¶¯Ò»´ÎAD×ª»»£¬È»ºóµÈ´ý×ª»»½áÊø¡£ADCÖÐ¶ÏÊÇµÍÓÅÏÈ¼¶
 	ADC_CONTR=ADC_START;
 
-	//è¿™æ®µæ—¶é—´åˆšå¥½ç”¨æ¥åšDAC,æŠŠDAç»“æžœè¾“å‡º
+	//Õâ¶ÎÊ±¼ä¸ÕºÃÓÃÀ´×öDAC,°ÑDA½á¹ûÊä³ö
     switch(workMode){
         case 1:
 		channalSelect=CH1;
@@ -56,12 +56,12 @@ void dac_work(int channalSelect,char value){
 
 void adc_work() interrupt 5
 {
-	//ADC_STARTè½¬æ¢ç»“æŸåŽè‡ªåŠ¨ç½®0
-	//ADC_FLAGè½¬æ¢ç»“æŸåŽä¸º1,éœ€è¦æ‰‹åŠ¨æ¸…é›¶
+	//ADC_START×ª»»½áÊøºó×Ô¶¯ÖÃ0
+	//ADC_FLAG×ª»»½áÊøºóÎª1,ÐèÒªÊÖ¶¯ÇåÁã
 	ADC_CONTR=ADC_INIT;
 
-	//æŠŠADç»“æžœå­˜å‚¨
-	//é—®é¢˜:ADCè½¬æ¢å€¼æ˜¯1024ä¸ªé˜¶,DACè½¬æ¢å€¼æ˜¯256ä¸ªé˜¶,è¦è¿›è¡Œè½¬æ¢,èˆåŽ»æœ€ä½Žä¸¤ä½
+	//°ÑAD½á¹û´æ´¢
+	//ÎÊÌâ:ADC×ª»»ÖµÊÇ1024¸ö½×,DAC×ª»»ÖµÊÇ256¸ö½×,Òª½øÐÐ×ª»»,ÉáÈ¥×îµÍÁ½Î»
 	ADC_RESULT=ADC_RES;
 }
 

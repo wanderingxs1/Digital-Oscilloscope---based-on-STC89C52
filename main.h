@@ -1,36 +1,41 @@
 #include <reg51.h>                              // special function register declarations
 #include<absacc.h>
+#include<math.h>
 #include<adc.h>
 #include<key.h>
 #include<workMode1-outputWave.h>
 
-//ç‰‡å¤–RAMå¤§å°ä¸º8192(0x0000-0x1FFF)å­—èŠ‚ï¼Œä½¿ç”¨4096(0x1000)å­—èŠ‚æ¥å­˜æ”¾ADè½¬æ¢ç»“æœ
+//Æ¬ÍâRAM´óĞ¡Îª8192(0x0000-0x1FFF)×Ö½Ú£¬Ê¹ÓÃ4096(0x1000)×Ö½ÚÀ´´æ·ÅAD×ª»»½á¹û
 #define ADC_BASE_ADDRESS 0x0000
 
 void init_timer0();
 void init_special_interrupts();
+void updateWaveBuffer();
 
-unsigned int         p_read=0x0000,p_write=0x0000,ad_temp=0;        //preadæ˜¯è¦è¯»å‡ºæ•°æ®çš„åœ°å€,pwriteæ˜¯è¦å†™å…¥æ•°æ®çš„åœ°å€,ad_tempå­˜æ”¾ä¸Šä¸€æ¬¡çš„é‡‡æ ·å€¼
-unsigned char        dspbuf[4]={0xfe,0xfe,0xfe,0xfe},sel=0;     //æ•°ç ç®¡å§‹ç»ˆåªäº®ä¸€ä¸ªå°æ•°ç‚¹
-unsigned char		 lcdbuf[4]={0xF7,0xFB,0xFD,0xFE};//0ï¼Œ1ï¼Œ2ï¼Œ3æ¨¡å¼
-unsigned int         clocktime=0,adcount=0;     //adcountç”¨æ¥è®¡æ•°ä¸­æ–­è§¦å‘ä¸ªæ•°,clocktimeæ²¡æœ‰ä½œç”¨
+unsigned int         p_read=0x0000,p_write=0x0000,ad_temp=0;        //preadÊÇÒª¶Á³öÊı¾İµÄµØÖ·,pwriteÊÇÒªĞ´ÈëÊı¾İµÄµØÖ·,ad_temp´æ·ÅÉÏÒ»´ÎµÄ²ÉÑùÖµ
+unsigned char        dspbuf[4]={0x11,0x11,0x11,0x11},sel=0;
+                     //ÊıÂë¹ÜÏÔÊ¾ÆµÂÊ£¬ÈıÎ»ÕûÊı ÏÔÊ¾·å·åÖµ£¬Ò»Î»ÕûÊıÒ»Î»Ğ¡Êı
+                     //LD1¿Ï¶¨ÊÇÏÔÊ¾0
+                     //³õÊ¼È«ÏÔÊ¾0£¬0xfeÊÇĞ¡Êıµã
+unsigned char		 lcdbuf[4]={0xF7,0xFB,0xFD,0xFE};//0£¬1£¬2£¬3Ä£Ê½
+unsigned int         clocktime=0,adcount=0;     //adcountÓÃÀ´¼ÆÊı¶¨Ê±Æ÷ÖĞ¶Ï0´¥·¢¸öÊı,clocktimeÓÃÀ´¼ÆÊı¶¨Ê±Æ÷ÖĞ¶Ï1´¥·¢¸öÊı
 
-unsigned char		 ADC_RESULT=0;//è®°å½•adè½¬æ¢çš„ç»“æœï¼Œèˆå¼ƒæœ€ä½ä¸¤ä½
-unsigned char		 DAC_VALUE=0;//è®°å½•è¦æ”¾å…¥DAçš„æ•°æ®
-unsigned char        OUTPUT_VALUE=0;//å·¥ä½œæ¨¡å¼2ä¸‹æ¯æ¬¡åœ¨ch2è¾“å‡ºçš„å€¼
-unsigned int		 adAddress=ADC_BASE_ADDRESS;//ADCç»“æœçš„å­˜å‚¨åœ°å€é¦–ä½
-unsigned int		 daAddress=ADC_BASE_ADDRESS;//å·¥ä½œæ¨¡å¼2ï¼Œch2è¾“å‡ºå·¥ä½œæ¨¡å¼1ä¸‹é‡‡å‡ºçš„æ³¢å½¢ï¼Œå¦‚æœä¸å¤Ÿï¼Œé‚£ä¹ˆå°±ä¸è¾“å‡ºäº†
+unsigned char		 ADC_RESULT=0;//¼ÇÂ¼ad×ª»»µÄ½á¹û£¬ÉáÆú×îµÍÁ½Î»
+unsigned char		 DAC_VALUE=0;//¼ÇÂ¼Òª·ÅÈëDAµÄÊı¾İ
+unsigned char        OUTPUT_VALUE=0;//¹¤×÷Ä£Ê½2ÏÂÃ¿´ÎÔÚch2Êä³öµÄÖµ
+unsigned int		 adAddress=ADC_BASE_ADDRESS;//ADC½á¹ûµÄ´æ´¢µØÖ·Ê×Î»
+unsigned int		 daAddress=ADC_BASE_ADDRESS;//¹¤×÷Ä£Ê½2£¬ch2Êä³ö¹¤×÷Ä£Ê½1ÏÂ²É³öµÄ²¨ĞÎ£¬Èç¹û²»¹»£¬ÄÇÃ´¾Í²»Êä³öÁË
 
 unsigned int         sinAddress=SIN_BASE_ADDRESS;
 unsigned int         triAddress=TRI_BASE_ADDRESS;
 unsigned int         squAddress=SQU_BASE_ADDRESS;
 unsigned int         teeAddress=TEE_BASE_ADDRESS;
 
-unsigned  char 	key_sta=0,key_num;//æŒ‰é”®æŒ‰ä¸‹çŠ¶æ€å’ŒæŒ‰é”®ç¼–å·(ç»å¯¹ç¼–å·ï¼‰
-unsigned char workMode=1;//å·¥ä½œæ¨¡å¼
-//å·¥ä½œæ¨¡å¼1ï¼šch1è¯»å–è¾“å…¥ï¼Œå­˜å‚¨è¾“å‡º ch2æ ¹æ®5678æŒ‰é”®æŒ‰ä¸‹æƒ…å†µï¼Œè¾“å‡ºæ­£å¼¦ï¼Œä¸‰è§’ï¼Œæ–¹æ³¢ï¼Œé”¯é½¿å››ç§æ³¢å½¢
-//å·¥ä½œæ¨¡å¼2ï¼šch1è¯»å–è¾“å…¥ï¼Œä¸å­˜å‚¨ç›´æ¥è¾“å‡º ch2è¾“å‡ºä¹‹å‰å­˜å‚¨å¥½çš„æ³¢å½¢
-//å·¥ä½œæ¨¡å¼3ï¼šch1è¯»å–è¾“å…¥ï¼Œå­˜å‚¨ï¼Œè¾“å‡ºä¸è¾“å‡ºéšä¾¿ã€‚ch2ä¸ç”¨ç®¡ã€‚ ä½†æ˜¯è¦æ ¹æ®è¾“å…¥è·å–é¢‘ç‡å’Œå¹…å€¼ï¼Œå¹¶æ˜¾ç¤ºåœ¨æ•°ç ç®¡ä¸Šï¼Œé…ç½®ä½é€Ÿä¸­æ–­ï¼Œè‡³å°‘æ¯ç§’4æ¬¡
+unsigned  char 	key_sta=0,key_num;//°´¼ü°´ÏÂ×´Ì¬ºÍ°´¼ü±àºÅ(¾ø¶Ô±àºÅ£©
+unsigned char workMode=1;//¹¤×÷Ä£Ê½
+//¹¤×÷Ä£Ê½1£ºch1¶ÁÈ¡ÊäÈë£¬´æ´¢Êä³ö ch2¸ù¾İ5678°´¼ü°´ÏÂÇé¿ö£¬Êä³öÕıÏÒ£¬Èı½Ç£¬·½²¨£¬¾â³İËÄÖÖ²¨ĞÎ
+//¹¤×÷Ä£Ê½2£ºch1¶ÁÈ¡ÊäÈë£¬²»´æ´¢Ö±½ÓÊä³ö ch2Êä³öÖ®Ç°´æ´¢ºÃµÄ²¨ĞÎ
+//¹¤×÷Ä£Ê½3£ºch1¶ÁÈ¡ÊäÈë£¬´æ´¢£¬Êä³ö²»Êä³öËæ±ã¡£ch2²»ÓÃ¹Ü¡£ µ«ÊÇÒª¸ù¾İÊäÈë»ñÈ¡ÆµÂÊºÍ·ùÖµ£¬²¢ÏÔÊ¾ÔÚÊıÂë¹ÜÉÏ£¬ÅäÖÃµÍËÙÖĞ¶Ï£¬ÖÁÉÙÃ¿Ãë4´Î
 
 sbit D_SER     = P1^0;
 sbit D_SRCLK   = P1^1;

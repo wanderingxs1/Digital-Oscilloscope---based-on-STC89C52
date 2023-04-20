@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   ADC                                                                   04/13/2023 19:14:56 PAGE 1   
+C51 COMPILER V9.00   ADC                                                                   04/20/2023 19:53:04 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE ADC
@@ -15,25 +15,24 @@ line level    source
    6          extern char WAVE_VALUE;
    7          extern char OUTPUT_VALUE;
    8          
-   9          unsigned int channalSelect=0x0000;//DACé€šé“é€‰æ‹©
+   9          unsigned int channalSelect=0x0000;//DACÍ¨µÀÑ¡Ôñ
   10          
   11          void adc_init()
   12          {
-  13   1          P1ASF=0x08;     //ç¡®å®šp13æ˜¯a-dåŠŸèƒ½,è¾“å…¥
-  14   1              //å¼€ADç”µæºï¼Œé€Ÿåº¦è®¾ç½®æœ€æ…¢ï¼Œæ¸…é›¶ä¸€æ¬¡ADå¼€å§‹ä½å’ŒADå®Œæˆä½ï¼Œé€‰æ‹©P1^3ä½œä¸ºADè¾“å…¥ç«¯å
-             -£
+  13   1          P1ASF=0x08;     //È·¶¨p13ÊÇa-d¹¦ÄÜ,ÊäÈë
+  14   1              //¿ªADµçÔ´£¬ËÙ¶ÈÉèÖÃ×îÂý£¬ÇåÁãÒ»´ÎAD¿ªÊ¼Î»ºÍADÍê³ÉÎ»£¬Ñ¡ÔñP1^3×÷ÎªADÊäÈë¶Ë¿Ú
   15   1          ADC_CONTR=ADC_INIT;
   16   1          delay(2);
   17   1      }
   18          
   19          
   20          
-  21          void adc_start()                //adcæ”¾åœ¨å®šæ—¶å™¨ä¸­æ–­é‡Œè¾¹ï¼Œé‡‡æ ·é¢‘çŽ‡ä¸º4000Hzã€‚
+  21          void adc_start()                //adc·ÅÔÚ¶¨Ê±Æ÷ÖÐ¶ÏÀï±ß£¬²ÉÑùÆµÂÊÎª4000Hz¡£
   22          {
-  23   1              //å¯åŠ¨ä¸€æ¬¡ADè½¬æ¢ï¼Œç„¶åŽç­‰å¾…è½¬æ¢ç»“æŸã€‚ADCä¸­æ–­æ˜¯ä½Žä¼˜å…ˆçº§
+  23   1              //Æô¶¯Ò»´ÎAD×ª»»£¬È»ºóµÈ´ý×ª»»½áÊø¡£ADCÖÐ¶ÏÊÇµÍÓÅÏÈ¼¶
   24   1              ADC_CONTR=ADC_START;
   25   1      
-  26   1              //è¿™æ®µæ—¶é—´åˆšå¥½ç”¨æ¥åšDAC,æŠŠDAç»“æžœè¾“å‡º
+  26   1              //Õâ¶ÎÊ±¼ä¸ÕºÃÓÃÀ´×öDAC,°ÑDA½á¹ûÊä³ö
   27   1          switch(workMode){
   28   2              case 1:
   29   2                      channalSelect=CH1;
@@ -62,18 +61,18 @@ line level    source
   52          
   53          void dac_work(int channalSelect,char value){
   54   1              XBYTE[channalSelect]=value;     
-C51 COMPILER V9.00   ADC                                                                   04/13/2023 19:14:56 PAGE 2   
-
   55   1      }
+C51 COMPILER V9.00   ADC                                                                   04/20/2023 19:53:04 PAGE 2   
+
   56          
   57          void adc_work() interrupt 5
   58          {
-  59   1              //ADC_STARTè½¬æ¢ç»“æŸåŽè‡ªåŠ¨ç½®0
-  60   1              //ADC_FLAGè½¬æ¢ç»“æŸåŽä¸º1,éœ€è¦æ‰‹åŠ¨æ¸…é›¶
+  59   1              //ADC_START×ª»»½áÊøºó×Ô¶¯ÖÃ0
+  60   1              //ADC_FLAG×ª»»½áÊøºóÎª1,ÐèÒªÊÖ¶¯ÇåÁã
   61   1              ADC_CONTR=ADC_INIT;
   62   1      
-  63   1              //æŠŠADç»“æžœå­˜å‚¨
-  64   1              //é—®é¢˜:ADCè½¬æ¢å€¼æ˜¯1024ä¸ªé˜¶,DACè½¬æ¢å€¼æ˜¯256ä¸ªé˜¶,è¦è¿›è¡Œè½¬æ¢,èˆåŽ»æœ€ä½Žä¸¤ä½
+  63   1              //°ÑAD½á¹û´æ´¢
+  64   1              //ÎÊÌâ:ADC×ª»»ÖµÊÇ1024¸ö½×,DAC×ª»»ÖµÊÇ256¸ö½×,Òª½øÐÐ×ª»»,ÉáÈ¥×îµÍÁ½Î»
   65   1              ADC_RESULT=ADC_RES;
   66   1      }
   67          
