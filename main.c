@@ -4,10 +4,14 @@
 unsigned char tmpA,tmpB,tmpC;
 //用来输出峰峰值的临时变量
 
+extern char isChange;//是准备调频/调幅，改变按钮5678的用途
+extern char freBuffer;
+extern char ampBuffer;
+
 extern char waveMode;
 extern char WAVE_VALUE;
 extern int freq;
-extern char vpp;
+extern float vpp;
 //led2-4作为频率和峰峰值的译码变量，在主循环里被赋值，在定时器中断1里赋给dspbuf
 //初始显示0
 //第三位要显示小数点，与0xFe
@@ -108,7 +112,6 @@ void timer_isr() interrupt 1           //定时器0中断处理
     {
     dsptask();
     key_service();
-
     adcount=0;
     }
   EA=1;
@@ -118,6 +121,41 @@ void updateFeature() interrupt 3    //定时器1中断处理
 {
   EA=0;
   clocktime++;
+  //取特征得在adAddress改变之前进行
+  ampMeasure();
+  freMeasure();
+  if(workMode==1){
+  	//如果ADC——RESULT的值和上一次不同，那就更新,构造了一个循环阵列
+  //方波呢？可以考虑将每次AD采样完成作为存入数据的标准
+  	daAddress=adAddress;//同步
+	if(adAddress<=0x0400){
+	XBYTE[adAddress]=(ADC_RESULT-64)*2;
+	ad_temp=ADC_RESULT;
+	adAddress++;
+	}
+	else{
+	adAddress=ADC_BASE_ADDRESS;
+	XBYTE[adAddress]=(ADC_RESULT-64)*2;
+	ad_temp=ADC_RESULT;
+    adAddress++;
+	}
+	}
+  if(workMode==2){
+  		//通道2同样定时输出波形
+		//通道2输出以前采的波形
+		//工作模式2进行ch2输出变量OUTPUT_VALUE的赋值,调到工作模式2一定已经采完一轮了
+  		//留有一个问题，跳出工作模式1后adAddress会在内存空间的某一处停下
+  		//暂定为从adAddress开始循环输出
+    		if(daAddress<=0x0400){
+      			OUTPUT_VALUE=XBYTE[daAddress]/2;
+      			daAddress=daAddress+1;
+    		}
+    		else{
+      			daAddress=ADC_BASE_ADDRESS;
+      			OUTPUT_VALUE=XBYTE[daAddress]/2;
+      			daAddress++;
+    	}
+  }
   if(clocktime==500)
   {
     //0.25s更新一次信息
@@ -148,20 +186,24 @@ void updateWaveBuffer(){
 			case 1:
       {
         if(sinAddress<=0x10FF){
-      			WAVE_VALUE=XBYTE[sinAddress];
-      			sinAddress++;
+				if(ampBuffer!=1){
+      			WAVE_VALUE=XBYTE[sinAddress]*ampBuffer;}
+				else{
+				WAVE_VALUE=XBYTE[sinAddress];
+				}
+				sinAddress=sinAddress+1+freBuffer;
     		  }
     	  else{
       		sinAddress=SIN_BASE_ADDRESS;
-      		WAVE_VALUE=XBYTE[sinAddress];
-      		sinAddress++;
+      		WAVE_VALUE=XBYTE[sinAddress]*ampBuffer;
+      		sinAddress=sinAddress+1+freBuffer;
     	}
       }
       break;
 			case 2:
        {
-        if(triAddress<=0x11F3){
-      			WAVE_VALUE=XBYTE[triAddress];
+        if(triAddress+freBuffer<=0x11F3){
+      			WAVE_VALUE=XBYTE[triAddress+freBuffer]+ampBuffer;
       			triAddress++;
     		  }
     	  else{
@@ -173,8 +215,8 @@ void updateWaveBuffer(){
       break;
 			case 3:
       {
-        if(squAddress<=0x12F3){
-      			WAVE_VALUE=XBYTE[squAddress];
+        if(squAddress+freBuffer<=0x12F3){
+      			WAVE_VALUE=XBYTE[squAddress+freBuffer]+ampBuffer;
       			squAddress++;
     		  }
     	  else{
@@ -186,8 +228,8 @@ void updateWaveBuffer(){
       break;
 			case 4:
       {
-        if(teeAddress<=0x1379){
-      			WAVE_VALUE=XBYTE[teeAddress];
+        if(teeAddress+freBuffer<=0x1379){
+      			WAVE_VALUE=XBYTE[teeAddress+freBuffer]+ampBuffer;
       			teeAddress++;
     		  }
     	  else{
@@ -200,22 +242,6 @@ void updateWaveBuffer(){
 			default:break;
 		}
 		}
-
-//通道2输出以前采的波形
-		//工作模式2进行ch2输出变量OUTPUT_VALUE的赋值,调到工作模式2一定已经采完一轮了
-  		//留有一个问题，跳出工作模式1后adAddress会在内存空间的某一处停下
-  		//暂定为从adAddress开始循环输出
-  		if(workMode==2){
-    		if(daAddress<=0x0400){
-      			OUTPUT_VALUE=XBYTE[daAddress];
-      			daAddress++;
-    		}
-    	else{
-      		daAddress=ADC_BASE_ADDRESS;
-      		OUTPUT_VALUE=XBYTE[daAddress];
-      		daAddress++;
-    	}
-  		}
 }
 
 //---------------------------------------------------------------------------------------
@@ -240,7 +266,7 @@ void fdisp(unsigned char n,unsigned char m)      //功能是将要写入的数值n对应的数
 //---------------------------------------------------------------------------------------
 void main(void)                    // 主函数
   {
-  CLK_DIV=CLK_DIV|0x09;		   //分频，非常重要！因为DAC的速度不快，对它灌入过快数据它受不了了
+  CLK_DIV=CLK_DIV|0x01;		   //分频，非常重要！因为DAC的速度不快，对它灌入过快数据它受不了了
   //发现不能运行立即调分频，先给一个很大的分频，再调回原来的
   init_timer0();                  //初始化定时器0
   init_timer1();
@@ -250,42 +276,20 @@ void main(void)                    // 主函数
   for(;;)
     {
 
-  //工作模式1才会随时进行存储
-  if(workMode==1||workMode==3){
-	//如果ADC——RESULT的值和上一次不同，那就更新,构造了一个循环阵列
-  //方波呢？可以考虑将每次AD采样完成作为存入数据的标准
-	if(ad_temp!=ADC_RESULT){
-  daAddress=adAddress;//同步
-	if(adAddress<=0x0400){
-	XBYTE[adAddress]=ADC_RESULT;
-	ad_temp=ADC_RESULT;
-	adAddress++;
-	}
-	else{
-	adAddress=ADC_BASE_ADDRESS;
-	XBYTE[adAddress]=ADC_RESULT;
-	ad_temp=ADC_RESULT;
-    adAddress++;
-	}
-	}
-  }
-
 	//工作模式1的波形选择
 	//工作模式2的输出已有波形
   //都是将所需数据送入它自己维护的buffer
 	switch(workMode){
 	case 1:
 	{
-		//通道1实时输出
-		DAC_VALUE=ADC_RESULT;
-		//通道2输出四种波形要定时赋值
+	//通道1实时输出
+	DAC_VALUE=ADC_RESULT;
 	}
 	break;
 	case 2:
 	{
 		//通道1实时输出
 		DAC_VALUE=ADC_RESULT;
-		//通道2同样定时输出波形
 	}
 	break;
   case 3:
@@ -303,7 +307,6 @@ void main(void)                    // 主函数
 		    keyWork();
         key_sta=key_sta&0xfe;           // 置key_sta.0=0,复位
     }
-
   //对已有频率和vpp译码，假设频率为0-999，vpp为0.0-9.9
   if(clocktime<2000)   //前1s显示峰峰值，一直译码频率，到达后1s立即写入。后1s显示频率，一直译码峰峰值，到达新的前1s立即写入
   {
@@ -316,10 +319,9 @@ void main(void)                    // 主函数
     fdisp(tmp2,3);
   }
   else{
-    float tmp = (vpp/256)*10;
-    tmpA=floor(tmp);
+    tmpA=floor(vpp);
     fdisp(tmpA,2);
-    tmpB=floor(tmp*10);
+    tmpB=floor(vpp*10);
     tmpC=tmpB%10;
     fdisp(tmpC,3);
   }

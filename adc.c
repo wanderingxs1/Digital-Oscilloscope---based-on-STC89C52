@@ -62,7 +62,7 @@ void adc_work() interrupt 5
 
 	//把AD结果存储
 	//问题:ADC转换值是1024个阶,DAC转换值是256个阶,要进行转换,舍去最低两位
-	ADC_RESULT=ADC_RES;
+	ADC_RESULT=ADC_RES/2+64;
 }
 
 void delay(int delayTime)

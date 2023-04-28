@@ -1,13 +1,15 @@
 #include<key.h>
-
+//按键延时消除抖动，很重要！避免一次操作被误判为多次
 extern char workMode;
 extern char key_num;
 extern char waveMode;
 extern char key_sta;
+extern char isChange;//是准备调频/调幅，改变按钮5678的用途
+extern char freBuffer;
+extern char ampBuffer;
 sbit KEY1      = P3^4;
 sbit KEY2      = P3^5;
 
-unsigned char flag4=0;//按键4修改幅值还是频率，0幅值1相位
 
 void key_service()
   {
@@ -38,39 +40,68 @@ void keyWork()
 	    case 3:
 	        workMode=key_num;
 	    break;
-	//4号按键改变工作模式1下，ch2输出信号的幅值/频率（flag4=0改幅值，flag4=1改相位）,按一次按键，下次的功能也不同
+	//4号按键改变工作模式1下,是否进行频率和幅度的调整，相关变量isChange
 	    case 4:
 	        if(workMode==1){
-	            if(flag4==0){
-	                //修改幅值
-	                flag4=1;
+	            if(isChange==0){
+					isChange=1;//开始调频调幅
 	                }
 	            else{
-	                //修改频率
-	                flag4=0;
+					isChange=0;
+					freBuffer=0;
+					ampBuffer=1;
 	            }
 	        }
+			delay(20);
 	    break;
 //5678号按键适用于在工作模式1下改变输出波形
 	    case 5:
 	        if(workMode==1){
-                waveMode=1;
+				if(!isChange){
+					waveMode=1;
+				}
+				else{
+					if(freBuffer>=1){
+						freBuffer=freBuffer-1;
+					}
+				}
             }
+			delay(20);
         break;
         case 6:
             if(workMode==1){
-                waveMode=2;
+				if(!isChange){
+					waveMode=2;
+				}
+				else{
+					freBuffer=freBuffer+1;
+				}
             }
+			delay(20);
         break;
         case 7:
             if(workMode==1){
-                waveMode=3;
+				if(!isChange){
+					waveMode=3;
+				}
+				else{
+					if(ampBuffer>=2){
+						ampBuffer=ampBuffer-1;
+					}
+				}
             }
+			delay(30);
         break;
         case 8:
             if(workMode==1){
-                waveMode=4;
+				if(!isChange){
+					waveMode=4;
+				}
+				else{
+					ampBuffer=ampBuffer+1;
+				}
             }
+			delay(30);
         break;
         default:
         break;

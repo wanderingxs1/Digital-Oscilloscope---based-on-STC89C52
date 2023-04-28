@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   ADC                                                                   04/20/2023 19:53:04 PAGE 1   
+C51 COMPILER V9.00   ADC                                                                   04/28/2023 11:39:54 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE ADC
@@ -62,7 +62,7 @@ line level    source
   53          void dac_work(int channalSelect,char value){
   54   1              XBYTE[channalSelect]=value;     
   55   1      }
-C51 COMPILER V9.00   ADC                                                                   04/20/2023 19:53:04 PAGE 2   
+C51 COMPILER V9.00   ADC                                                                   04/28/2023 11:39:54 PAGE 2   
 
   56          
   57          void adc_work() interrupt 5
@@ -73,7 +73,7 @@ line level    source
   62   1      
   63   1              //把AD结果存储
   64   1              //问题:ADC转换值是1024个阶,DAC转换值是256个阶,要进行转换,舍去最低两位
-  65   1              ADC_RESULT=ADC_RES;
+  65   1              ADC_RESULT=ADC_RES/2+64;
   66   1      }
   67          
   68          void delay(int delayTime)
@@ -87,7 +87,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    123    ----
+   CODE SIZE        =    136    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

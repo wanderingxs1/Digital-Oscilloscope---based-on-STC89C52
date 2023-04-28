@@ -4,6 +4,7 @@
 #include<adc.h>
 #include<key.h>
 #include<workMode1-outputWave.h>
+#include<featureExtract.h>
 
 //片外RAM大小为8192(0x0000-0x1FFF)字节，使用4096(0x1000)字节来存放AD转换结果
 #define ADC_BASE_ADDRESS 0x0000

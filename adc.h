@@ -3,7 +3,7 @@
 
 #include <reg51.h>                              // special function register declarations
 #include<absacc.h>
-#include<intrins.h>
+#include<math.h>
 
 sfr ADC_CONTR=0xBC;	 //ADC控制寄存器
 sfr ADC_RES =0xBD;	//ADC结果寄存器高八位

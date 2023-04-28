@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   FEATUREEXTRACT                                                        04/20/2023 19:53:04 PAGE 1   
+C51 COMPILER V9.00   FEATUREEXTRACT                                                        04/28/2023 11:39:55 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE FEATUREEXTRACT
@@ -9,21 +9,71 @@ line level    source
 
    1          #include<featureExtract.h>
    2          
-   3          unsigned int freq=0;//´ý²âÐÅºÅÆµÂÊ,0-300Hz
-   4          unsigned char vpp=0;//Ïà¶Ô´óÐ¡£¬0-255¶ÔÓ¦-5-5V
+   3          extern char ADC_RESULT;
+   4          extern int adAddress;
    5          
-   6          void updateValue(void)
-   7          {
-   8   1          
-   9   1      }
+   6          unsigned int freq=0;//´ý²âÐÅºÅÆµÂÊ,0-300Hz
+   7          float vpp=0.0;//¾ø¶ÔµçÑ¹Öµ
+   8          unsigned char amp=0;//ÕâÒ»Ê±¿ÌµÄ²ÉÑùÊý×ÖÖµ
+   9          unsigned char ampl=0;//Ç°Ò»´ÎµÄ²ÉÑùÊý×ÖÖµ
+  10          //ÕâÁ½¸öÖµÒ»¶¨Òª³õÊ¼ÖÃÎªÖÐÖµ£¡
+  11          unsigned char amp_up=128;//Êý¾Ý¿éÄÚµÄ×î¸ßµçÑ¹Öµ
+  12          unsigned char amp_low=128;//Êý¾Ý¿éÄÚµÄ×îµÍµçÑ¹Öµ
+  13          int fre=0;//Êý¾Ý¿éÄÚËùÓÐÍêÕûÖÜÆÚµÄ²ÉÑùµã×Ü¸öÊý
+  14          int fre_up=0;//Ò»¸öÖÜÆÚµÄÄ©µØÖ·
+  15          int fre_low=0;//Ò»¸öÖÜÆÚµÄÊ×µØÖ·
+  16          float fre_count=0;//ÒÑ¾­¾­ÀúµÄÖÜÆÚ¸öÊý
+  17          
+  18          void ampMeasure()
+  19          {
+  20   1          amp=ADC_RESULT;
+  21   1          if (amp>amp_up){amp_up=amp;}
+  22   1          if (amp<amp_low){amp_low=amp;}
+  23   1              //¼ÆÊý·¶Î§ÎªÒ»¸öÊý¾Ý¿é
+  24   1          if(adAddress>0x0400){
+  25   2              vpp=(amp_up*5.0-amp_low*5.0)/128;//Ö®Ç°ÎªÁËÊ¾²¨Æ÷ÏÔÊ¾¸ø·ùÖµ³ý2£¬ÕâÀï³Ë»ØÀ´
+  26   2              amp_up=amp_low=128;
+  27   2          }
+  28   1      }
+  29          
+  30          void freMeasure()
+  31          {
+  32   1          amp=ADC_RESULT;
+  33   1              //×÷Í¼ÅÐ¶ÏÊ±Ðò
+  34   1              //ÅÐ¶ÏÒ»¸öÖÜÆÚµÄ¿ªÊ¼£¬¼´Ç°Ò»´ÎÐ¡ÓÚ0£¬ºóÒ»´Î´óÓÚ0
+  35   1          if (amp>128 && ampl<=128)
+  36   1          {
+  37   2          fre_up=adAddress; //µÚfre_count¸öÖÜÆÚµÄÊ×µØÖ·
+  38   2          if(fre_low!=0)        //µÚ0¸öÖÜÆÚÖ®ºó²Å»á¼ÆÊý
+  39   2          {
+  40   3          fre=fre+fabs(fre_low-fre_up);//ºóÒ»Ïîfabs()ÊÇÒ»¸öÖÜÆÚµÄ²ÉÑùµã¸öÊý,freÊÇÊý¾Ý¿éÄÚËùÓÐÍêÕûÖÜÆÚµÄ²ÉÑùµã×Ü¸
+             -öÊý
+  41   3          fre_count++;
+  42   3          }
+  43   2          fre_low=fre_up;     //¸üÐÂÎªµÚ(fre_count+1) ¸öÖÜÆÚµÄÊ×µØÖ·
+  44   2          }
+  45   1              //Êý¾Ý¿é´¦ÀíÍê
+  46   1          if(adAddress>0x0400){
+  47   2                      //¶ÔÊä³ö»Ø·Å²¨ÐÎ´æ´¢µÄ²ÉÑùÆµÂÊÎª4000/2=2000Hz£¨×¢Òâ¶þ·ÖÆµ£©
+  48   2              freq=floor(2000/(fre*1.0/fre_count));
+  49   2              fre=0;
+  50   2              fre_up=fre_low=0;
+  51   2              fre_count=0;
+  52   2              amp=ampl=129;
+  53   2          }
+  54   1          ampl=amp;
+C51 COMPILER V9.00   FEATUREEXTRACT                                                        04/28/2023 11:39:55 PAGE 2   
+
+  55   1      
+  56   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =      1    ----
+   CODE SIZE        =    314    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      3    ----
+   DATA SIZE        =     20    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
